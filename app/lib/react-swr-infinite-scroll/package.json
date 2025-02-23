@@ -1,0 +1,32 @@
+{
+  "name": "react-swr-infinite-scroll",
+  "license": "MIT",
+  "version": "1.0.1",
+  "private": false,
+  "description": "Infinite scrolling with useSWRInfinite",
+  "author": "Eunsoo Shin",
+  "homepage": "https://github.com/esinx/react-swr-infinite-scroll",
+  "bugs": {
+    "url": "https://github.com/esinx/react-swr-infinite-scroll/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/esinx/react-swr-infinite-scroll.git"
+  },
+  "keywords": [
+    "react",
+    "swr",
+    "infinite scroll",
+    "hooks"
+  ],
+  "main": "index.js",
+  "module": "index.esm.js",
+  "types": "index.d.ts",
+  "dependencies": {
+    "classnames": "^2.2.6"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0"
+  }
+}

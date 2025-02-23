@@ -1,0 +1,8 @@
+#viewers:popover-open {
+	display: flex;
+}
+
+body:has(.live) {
+    height: 100vh;
+    max-height: 100vh;
+}

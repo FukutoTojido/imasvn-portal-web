@@ -1,0 +1,41 @@
+.chatBox {
+    anchor-name: --chat-box;
+}
+
+.emoteContainer {
+    /* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
+    position-anchor: --chat-box;
+    inset: auto;
+    bottom: anchor(top);
+    right: anchor(right);
+
+    padding: 10px;
+
+    margin: 0;
+    max-width: 100vw;
+    background: transparent
+}
+
+/*Scrollbar*/
+
+.emoteContainer > div::-webkit-scrollbar {
+	width: 10px;
+	background-color: transparent;
+	/* display: none; */
+}
+
+/* Track */
+
+.emoteContainer > div::-webkit-scrollbar-track {
+	/* margin-top: 25px;
+	margin-bottom: 25px; */
+	visibility: 0;
+}
+
+/* Handle */
+
+.emoteContainer > div::-webkit-scrollbar-thumb {
+	background: #56587d;
+	border-radius: 10px;
+}
+
