@@ -28,7 +28,7 @@ export function meta({}: Route.MetaArgs) {
 export async function clientLoader() {
 	try {
 		const result = (
-			await axios.get("http://localhost:3001/auth/@me", {
+			await axios.get(`${import.meta.env.VITE_BACKEND_API}/auth/@me`, {
 				withCredentials: true,
 			})
 		).data;
