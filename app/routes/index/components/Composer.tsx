@@ -59,7 +59,7 @@ export default function Composer() {
 
 			dispatch(hide());
 
-			const postId = res.data;
+			const { postId } = res.data;
 			navigate(`/posts/${postId}`);
 		} catch (e) {
 			console.error("An error has occured", e);
