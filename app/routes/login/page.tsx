@@ -15,18 +15,21 @@ export function meta({}: Route.MetaArgs) {
 		},
 		{
 			property: "og:image",
-			content: "https://cdn.tryz.id.vn/anime-girl-car-drinking-coffee-co.jpg",
+			content: "https://cdn.tryz.id.vn/Portal%20Image.png",
 		},
 		{ property: "og:url", content: "https://live.tryz.id.vn" },
 		{ name: "twitter:card", content: "summary_large_image" },
-		{ name: "twitter:title", content: "Login | THE iDOLM@STER Vietnam Portal" },
+		{
+			name: "twitter:title",
+			content: "Login | THE iDOLM@STER Vietnam Portal",
+		},
 		{
 			name: "twitter:description",
 			content: "Please login to fully access THE iDOLM@STER Vietnam",
 		},
 		{
 			name: "twitter:image",
-			content: "https://cdn.tryz.id.vn/anime-girl-car-drinking-coffee-co.jpg",
+			content: "https://cdn.tryz.id.vn/Portal%20Image.png",
 		},
 		{ property: "twitter:url", content: "https://live.tryz.id.vn" },
 		{ property: "twitter:domain", content: "live.tryz.id.vn" },

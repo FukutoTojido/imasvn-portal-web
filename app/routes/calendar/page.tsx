@@ -11,15 +11,29 @@ export function meta({}: Route.MetaArgs) {
 	return [
 		{ title: "Calendar | THE iDOLM@STER Vietnam Portal" },
 		{ name: "description", content: "THE iDOLM@STER Birthday Calendar" },
-		{ property: "og:title", content: "Calendar | THE iDOLM@STER Vietnam Portal" },
+		{
+			property: "og:title",
+			content: "Calendar | THE iDOLM@STER Vietnam Portal",
+		},
 		{ property: "og:description", content: "THE iDOLM@STER Birthday Calendar" },
-		{ property: "og:image", content: "https://cdn.tryz.id.vn/fuyuping.png" },
-		{ property: "og:image:width", content: "400" },
-		{ property: "og:image:height", content: "400" },
+		{
+			property: "og:image",
+			content: "https://cdn.tryz.id.vn/Portal%20Image.png",
+		},
 		{ property: "og:url", content: "https://live.tryz.id.vn" },
-		{ name: "twitter:title", content: "Calendar | THE iDOLM@STER Vietnam Portal" },
-		{ name: "twitter:description", content: "THE iDOLM@STER Birthday Calendar" },
-		{ name: "twitter:image", content: "https://cdn.tryz.id.vn/fuyuping.png" },
+		{ name: "twitter:card", content: "summary_large_image" },
+		{
+			name: "twitter:title",
+			content: "Calendar | THE iDOLM@STER Vietnam Portal",
+		},
+		{
+			name: "twitter:description",
+			content: "THE iDOLM@STER Birthday Calendar",
+		},
+		{
+			name: "twitter:image",
+			content: "https://cdn.tryz.id.vn/Portal%20Image.png",
+		},
 		{ property: "twitter:url", content: "https://live.tryz.id.vn" },
 		{ property: "twitter:domain", content: "live.tryz.id.vn" },
 	];

@@ -5,7 +5,7 @@ import { useRef, useState, type RefObject } from "react";
 import type { Viewer } from "./types";
 import VideoPlayer from "./components/VideoPlayer";
 import Viewers from "./components/Viewers";
-import "./Live.css"
+import "./Live.css";
 import type { Route } from "./+types/page";
 
 // biome-ignore lint/correctness/noEmptyPattern: <explanation>
@@ -15,13 +15,24 @@ export function meta({}: Route.MetaArgs) {
 		{ name: "description", content: "Tsukimura Temari Radio 24/7" },
 		{ property: "og:title", content: "Live | THE iDOLM@STER Vietnam Portal" },
 		{ property: "og:description", content: "Tsukimura Temari Radio 24/7" },
-		{ property: "og:image", content: "https://cdn.tryz.id.vn/temari.jpg" },
-		{ property: "og:image:width", content: "400" },
-		{ property: "og:image:height", content: "400" },
+		{
+			property: "og:image",
+			content: "https://cdn.tryz.id.vn/Live%20Image.png",
+		},
 		{ property: "og:url", content: "https://live.tryz.id.vn" },
-		{ name: "twitter:title", content: "Live | THE iDOLM@STER Vietnam Portal" },
-		{ name: "twitter:description", content: "Tsukimura Temari Radio 24/7" },
-		{ name: "twitter:image", content: "https://cdn.tryz.id.vn/temari.jpg" },
+		{ name: "twitter:card", content: "summary_large_image" },
+		{
+			name: "twitter:title",
+			content: "Live | THE iDOLM@STER Vietnam Portal",
+		},
+		{
+			name: "twitter:description",
+			content: "Tsukimura Temari Radio 24/7",
+		},
+		{
+			name: "twitter:image",
+			content: "https://cdn.tryz.id.vn/Live%20Image.png",
+		},
 		{ property: "twitter:url", content: "https://live.tryz.id.vn" },
 		{ property: "twitter:domain", content: "live.tryz.id.vn" },
 	];

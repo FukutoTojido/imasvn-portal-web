@@ -1,4 +1,4 @@
-import { AtSign, Video } from "lucide-react";
+import { AtSign, Calendar, User, Video } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import UserBadge from "./UserBadge";
 
@@ -21,6 +21,18 @@ export default function NavBar() {
 			href: "/live",
 			name: "Live",
 			icon: <Video size={16} />,
+		},
+		{
+			alias: ["/calendar"],
+			href: "/calendar",
+			name: "Calendar",
+			icon: <Calendar size={16} />,
+		},
+		{
+			alias: ["/characters"],
+			href: "/characters",
+			name: "Characters",
+			icon: <User size={16} />,
 		},
 		// {
 		//     alias: ["/anime"],

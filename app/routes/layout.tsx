@@ -12,14 +12,28 @@ export function meta({}: Route.MetaArgs) {
 		{ title: "Portal | THE iDOLM@STER Vietnam Portal" },
 		{ name: "description", content: "Welcome to THE iDOLM@STER Vietnam" },
 		{ property: "og:title", content: "Portal | THE iDOLM@STER Vietnam Portal" },
-		{ property: "og:description", content: "Welcome to THE iDOLM@STER Vietnam" },
-		{ property: "og:image", content: "https://cdn.tryz.id.vn/fuyuping.png" },
-		{ property: "og:image:width", content: "400" },
-		{ property: "og:image:height", content: "400" },
+		{
+			property: "og:description",
+			content: "Welcome to THE iDOLM@STER Vietnam",
+		},
+		{
+			property: "og:image",
+			content: "https://cdn.tryz.id.vn/Portal%20Image.png",
+		},
 		{ property: "og:url", content: "https://live.tryz.id.vn" },
-		{ name: "twitter:title", content: "Portal | THE iDOLM@STER Vietnam Portal" },
-		{ name: "twitter:description", content: "Welcome to THE iDOLM@STER Vietnam" },
-		{ name: "twitter:image", content: "https://cdn.tryz.id.vn/fuyuping.png" },
+		{ name: "twitter:card", content: "summary_large_image" },
+		{
+			name: "twitter:title",
+			content: "Portal | THE iDOLM@STER Vietnam Portal",
+		},
+		{
+			name: "twitter:description",
+			content: "Welcome to THE iDOLM@STER Vietnam",
+		},
+		{
+			name: "twitter:image",
+			content: "https://cdn.tryz.id.vn/Portal%20Image.png",
+		},
 		{ property: "twitter:url", content: "https://live.tryz.id.vn" },
 		{ property: "twitter:domain", content: "live.tryz.id.vn" },
 	];
