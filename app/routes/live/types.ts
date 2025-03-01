@@ -28,3 +28,9 @@ export type Viewer = {
 	username: string;
     id: string
 };
+
+export type Alert = {
+	type: "OK" | "ERROR";
+	message: string;
+	timestamp: number,
+};

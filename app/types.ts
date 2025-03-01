@@ -20,6 +20,7 @@ export type UserState =
 			id: string;
 			isJoinedServer: boolean;
 			authType: UserType.OK;
+			role: number
 	  };
 
 export interface UserFlairData {

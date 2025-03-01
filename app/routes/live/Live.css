@@ -3,6 +3,6 @@
 }
 
 body:has(.live) {
-    height: 100vh;
-    max-height: 100vh;
+    height: 100svh;
+    max-height: 100svh;
 }

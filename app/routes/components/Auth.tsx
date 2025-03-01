@@ -15,6 +15,7 @@ export default function Auth({
 		avatar: string;
 		banner: string;
 		isJoinedServer: boolean;
+		role: number
 	};
 }) {
 	const dispatch = useDispatch();
@@ -38,6 +39,7 @@ export default function Auth({
 				banner: user.banner,
 				isJoinedServer: user.isJoinedServer,
 				authType: UserType.OK,
+				role: user.role
 			}),
 		);
 	}, [

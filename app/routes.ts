@@ -11,6 +11,7 @@ export default [
 			index("routes/index/page.tsx"),
 			route("users/:id", "routes/users/page.tsx"),
 			route("posts/:id", "routes/posts/page.tsx"),
+			route("live/preview", "routes/live/preview/page.tsx"),
 		]),
 		layout("routes/login/layout.tsx", [
 			route("login", "routes/login/page.tsx"),
@@ -19,7 +20,7 @@ export default [
 		layout("routes/calendar/layout.tsx", [
 			route("/calendar", "routes/calendar/page.tsx"),
 			route("/characters", "routes/calendar/characters/page.tsx"),
-		])
+		]),
 	]),
 	route("auth", "routes/auth/index.tsx"),
 ] satisfies RouteConfig;
