@@ -31,6 +31,7 @@ enum State {
 const TIMEOUT = 2000;
 
 export default function VideoPlayer({
+	title,
 	userData,
 	pageRef,
 	hideChat,
@@ -39,6 +40,7 @@ export default function VideoPlayer({
 	setIsFullscreen,
 	setHideChat,
 }: {
+	title: string;
 	userData: UserState;
 	pageRef: RefObject<HTMLDivElement>;
 	hideChat: boolean;
@@ -209,21 +211,23 @@ export default function VideoPlayer({
 							"linear-gradient(to bottom, black 0%, transparent 100px, transparent calc(100% - 100px) ,black 100%)",
 					}}
 				>
-					<div className="flex-1 w-full p-5 flex items-start justify-between">
-						<div className="flex items-center gap-8">
-							<div className="text-sm font-bold flex items-center gap-2.5">
-								<div className="w-4 h-4 rounded-full bg-red" />
-								<span>LIVE</span>
+					<div className="flex-1 w-full p-5 flex items-start justify-between gap-5">
+						<div className="flex flex-col">
+							<div className="flex-1 line-clamp-1 font-bold">{title}</div>
+							<div className="flex items-center gap-5">
+								<button
+									type="button"
+									// @ts-ignore
+									popoverTarget="viewers"
+									className="w-full flex gap-2.5 items-center hover:underline underline-offset-2"
+								>
+									<Users className="pointer-events-none" size={14} />
+									<span className="pointer-events-none text-xs">
+										{viewers.length} viewer{viewers.length > 1 ? "s" : ""}{" "}
+										watching
+									</span>
+								</button>
 							</div>
-							<button
-								type="button"
-								// @ts-ignore
-								popoverTarget="viewers"
-								className="w-full font-bold flex gap-2.5"
-							>
-								<Users className="pointer-events-none" />
-								<span className="pointer-events-none">{viewers.length}</span>
-							</button>
 						</div>
 
 						<button type="button" onClick={() => setHideChat(!hideChat)}>

@@ -56,7 +56,7 @@ export function meta({ data: { title, url } }: Route.MetaArgs) {
 	];
 }
 
-export default function Page() {
+export default function Page({ loaderData }: Route.ComponentProps) {
 	const userData = useSelector(
 		(state: ReturnType<typeof store.getState>) => state.auth.user,
 	);
@@ -71,6 +71,7 @@ export default function Page() {
 			ref={pageRef}
 		>
 			<VideoPlayer
+				title={loaderData.title}
 				userData={userData}
 				pageRef={pageRef as RefObject<HTMLDivElement>}
 				isFullscreen={isFullscreen}
