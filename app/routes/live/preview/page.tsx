@@ -55,6 +55,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 		(state: ReturnType<typeof store.getState>) => state.auth.user,
 	);
 
+	const [title, setTitle] = useState<string>(loaderData?.title ?? "");
 	const [url, setUrl] = useState<string>(loaderData?.url ?? "");
 	const [alert, setAlert] = useState<Alert[]>([]);
 
@@ -104,8 +105,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 						type="text"
 						name="title"
 						id="title"
-						defaultValue={loaderData?.title}
+						defaultValue={title}
 						className="w-full bg-primary-3 p-2.5 rounded-lg focus-within:outline-2 outline-primary-6"
+						onChange={(event) => setTitle(event.target.value)}
 					/>
 				</div>
 				<div className="flex flex-col w-full gap-2.5">
