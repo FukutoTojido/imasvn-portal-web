@@ -19,7 +19,6 @@ export default [
 			route("login", "routes/login/page.tsx"),
 		]),
 		layout("routes/live/layout.tsx", [route("live", "routes/live/page.tsx")]),
-		layout("routes/calendar/layout.tsx", []),
 	]),
 	route("auth", "routes/auth/index.tsx"),
 ] satisfies RouteConfig;

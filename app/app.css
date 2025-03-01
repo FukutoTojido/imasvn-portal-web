@@ -695,6 +695,10 @@ label {
 	}
 }
 
+/* ::view-transition-group(*) {
+	animation-duration: 20s;
+} */
+
 ::view-transition-group(calendarBack),
 ::view-transition-group(calendarNext) {
 	overflow: hidden;
