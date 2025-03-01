@@ -8,69 +8,52 @@ import Viewers from "./components/Viewers";
 import type { Route } from "./+types/page";
 import axios from "axios";
 
-// biome-ignore lint/correctness/noEmptyPattern: <explanation>
-export async function meta({}: Route.MetaArgs) {
+export async function loader() {
 	try {
 		const res = await axios.get(
 			`${import.meta.env.VITE_BACKEND_API}/live/preview`,
 		);
-		const { title, url } = res.data;
-
-		return [
-			{ title: "Live | THE iDOLM@STER Vietnam Portal" },
-			{ name: "description", content: title },
-			{ property: "og:title", content: "Live | THE iDOLM@STER Vietnam Portal" },
-			{ property: "og:description", content: "Tsukimura Temari Radio 24/7" },
-			{
-				property: "og:image",
-				content: url,
-			},
-			{ property: "og:url", content: "https://live.tryz.id.vn" },
-			{ name: "twitter:card", content: "summary_large_image" },
-			{
-				name: "twitter:title",
-				content: "Live | THE iDOLM@STER Vietnam Portal",
-			},
-			{
-				name: "twitter:description",
-				content: title,
-			},
-			{
-				name: "twitter:image",
-				content: url,
-			},
-			{ property: "twitter:url", content: "https://live.tryz.id.vn" },
-			{ property: "twitter:domain", content: "live.tryz.id.vn" },
-		];
+		const { title, url }: { title: string; url: string } = res.data;
+		return {
+			title,
+			url,
+		};
 	} catch (e) {
 		console.error(e);
-		return [
-			{ title: "Live | THE iDOLM@STER Vietnam Portal" },
-			{ name: "description", content: "Tsukimura Temari Radio 24/7" },
-			{ property: "og:title", content: "Live | THE iDOLM@STER Vietnam Portal" },
-			{ property: "og:description", content: "Tsukimura Temari Radio 24/7" },
-			{
-				property: "og:image",
-				content: "https://cdn.tryz.id.vn/Live%20Image.png",
-			},
-			{ property: "og:url", content: "https://live.tryz.id.vn" },
-			{ name: "twitter:card", content: "summary_large_image" },
-			{
-				name: "twitter:title",
-				content: "Live | THE iDOLM@STER Vietnam Portal",
-			},
-			{
-				name: "twitter:description",
-				content: "Tsukimura Temari Radio 24/7",
-			},
-			{
-				name: "twitter:image",
-				content: "https://cdn.tryz.id.vn/Live%20Image.png",
-			},
-			{ property: "twitter:url", content: "https://live.tryz.id.vn" },
-			{ property: "twitter:domain", content: "live.tryz.id.vn" },
-		];
+		return {
+			title: "Tsukimura Temari Radio 24/7",
+			url: "https://cdn.tryz.id.vn/Live%20Image.png",
+		};
 	}
+}
+
+export function meta({ data: { title, url } }: Route.MetaArgs) {
+	return [
+		{ title: "Live | THE iDOLM@STER Vietnam Portal" },
+		{ name: "description", content: title },
+		{ property: "og:title", content: "Live | THE iDOLM@STER Vietnam Portal" },
+		{ property: "og:description", content: title },
+		{
+			property: "og:image",
+			content: url,
+		},
+		{ property: "og:url", content: "https://live.tryz.id.vn" },
+		{ name: "twitter:card", content: "summary_large_image" },
+		{
+			name: "twitter:title",
+			content: "Live | THE iDOLM@STER Vietnam Portal",
+		},
+		{
+			name: "twitter:description",
+			content: title,
+		},
+		{
+			name: "twitter:image",
+			content: url,
+		},
+		{ property: "twitter:url", content: "https://live.tryz.id.vn" },
+		{ property: "twitter:domain", content: "live.tryz.id.vn" },
+	];
 }
 
 export default function Page() {
