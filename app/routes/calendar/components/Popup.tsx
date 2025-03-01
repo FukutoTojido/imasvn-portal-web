@@ -66,7 +66,7 @@ export default function Popup({
 	return (
 		<div
 			ref={ref}
-			className="max-w-full max-h-full overflow-auto w-[800px] p-5 bg-white rounded-xl flex gap-5 text-alt-accent flex-col sm:flex-row items-center sm:items-start"
+			className="max-w-full max-h-full overflow-auto w-[800px] p-5 bg-primary-3 rounded-xl flex gap-5 text-primary-6 flex-col sm:flex-row items-center sm:items-start"
 			{...{ ...props }}
 		>
 			<img
@@ -75,7 +75,7 @@ export default function Popup({
 				alt=""
 				width={240}
 				height={240}
-				className="w-[240px] h-[240px] rounded-xl sm:bg-alt-subtle object-cover object-top"
+				className="w-[240px] h-[240px] rounded-xl sm:bg-primary-2 object-cover object-top"
 			/>
 			<div className="sm:h-full h-auto flex-1 flex-col flex gap-5 w-full">
 				<div className="w-full sm:w-auto flex flex-col text-center sm:text-left">
@@ -86,7 +86,7 @@ export default function Popup({
 						{idolInfo?.Name.split("(")[0] ?? ""}
 					</div>
 				</div>
-				<div className="flex-1 bg-alt-subtle w-full p-5 rounded-xl text-sm">
+				<div className="flex-1 bg-primary-2 w-full p-5 rounded-xl text-sm">
 					<ul className="w-full" ref={descriptionRef}>
 						{info ? (
 							Object.keys(info)
@@ -125,7 +125,7 @@ export default function Popup({
 								})
 						) : (
 							<>
-								<li className="w-full h-[1em] rounded-md bg-alt-bg mb-1 skeleton2" />
+								<li className="w-full h-[1em] rounded-md bg-primary-4 mb-1 skeleton2" />
 							</>
 						)}
 					</ul>

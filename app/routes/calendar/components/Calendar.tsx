@@ -154,9 +154,9 @@ export default function Calendar({
 	}, [birthdays, month]);
 
 	return (
-		<div className="calendar w-full bg-white p-2.5 rounded-2xl overflow-hidden grid grid-cols-7 auto-rows-max gap-2 h-max shadow-md">
-			<div className="flex items-center justify-between col-span-full rounded-md bg-[#ff9752] text-white">
-				<div className="font-black p-2.5">
+		<div className="calendar w-full bg-primary-3 p-2.5 rounded-2xl overflow-hidden grid grid-cols-7 auto-rows-max gap-2 h-max shadow-md">
+			<div className="flex items-center justify-between col-span-full rounded-md bg-primary-5 text-primary-1">
+				<div className="font-bold p-2.5">
 					{monthMap[month as keyof typeof monthMap]} {year}
 				</div>
 				<div className="flex items-center gap-2.5">
@@ -187,7 +187,7 @@ export default function Calendar({
 							// 	});
 							// });
 						}}
-						className="p-2.5 rounded-full hover:bg-[#f2d5c2] hover:text-white transition-colors"
+						className="p-2.5 rounded-full hover:bg-primary-1/60 hover:text-primary-6 transition-colors"
 					>
 						<ChevronLeft size={20} />
 					</button>
@@ -218,7 +218,7 @@ export default function Calendar({
 							// 	});
 							// });
 						}}
-						className="p-2.5 rounded-full hover:bg-[#f2d5c2] hover:text-white transition-colors"
+						className="p-2.5 rounded-full hover:bg-primary-1/60 hover:text-primary-6 transition-colors"
 					>
 						<ChevronRight size={20} />
 					</button>
@@ -238,9 +238,9 @@ export default function Calendar({
 							type="button"
 							key={day.date.getTime()}
 							className={`
-								text-left relative rounded-md p-2.5 text-sm flex flex-col gap-2.5 justify-between font-bold hover:bg-[#ff9752] hover:text-white hover:opacity-100 transition-all
+								text-left relative rounded-md p-2.5 text-sm flex flex-col gap-2.5 justify-between font-bold hover:bg-primary-5 hover:text-primary-1 hover:opacity-100 transition-all
 								${day.date.getMonth() !== month ? "opacity-40" : ""} 
-								${compareDate(day.date, currentDate) ? "bg-[#ff9752] text-white" : "text-[#ff9752] bg-[#fdd7bd48]"}
+								${compareDate(day.date, currentDate) ? "bg-primary-5 text-primary-1" : "text-primary-5 bg-primary-5/20"}
 								`.replaceAll(/\s+/g, " ")}
 							onClick={() => {
 								setIdols?.(
@@ -255,7 +255,7 @@ export default function Calendar({
 							}}
 						>
 							<div
-								className={`absolute top-0 left-0 w-full h-full rounded-md ${compareDate(day.date, currDate) ? "border-2 border-[#ff9752]" : ""}`}
+								className={`absolute top-0 left-0 w-full h-full rounded-md ${compareDate(day.date, currDate) ? "border-2 border-primary-5" : ""}`}
 							/>
 							{day.date.getDate()}
 							<div className="flex ml-auto gap-[2px] flex-wrap justify-end min-h-2.5">

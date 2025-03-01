@@ -75,21 +75,12 @@ export default function Page() {
 	);
 
 	return (
-		<div className="max-w-[1024px] w-full h-full flex flex-col p-5 gap-8">
+		<div className="max-w-[1024px] w-full h-full flex flex-col p-5 gap-5 mx-auto overflow-auto">
+			<div className="font-bold text-xl text-primary-6">THE iDOLM@STER Characters List</div>
 			<div className="w-full flex items-center justify-between gap-5 flex-wrap md:flex-row flex-col">
-				<img
-					src="/imasvn-logo.svg"
-					alt="THE iDOLM@STER Vietnam Logo"
-					width={230}
-					height={50}
-					className="h-auto"
-					style={{
-						objectFit: "contain",
-					}}
-				/>
 				<div className="md:w-auto w-full flex-1">
 					<Input
-						variant="characters"
+						variant="normal"
 						placeholder="Search Characters..."
 						onInput={debounce((inputObject: HTMLTextAreaElement) => {
 							setQuery(inputObject.value);
@@ -97,7 +88,6 @@ export default function Page() {
 					/>
 				</div>
 			</div>
-			<div className="font-bold text-4xl text-alt-accent">Characters List</div>
 			<div className="w-full grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-2.5">
 				<InfiniteScroll
 					swr={swr}

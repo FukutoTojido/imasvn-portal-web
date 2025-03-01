@@ -52,8 +52,8 @@ export default function Page() {
 	} = useIdolPopup();
 
 	return (
-		<div className="xl:w-[1280px] h-full w-full flex gap-5 flex-col items-center text-[#ff9752] p-5">
-			<div className="w-full text-2xl font-black flex gap-5 items-center">
+		<div className="xl:w-[1280px] h-full w-full flex gap-5 flex-col items-center text-primary-6 p-5 mx-auto">
+			<div className="w-full text-2xl font-bold flex gap-5 items-center">
 				<img
 					src="/fuyuping.png"
 					alt="THE iDOLM@STER Vietnam Logo"

@@ -469,32 +469,6 @@ label {
 	border-radius: 10px;
 }
 
-/*Scrollbar*/
-
-.idolContainer::-webkit-scrollbar {
-	width: 10px;
-	background: white;
-	border: none;
-	/* display: none; */
-}
-
-/* Track */
-
-.idolContainer::-webkit-scrollbar-track {
-	/* margin-top: 25px;
-	margin-bottom: 25px; */
-	visibility: 0;
-	border: none;
-}
-
-/* Handle */
-
-.idolContainer::-webkit-scrollbar-thumb {
-	background: grey;
-	border-radius: 10px;
-	border: none;
-}
-
 @keyframes osuSpinnerKurwa {
 	from {
 		transform: rotate(0deg);

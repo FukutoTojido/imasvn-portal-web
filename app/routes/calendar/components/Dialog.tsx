@@ -21,9 +21,9 @@ export default function Dialog({
 	return (
 		<dialog
 			open={showPopup}
-			className="bg-transparent fixed inset-0 w-full h-full"
+			className="bg-transparent fixed inset-0 w-screen h-screen overflow-hidden pt-[80px]"
 		>
-			<div className="w-full h-full flex justify-center items-center absolute inset-0 p-5">
+			<div className="w-full h-full flex justify-center items-center p-5">
 				{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
 				<div
 					className="absolute top-0 left-0 w-full h-full bg-black/50 cursor-pointer"

@@ -29,11 +29,11 @@ export default function Idol({
 
 	if (!charInfo || !cardRefList?.current || !popupRefList?.current) {
 		return (
-			<div className="bg-white w-full rounded-md flex gap-5 p-5 text-alt-accent hover:-translate-y-1 transition-transform select-none">
-				<div className="w-[50px] h-[50px] rounded-md bg-alt-subtle object-cover object-top shrink-0 skeleton2" />
+			<div className="bg-primary-3 w-full rounded-md flex gap-5 p-5 text-primary-6 hover:-translate-y-1 transition-transform select-none">
+				<div className="w-[50px] h-[50px] rounded-md bg-primary-2 object-cover object-top shrink-0 skeleton2" />
 				<div className="flex-1 flex flex-col gap-2.5">
-					<div className="text-lg font-bold h-[1em] w-full skeleton2 bg-alt-subtle rounded-md" />
-					<div className="text-sm line-clamp-1 h-[1em] w-1/2 skeleton2 bg-alt-subtle rounded-md" />
+					<div className="text-lg font-bold h-[1em] w-full skeleton2 bg-primary-6 rounded-md" />
+					<div className="text-sm line-clamp-1 h-[1em] w-1/2 skeleton2 bg-primary-6 rounded-md" />
 				</div>
 			</div>
 		);
@@ -96,7 +96,7 @@ export default function Idol({
 				});
 			}}
 			type="button"
-			className="rounded-md flex gap-5 p-5 text-alt-accent transition-all select-none cursor-pointer hover:bg-alt-subtle bg-white"
+			className="rounded-md flex gap-5 p-5 text-primary-6 transition-all select-none cursor-pointer hover:bg-primary-2 bg-primary-3"
 		>
 			<img
 				ref={avaRef}
@@ -104,7 +104,7 @@ export default function Idol({
 				alt=""
 				width={50}
 				height={50}
-				className="w-[50px] h-[50px] rounded-md bg-alt-subtle object-cover object-top shrink-0 avatar"
+				className="w-[50px] h-[50px] rounded-md bg-primary-2 object-cover object-top shrink-0 avatar"
 			/>
 			<div className="flex-1 flex flex-col text-left">
 				<div className="text-lg font-bold character" ref={characterRef}>
