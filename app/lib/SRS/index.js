@@ -661,6 +661,7 @@ export function SrsRtcWhipWhepAsync() {
 
 		const res = await fetch(url, {
 			method: "POST",
+			credentials: "include",
 			body: JSON.stringify({
 				uid,
 				sdp: offer.sdp,

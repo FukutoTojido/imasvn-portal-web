@@ -23,6 +23,7 @@ import {
 import { UserType, type UserState } from "~/types";
 import type { Viewer } from "../types";
 import { SrsRtcWhipWhepAsync } from "~/lib/SRS";
+import ErrorComponent from "./Error";
 enum State {
 	HOVER = 0,
 	IDLE = 1,
@@ -154,7 +155,12 @@ export default function VideoPlayer({
 	useEffect(() => {
 		sdk?.close();
 
-		if (!ref.current) return;
+		if (
+			!ref.current ||
+			userData.authType !== UserType.OK ||
+			!userData.isJoinedServer
+		)
+			return;
 
 		const videoUrl = `${import.meta.env.VITE_BACKEND_API}/whep/`;
 
@@ -186,6 +192,26 @@ export default function VideoPlayer({
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [userData?.authType]);
+
+	if (userData.authType === UserType.LOADING) {
+		return (
+			<div
+				className="md:flex-1 relative w-full md:h-full group"
+				ref={playerRef}
+			/>
+		);
+	}
+
+	if (userData.authType !== UserType.OK || !userData.isJoinedServer) {
+		return (
+			<div
+				className="md:flex-1 relative w-full md:h-full group"
+				ref={playerRef}
+			>
+				<ErrorComponent />
+			</div>
+		);
+	}
 
 	return (
 		<div className="md:flex-1 relative w-full md:h-full group" ref={playerRef}>

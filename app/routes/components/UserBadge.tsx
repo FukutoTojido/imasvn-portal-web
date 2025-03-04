@@ -25,7 +25,7 @@ export default function UserBadge() {
 					</div>
 					<div className="flex flex-col">
 						<div className="font-bold text-primary-6 text-sm">
-							Login with Discord
+							Login
 						</div>
 					</div>
 				</div>
