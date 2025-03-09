@@ -22,6 +22,7 @@ export enum SOCKET_ENUM {
 	UPDATE_USERCOUNT = "UPDATE_USERCOUNT",
 	NEW_USER = "NEW_USER",
 	USER_STATE = "USER_STATE",
+	PING = "PING"
 }
 
 export type Viewer = {

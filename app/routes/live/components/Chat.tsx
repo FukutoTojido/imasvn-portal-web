@@ -108,6 +108,16 @@ export default function Chat({
 			type: SOCKET_ENUM.NEW_USER,
 			payload: userData,
 		});
+
+		const interval = setInterval(() => {
+			sendJsonMessage?.({
+				type: SOCKET_ENUM.PING,
+			});
+		}, 60000);
+
+		return () => {
+			clearInterval(interval);
+		}
 	}, [sendJsonMessage, userData.authType]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
