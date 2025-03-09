@@ -77,7 +77,7 @@ export default function Chat({
 		import.meta.env.VITE_WEBSOCKET_ENDPOINT,
 		{
 			onOpen: () => {
-				console.log("WebSocket connected!");
+				console.log(`${new Date().toISOString()} - WebSocket connected!`);
 			},
 			onMessage: (event) => {
 				const { type, payload } = JSON.parse(event.data);
@@ -96,7 +96,7 @@ export default function Chat({
 				}
 			},
 			onClose: () => {
-				console.log("WebSocket closed!");
+				console.log(`${new Date().toISOString()} - WebSocket disconnected!`);
 			}
 		},
 	);
