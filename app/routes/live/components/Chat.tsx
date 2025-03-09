@@ -95,6 +95,9 @@ export default function Chat({
 					return;
 				}
 			},
+			onClose: () => {
+				console.log("WebSocket closed!");
+			}
 		},
 	);
 
