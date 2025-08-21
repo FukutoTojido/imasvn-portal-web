@@ -917,7 +917,6 @@ label {
 	transition: 500ms;
 	transform-style: preserve-3d;
 	animation: cubic-bezier(0.22, 1, 0.36, 1) rotateIn 1000ms 2000ms backwards;
-	z-index: 1;
 }
 
 .card-front,
@@ -928,4 +927,6 @@ label {
 
 .card-back {
 	rotate: y -180deg;
+	translate: z -1px;
+	z-index: 1;
 }
