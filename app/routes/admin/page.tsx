@@ -1,10 +1,13 @@
 import {
 	type ColumnDef,
+	type ColumnFiltersState,
 	getCoreRowModel,
+	getFilteredRowModel,
+	getPaginationRowModel,
 	useReactTable,
 } from "@tanstack/react-table";
 import axios from "axios";
-import { Trash } from "lucide-react";
+import { ChevronLeft, ChevronRight, Trash } from "lucide-react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import useSWR, { mutate } from "swr";
@@ -23,6 +26,8 @@ import { Button } from "~/components/ui/button";
 import AddProducer from "./components/AddProducer";
 import TableComponent from "./components/Table";
 import type { Producer } from "./types";
+import { Input } from "~/components/ui/input";
+import { useState } from "react";
 
 const columns: ColumnDef<Producer>[] = [
 	{
@@ -96,10 +101,18 @@ const getProducers = async () => {
 export default function Page() {
 	const { data, mutate } = useSWR("producers", getProducers);
 
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
 	const table = useReactTable({
 		data: data ?? [],
 		columns,
 		getCoreRowModel: getCoreRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
+		onColumnFiltersChange: setColumnFilters,
+		getFilteredRowModel: getFilteredRowModel(),
+		state: {
+			columnFilters,
+		},
 	});
 
 	const navigate = useNavigate();
@@ -107,7 +120,31 @@ export default function Page() {
 	return (
 		<>
 			<div className="text-5xl font-medium text-text">Producer ID Manager</div>
-			<div className="w-full p-2.5 border border-surface-1 rounded-xl bg-base">
+			<div className="w-full p-2.5 border border-surface-1 rounded-xl bg-base flex flex-col gap-2.5">
+				<div className="flex items-center justify-end space-x-2">
+					<Input
+						className="flex-1 bg-crust border border-surface-1 text-text h-full"
+						placeholder="Search producer..."
+						value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+						onChange={(event) =>
+							table.getColumn("name")?.setFilterValue(event.target.value)
+						}
+					/>
+					<Button
+						className="bg-text text-mantle hover:bg-subtext-0 disabled:bg-crust disabled:text-text"
+						onClick={() => table.previousPage()}
+						disabled={!table.getCanPreviousPage()}
+					>
+						<ChevronLeft />
+					</Button>
+					<Button
+						className="bg-text text-mantle hover:bg-subtext-0 disabled:bg-crust disabled:text-text"
+						onClick={() => table.nextPage()}
+						disabled={!table.getCanNextPage()}
+					>
+						<ChevronRight />
+					</Button>
+				</div>
 				<TableComponent
 					table={table}
 					columns={columns}
@@ -115,8 +152,8 @@ export default function Page() {
 						navigate(`/admin/producer-id/${row.getValue("id")}`)
 					}
 				/>
+				<AddProducer mutate={mutate} />
 			</div>
-			<AddProducer mutate={mutate} />
 		</>
 	);
 }
