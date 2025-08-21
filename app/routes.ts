@@ -24,5 +24,6 @@ export default [
 			route("admin/producer-id/:id", "routes/admin/producerId/page.tsx"),
 		]),
 	]),
+	route("producer-id/:id", "routes/producer-id/page.tsx"),
 	route("auth", "routes/auth/index.tsx"),
 ] satisfies RouteConfig;

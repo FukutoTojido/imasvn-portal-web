@@ -2,10 +2,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=M+PLUS+1+Code:wght@100..700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+
+@font-face {
+	font-family: DFPOPMix;
+	src: url(/DFPPOPMix-W5.ttf);
+}
 
 @theme {
 	--color-primary-1: #25263a;
@@ -321,7 +328,7 @@ button {
 	outline: none;
 }
 
-.admin {
+.gridLoop {
 	background-size: 40px 40px;
 	background-image: linear-gradient(to right, var(--color-surface-1) 1px, transparent 1px),
 		linear-gradient(to bottom, var(--color-surface-1) 1px, transparent 1px);
