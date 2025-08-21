@@ -47,67 +47,78 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 				ref={ref}
 			>
 				<div
-					className="w-[1600px] h-[2572px] overflow-hidden relative shrink-0"
+					className="w-[1600px] h-[2572px] relative shrink-0 producer-id"
 					style={{
 						transform: `scale(${scale * 100}%)`,
 					}}
 				>
-					<img
-						src="/Base.svg"
-						alt=""
-						className="w-full h-full object-cover object-center block"
-					/>
-					<div className="absolute top-0 left-0 w-full h-full">
-						<img
-							src="/classification.svg"
-							alt=""
-							className="absolute top-[284px] left-[208px] w-[256px] h-[212px]"
-						/>
-						<div className="absolute text-[68px] top-[276px] left-[592px] leading-[68px]">
-							{loaderData.name}
+					<div className="absolute top-0 left-0 w-full h-full producer-id-inner">
+						<div className="absolute top-0 left-0 w-full h-full card-front">
+							<img
+								src="/Base.svg"
+								alt=""
+								className="w-full h-full object-cover object-center block"
+							/>
+							<div className="absolute top-0 left-0 w-full h-full">
+								<img
+									src="/classification.svg"
+									alt=""
+									className="absolute top-[284px] left-[208px] w-[256px] h-[212px]"
+								/>
+								<div className="absolute text-[68px] top-[276px] left-[592px] leading-[68px]">
+									{loaderData.name}
+								</div>
+								<div className="absolute text-[136px] top-[364px] left-[592px] leading-[136px]">
+									{loaderData.idol}
+								</div>
+								<img
+									src={loaderData.img}
+									alt=""
+									className="w-[1064px] h-[1024px] absolute left-[256px] top-[716px] rounded-[24px] object-cover object-center"
+								/>
+								<div
+									className="absolute text-[88px] leading-[121px] text-center left-0 right-0 mx-auto top-[1792px]"
+									style={{
+										fontFamily: `"DM Serif Text", Rubik, sans-serif`,
+									}}
+								>
+									{loaderData.title}
+								</div>
+								<img
+									src="/rank.svg"
+									alt=""
+									className="absolute top-[1976px] left-[220px] w-[232px] h-[260px]"
+								/>
+								<div
+									className="absolute top-[1992px] left-[504px] font-bold text-[56px] leading-[76px]"
+									style={{
+										fontFamily: `"Victor Mono", Rubik, sans-serif`,
+									}}
+								>
+									Events participated: 0001
+								</div>
+								<div
+									className="absolute top-[2060px] left-[504px] font-bold text-[56px] leading-[76px]"
+									style={{
+										fontFamily: `"Victor Mono", Rubik, sans-serif`,
+									}}
+								>
+									Number of fans:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9999
+								</div>
+								<img
+									src="/NFC.svg"
+									alt=""
+									className="absolute top-[2358.48px] left-[180px] w-[340px] h-[43.04px]"
+								/>
+							</div>
 						</div>
-						<div className="absolute text-[136px] top-[364px] left-[592px] leading-[136px]">
-							{loaderData.idol}
+						<div className="absolute top-0 left-0 w-full h-full card-back">
+							<img
+								src="/Back.svg"
+								alt=""
+								className="w-full h-full object-cover object-center block"
+							/>
 						</div>
-						<img
-							src={loaderData.img}
-							alt=""
-							className="w-[1064px] h-[1024px] absolute left-[256px] top-[716px] rounded-[24px] object-cover object-center"
-						/>
-						<div
-							className="absolute text-[88px] leading-[121px] text-center left-0 right-0 mx-auto top-[1792px]"
-							style={{
-								fontFamily: `"DM Serif Text", Rubik, sans-serif`,
-							}}
-						>
-							{loaderData.title}
-						</div>
-						<img
-							src="/rank.svg"
-							alt=""
-							className="absolute top-[1976px] left-[220px] w-[232px] h-[260px]"
-						/>
-						<div
-							className="absolute top-[1992px] left-[504px] font-bold text-[56px] leading-[76px]"
-							style={{
-								fontFamily: `"Victor Mono", Rubik, sans-serif`,
-							}}
-						>
-							Events participated: 0001
-						</div>
-						<div
-							className="absolute top-[2060px] left-[504px] font-bold text-[56px] leading-[76px]"
-							style={{
-								fontFamily: `"Victor Mono", Rubik, sans-serif`,
-							}}
-						>
-							Number of fans:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9999
-						</div>
-						<img
-							src="/NFC.svg"
-							alt=""
-							className="absolute top-[2358.48px] left-[180px] w-[340px] h-[43.04px]"
-						/>
 					</div>
 				</div>
 			</div>

@@ -2,8 +2,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=M+PLUS+1+Code:wght@100..700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -330,8 +330,11 @@ button {
 
 .gridLoop {
 	background-size: 40px 40px;
-	background-image: linear-gradient(to right, var(--color-surface-1) 1px, transparent 1px),
-		linear-gradient(to bottom, var(--color-surface-1) 1px, transparent 1px);
+	background-image: linear-gradient(
+			to right,
+			var(--color-surface-1) 1px,
+			transparent 1px
+		), linear-gradient(to bottom, var(--color-surface-1) 1px, transparent 1px);
 
 	animation: linear loopGrid 500ms infinite;
 }
@@ -885,4 +888,43 @@ label {
 	body {
 		@apply bg-background text-foreground;
 	}
+}
+
+@keyframes slideIn {
+	from {
+		translate: 0 100%;
+	}
+	to {
+		translate: 0 0;
+	}
+}
+
+@keyframes rotateIn {
+	from {
+		rotate: y -180deg;
+	}
+	to {
+		rotate: 0;
+	}
+}
+
+.producer-id {
+	animation: cubic-bezier(0.22, 1, 0.36, 1) slideIn 1000ms 1000ms backwards;
+	perspective: 4000px;
+}
+
+.producer-id-inner {
+	transition: 500ms;
+	transform-style: preserve-3d;
+	animation: cubic-bezier(0.22, 1, 0.36, 1) rotateIn 1000ms 2000ms backwards;
+}
+
+.card-front,
+.card-back {
+	-webkit-backface-visibility: hidden; /* Safari */
+	backface-visibility: hidden;
+}
+
+.card-back {
+	rotate: y -180deg;
 }
