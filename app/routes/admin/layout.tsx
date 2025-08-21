@@ -14,7 +14,7 @@ export default function Page() {
 	if (me.authType === UserType.OK && me.role !== 1) return <ErrorComponent />;
 
 	return (
-		<div className="w-screen h-screen p-5 py-10 flex flex-col items-center bg-crust font-rubik text-text">
+		<div className="w-screen h-screen p-5 py-10 flex flex-col items-center bg-crust font-rubik text-text admin">
 			<div className="max-w-full w-[1200px] flex flex-col gap-5">
 				<Toaster/>
 				<Outlet />

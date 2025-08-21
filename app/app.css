@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/correctness/noUnknownTypeSelector: <explanation> */
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=M+PLUS+1+Code:wght@100..700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -211,7 +211,7 @@
 	}
 }
 
-:root{
+:root {
 	--foreground-rgb: 0, 0, 0;
 	--background-start-rgb: 214, 219, 220;
 	--background-end-rgb: 255, 255, 255;
@@ -319,6 +319,24 @@ button {
 
 .post:hover:has(.userFlair:hover) {
 	outline: none;
+}
+
+.admin {
+	background-size: 40px 40px;
+	background-image: linear-gradient(to right, var(--color-surface-1) 1px, transparent 1px),
+		linear-gradient(to bottom, var(--color-surface-1) 1px, transparent 1px);
+
+	animation: linear loopGrid 500ms infinite;
+}
+
+@keyframes loopGrid {
+	from {
+		background-position: 0 0;
+	}
+
+	to {
+		background-position: 40px 40px;
+	}
 }
 
 @keyframes skele {
@@ -854,10 +872,10 @@ label {
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+	* {
+		@apply border-border outline-ring/50;
 	}
-  body {
-    @apply bg-background text-foreground;
+	body {
+		@apply bg-background text-foreground;
 	}
 }
