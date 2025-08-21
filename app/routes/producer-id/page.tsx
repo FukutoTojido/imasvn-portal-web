@@ -43,6 +43,8 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 			}}
 		>
             <link rel="preload" href={loaderData.img} as="image"></link>
+            <link rel="preload" href="/Base.svg" as="image"></link>
+            <link rel="preload" href="/Back.svg" as="image"></link>
 			<div
 				className="w-[500px] max-w-full h-full flex items-center justify-center relative"
 				ref={ref}

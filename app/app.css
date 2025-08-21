@@ -911,6 +911,7 @@ label {
 .producer-id {
 	animation: cubic-bezier(0.22, 1, 0.36, 1) slideIn 1000ms 1000ms backwards;
 	perspective: 4000px;
+	z-index: 0;
 }
 
 .producer-id-inner {
