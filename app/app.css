@@ -908,6 +908,15 @@ label {
 	}
 }
 
+@keyframes print {
+	from {
+		clip-path: inset(0 0 100% 0);
+	}
+	to {
+		clip-path: inset(0 0 0 0);
+	}
+}
+
 .producer-id {
 	animation: cubic-bezier(0.22, 1, 0.36, 1) slideIn 1000ms 1000ms backwards;
 	perspective: 4000px;
@@ -917,6 +926,66 @@ label {
 	transition: 500ms;
 	transform-style: preserve-3d;
 	animation: cubic-bezier(0.22, 1, 0.36, 1) rotateIn 1000ms 2000ms backwards;
+}
+
+.ink {
+	animation: linear print 4000ms 3000ms backwards;
+}
+
+@keyframes scan {
+	0% {
+		top: 0;
+		opacity: 0;
+	}
+	25% {
+		top: 0;
+		opacity: 1;
+	}
+	75% {
+		top: 100%;
+		opacity: 1;
+	}
+	100% {
+		top: 100%;
+		opacity: 0;
+	}
+}
+
+@keyframes scannerLoop {
+	0% {
+		opacity: 0;
+		left: 0;
+	}
+
+	50% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+		left: 100%;
+	}
+}
+
+.scanner {
+	top: 0;
+	opacity: 0;
+	animation: linear scan 8000ms 1000ms forwards;
+}
+
+.scanner::before {
+	content: "";
+	position: absolute;
+	top: -30px;
+	left: 0;
+	padding: 40px 100px;
+	border-radius: 40px;
+
+	background: #80ffaa;
+	translate: x -50%;
+
+	animation: linear scannerLoop 2000ms infinite;
+	filter: blur(80px);
 }
 
 .card-front,

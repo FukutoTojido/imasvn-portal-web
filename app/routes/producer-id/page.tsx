@@ -42,9 +42,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 				fontFamily: "DFPOPMix, Rubik, sans-serif",
 			}}
 		>
-            <link rel="preload" href={loaderData.img} as="image"></link>
-            <link rel="preload" href="/Base.svg" as="image"></link>
-            <link rel="preload" href="/Back.svg" as="image"></link>
+			<link rel="preload" href={loaderData.img} as="image"></link>
+			<link rel="preload" href="/Base.svg" as="image"></link>
+			<link rel="preload" href="/Back.svg" as="image"></link>
 			<div
 				className="w-[500px] max-w-full h-full flex items-center justify-center relative"
 				ref={ref}
@@ -62,7 +62,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 								alt=""
 								className="w-full h-full object-cover object-center block"
 							/>
-							<div className="absolute top-0 left-0 w-full h-full">
+							<div className="absolute top-0 left-0 w-full h-full ink">
 								<img
 									src="/classification.svg"
 									alt=""
@@ -114,6 +114,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 									className="absolute top-[2358.48px] left-[180px] w-[340px] h-[43.04px]"
 								/>
 							</div>
+							<div className="absolute w-full h-[20px] rounded-full blur bg-[#80ffaa] scanner"></div>
 						</div>
 						<div className="absolute top-0 left-0 w-full h-full card-back">
 							<img
