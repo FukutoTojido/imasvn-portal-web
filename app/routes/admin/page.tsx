@@ -102,7 +102,10 @@ const getProducers = async () => {
 export default function Page() {
 	const { data, mutate } = useSWR("producers", getProducers);
 	const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(0));
-	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+	const [filter, setFilter] = useQueryState("filter");
+	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
+		filter ? [{ id: "name", value: filter }] : [],
+	);
 
 	const table = useReactTable({
 		data: data ?? [],
@@ -134,6 +137,7 @@ export default function Page() {
 						value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
 						onChange={(event) => {
 							table.getColumn("name")?.setFilterValue(event.target.value);
+							setFilter(event.target.value ? event.target.value : null);
 						}}
 					/>
 					<Button
