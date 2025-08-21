@@ -8,6 +8,8 @@ import {
 } from "@tanstack/react-table";
 import axios from "axios";
 import { ChevronLeft, ChevronRight, Trash } from "lucide-react";
+import { parseAsInteger, useQueryState } from "nuqs";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import useSWR, { mutate } from "swr";
@@ -23,11 +25,10 @@ import {
 	AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
 import AddProducer from "./components/AddProducer";
 import TableComponent from "./components/Table";
 import type { Producer } from "./types";
-import { Input } from "~/components/ui/input";
-import { useState } from "react";
 
 const columns: ColumnDef<Producer>[] = [
 	{
@@ -100,7 +101,7 @@ const getProducers = async () => {
 
 export default function Page() {
 	const { data, mutate } = useSWR("producers", getProducers);
-
+	const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(0));
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
 	const table = useReactTable({
@@ -110,6 +111,11 @@ export default function Page() {
 		getPaginationRowModel: getPaginationRowModel(),
 		onColumnFiltersChange: setColumnFilters,
 		getFilteredRowModel: getFilteredRowModel(),
+		initialState: {
+			pagination: {
+				pageIndex: page,
+			},
+		},
 		state: {
 			columnFilters,
 		},
@@ -126,20 +132,26 @@ export default function Page() {
 						className="flex-1 bg-crust border border-surface-1 text-text h-full"
 						placeholder="Search producer..."
 						value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-						onChange={(event) =>
-							table.getColumn("name")?.setFilterValue(event.target.value)
-						}
+						onChange={(event) => {
+							table.getColumn("name")?.setFilterValue(event.target.value);
+						}}
 					/>
 					<Button
 						className="bg-text text-mantle hover:bg-subtext-0 disabled:bg-crust disabled:text-text"
-						onClick={() => table.previousPage()}
+						onClick={() => {
+							table.previousPage();
+							setPage(table.getState().pagination.pageIndex - 1);
+						}}
 						disabled={!table.getCanPreviousPage()}
 					>
 						<ChevronLeft />
 					</Button>
 					<Button
 						className="bg-text text-mantle hover:bg-subtext-0 disabled:bg-crust disabled:text-text"
-						onClick={() => table.nextPage()}
+						onClick={() => {
+							table.nextPage();
+							setPage(table.getState().pagination.pageIndex + 1);
+						}}
 						disabled={!table.getCanNextPage()}
 					>
 						<ChevronRight />

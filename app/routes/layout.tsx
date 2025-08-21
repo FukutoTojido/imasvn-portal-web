@@ -1,10 +1,9 @@
-import { Outlet } from "react-router";
-import type { Route } from "./+types/layout";
 import axios, { type AxiosError, CanceledError } from "axios";
-
-import Auth from "./components/Auth";
-import { setCookies } from "./auth";
+import { Outlet } from "react-router";
 import Store from "~/routes/components/Store";
+import type { Route } from "./+types/layout";
+import { setCookies } from "./auth";
+import Auth from "./components/Auth";
 
 // biome-ignore lint/correctness/noEmptyPattern: <explanation>
 export function meta({}: Route.MetaArgs) {
