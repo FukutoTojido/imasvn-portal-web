@@ -42,6 +42,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 				fontFamily: "DFPOPMix, Rubik, sans-serif",
 			}}
 		>
+            <link rel="preload" href={loaderData.img} as="image"></link>
 			<div
 				className="w-[500px] max-w-full h-full flex items-center justify-center relative"
 				ref={ref}
@@ -77,7 +78,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 									className="w-[1064px] h-[1024px] absolute left-[256px] top-[716px] rounded-[24px] object-cover object-center"
 								/>
 								<div
-									className="absolute text-[88px] leading-[121px] text-center left-0 right-0 mx-auto top-[1792px]"
+									className="absolute text-[73px] leading-[100px] text-center left-0 right-0 mx-auto top-[1806px]"
 									style={{
 										fontFamily: `"DM Serif Text", Rubik, sans-serif`,
 									}}
