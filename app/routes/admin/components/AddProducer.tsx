@@ -64,9 +64,10 @@ export default function AddProducer({
 				>
 					<Label className="text-text">Name</Label>
 					<Input
-						{...register("name", { required: true })}
+						{...register("name", { required: true})}
 						className="bg-base border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
 						autoComplete="off"
+						autoFocus={true}
 					/>
 					<Button
 						type="submit"
