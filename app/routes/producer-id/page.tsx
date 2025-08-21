@@ -108,6 +108,14 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 								>
 									Number of fans:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9999
 								</div>
+								<div
+									className="absolute top-[2172px] left-[493px] font-bold text-[56px] leading-[76px] tracking-[0.415em]"
+									style={{
+										fontFamily: `"Victor Mono", Rubik, sans-serif`,
+									}}
+								>
+									{loaderData.id}
+								</div>
 								<img
 									src="/NFC.svg"
 									alt=""
