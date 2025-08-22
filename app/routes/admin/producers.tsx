@@ -87,7 +87,7 @@ const columns: ColumnDef<Producer>[] = [
 	},
 ];
 
-const getProducers = async () => {
+export const getProducers = async () => {
 	try {
 		const { data } = await axios.get<Producer[]>(
 			`${import.meta.env.VITE_BACKEND_API}/producer-id`,

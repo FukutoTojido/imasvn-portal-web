@@ -24,6 +24,7 @@ import {
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import PreviewImage from "./PreviewImage";
+import ProducerMenu from "./ProducerMenu";
 
 export type EventData = {
 	id: number;
@@ -39,6 +40,19 @@ type EventForm = {
 	img: FileList | null;
 };
 
+const getEvent = async (id: number | null) => {
+	if (!id) return null;
+	try {
+		const { data: event } = await axios.get<EventData>(
+			`${import.meta.env.VITE_BACKEND_API}/events/${id}`,
+		);
+		return event;
+	} catch (e) {
+		console.error(e);
+		return null;
+	}
+};
+
 export default function UpdateEvent({
 	ref: stateRef,
 }: {
@@ -49,17 +63,11 @@ export default function UpdateEvent({
 }) {
 	const [open, setOpen] = useState(false);
 	const [id, setEventId] = useState<number | null>(null);
-	const { data, isLoading } = useSWR(id ? `event-${id}` : null, async () => {
-		try {
-			const { data: cards } = await axios.get<EventData>(
-				`${import.meta.env.VITE_BACKEND_API}/events/${id}`,
-			);
-			return cards;
-		} catch (e) {
-			console.error(e);
-			return null;
-		}
-	});
+
+	const { data, isLoading } = useSWR(
+		id ? `event-${id}` : null,
+		async () => await getEvent(id),
+	);
 
 	const methods = useForm<EventForm>({
 		defaultValues: {
@@ -79,6 +87,7 @@ export default function UpdateEvent({
 			img: null,
 		},
 	});
+
 	const [submitting, setSubmitting] = useState(false);
 	const ref = useRef(null);
 	const { register, handleSubmit, reset, setValue } = methods;
@@ -224,6 +233,10 @@ export default function UpdateEvent({
 										cropper={false}
 										className="h-full"
 									/>
+								</div>
+								<div className="flex flex-col gap-2.5 col-span-full">
+									<Label>Participants</Label>
+									<ProducerMenu />
 								</div>
 							</div>
 							<Button

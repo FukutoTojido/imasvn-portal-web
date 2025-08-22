@@ -51,7 +51,7 @@ export default function TableComponent<T>({
 						<TableRow
 							key={row.id}
 							data-state={row.getIsSelected() && "selected"}
-							className="hover:bg-surface-0 rounded-xl has-[button:hover]:bg-transparent"
+							className="hover:bg-surface-0 data-[state=selected]:bg-base rounded-xl has-[button:hover]:bg-transparent"
 						>
 							{row.getVisibleCells().map((cell) => (
 								<TableCell
