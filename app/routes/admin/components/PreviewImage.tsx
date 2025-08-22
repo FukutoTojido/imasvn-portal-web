@@ -80,7 +80,7 @@ export default function PreviewImage({
 						<img
 							src={url ?? objectUrl ?? undefined}
 							alt=""
-							className="w-full h-full object-cover object-center rounded-xl"
+							className="w-full h-full object-contain object-center rounded-xl"
 						/>
 					) : (
 						""
