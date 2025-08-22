@@ -9,6 +9,7 @@ import Cropper, { type Area } from "react-easy-crop";
 import { useWatch } from "react-hook-form";
 import { cn } from "~/lib/utils";
 import getCroppedImg from "../utils";
+import type { ClassValue } from "clsx";
 
 type FormType = {
 	name: string;
@@ -20,9 +21,13 @@ type FormType = {
 export default function PreviewImage({
 	url,
 	ref,
+	cropper = true,
+	className = ""
 }: {
 	url?: string;
 	ref: RefObject<{ getImage: () => Promise<File | null> } | null>;
+	cropper?: boolean;
+	className?: ClassValue
 }) {
 	const img = useWatch<FormType>({ name: "img" });
 	const objectUrl = useMemo(
@@ -63,21 +68,24 @@ export default function PreviewImage({
 		<>
 			<div
 				className={cn(
-					"relative col-span-full aspect-square bg-mantle rounded-md border-dashed border-overlay-0 bg-center bg-cover overflow-hidden p-5",
+					"relative col-span-full bg-mantle rounded-md border-dashed border-overlay-0 bg-center bg-cover overflow-hidden p-5",
 					url || objectUrl ? "" : "border-1",
+					cropper ? "aspect-square" : "",
+					className
 				)}
 			>
 				<div className="relative w-full h-full rounded-xl overflow-hidden">
-					{url && !objectUrl ? (
+					{(!cropper && (url || objectUrl)) ||
+					(cropper && url && !objectUrl) ? (
 						<img
-							src={url}
+							src={url ?? objectUrl ?? undefined}
 							alt=""
 							className="w-full h-full object-cover object-center rounded-xl"
 						/>
 					) : (
 						""
 					)}
-					{objectUrl ? (
+					{objectUrl && cropper ? (
 						<Cropper
 							image={objectUrl}
 							aspect={1}

@@ -1,14 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
-import type { Route } from "./+types/page";
-import { UserType, type UserState } from "~/types";
 import axios, { type AxiosError } from "axios";
-import OpenImage from "../components/OpenImage";
-import { logOut } from "~/slices/auth";
 import { LogOut } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "~/slices/auth";
+import type store from "~/store";
+import { UserType } from "~/types";
 import Button from "../components/Button";
 import Feed from "../components/Feed";
-import type store from "~/store";
 import NotFound from "../components/NotFound";
+import OpenImage from "../components/OpenImage";
+import type { Route } from "./+types/page";
 
 export async function loader({ params }: Route.LoaderArgs) {
 	try {

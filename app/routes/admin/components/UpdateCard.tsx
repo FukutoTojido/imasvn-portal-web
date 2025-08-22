@@ -167,7 +167,7 @@ export default function UpdateCard({
 				}}
 			>
 				<DialogTrigger className="w-max" asChild>
-					<Button className="bg-text text-crust hover:bg-base hover:text-text self-end">
+					<Button className="bg-text text-crust hover:bg-base hover:text-text self-end font-normal">
 						Insert Card
 					</Button>
 				</DialogTrigger>

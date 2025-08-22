@@ -171,14 +171,16 @@ export default function Page({ params }: Route.ComponentProps) {
 				<div className="text-5xl font-medium">{producerData.name}</div>
 				<div className="text-xl">Producer ID: {producerData.id}</div>
 			</div>
-			<TableComponent
-				table={table}
-				columns={columns}
-				onRowClick={(row) => {
-					ref.current?.setCardId(row.getValue("id"));
-					ref.current?.setOpen(true);
-				}}
-			/>
+			<div className="w-full p-2.5 border border-surface-1 rounded-xl bg-base flex flex-col gap-2.5">
+				<TableComponent
+					table={table}
+					columns={columns}
+					onRowClick={(row) => {
+						ref.current?.setCardId(row.getValue("id"));
+						ref.current?.setOpen(true);
+					}}
+				/>
+			</div>
 			<UpdateCard
 				ref={ref}
 				id={params.id}

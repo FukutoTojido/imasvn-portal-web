@@ -48,7 +48,7 @@ export default function AddProducer({
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger className="w-max" asChild>
-				<Button className="bg-text text-crust hover:bg-base hover:text-text self-end">
+				<Button className="bg-text text-crust hover:bg-base hover:text-text self-end font-normal">
 					Add Producer
 				</Button>
 			</DialogTrigger>

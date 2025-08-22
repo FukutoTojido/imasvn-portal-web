@@ -132,7 +132,7 @@ export default function Page() {
 			<div className="w-full p-2.5 border border-surface-1 rounded-xl bg-base flex flex-col gap-2.5">
 				<div className="flex items-center justify-end space-x-2">
 					<Input
-						className="flex-1 bg-crust border border-surface-1 text-text h-full"
+						className="flex-1 bg-mantle border border-overlay-0 text-text h-full"
 						placeholder="Search producer..."
 						value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
 						onChange={(event) => {
@@ -140,6 +140,19 @@ export default function Page() {
 							setFilter(event.target.value ? event.target.value : null);
 						}}
 					/>
+					<AddProducer mutate={mutate} />
+				</div>
+				<TableComponent
+					table={table}
+					columns={columns}
+					onRowClick={(row) =>
+						navigate(`/admin/producer-id/${row.getValue("id")}`)
+					}
+				/>
+				<div className="w-full flex items-center justify-end gap-2.5">
+					<div className="flex-1 px-2.5 text-sm text-subtext-0">
+						Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+					</div>
 					<Button
 						className="bg-text text-mantle hover:bg-subtext-0 disabled:bg-crust disabled:text-text"
 						onClick={() => {
@@ -161,14 +174,6 @@ export default function Page() {
 						<ChevronRight />
 					</Button>
 				</div>
-				<TableComponent
-					table={table}
-					columns={columns}
-					onRowClick={(row) =>
-						navigate(`/admin/producer-id/${row.getValue("id")}`)
-					}
-				/>
-				<AddProducer mutate={mutate} />
 			</div>
 		</>
 	);
