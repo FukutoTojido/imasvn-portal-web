@@ -4,22 +4,24 @@ import {
 	getCoreRowModel,
 	getFilteredRowModel,
 	getPaginationRowModel,
+	type RowSelectionState,
 	useReactTable,
 } from "@tanstack/react-table";
 import axios from "axios";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useFormContext } from "react-hook-form";
 import useSWR from "swr";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import type { Producer } from "../types";
-import TableComponent from "./Table";
+import { Checkbox } from "~/components/ui/checkbox";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { Checkbox } from "~/components/ui/checkbox";
+import { Input } from "~/components/ui/input";
+import type { Producer } from "../types";
+import TableComponent from "./Table";
 
 export const getProducers = async () => {
 	try {
@@ -33,9 +35,23 @@ export const getProducers = async () => {
 	}
 };
 
-export default function ProducerMenu() {
+export default function ProducerMenu({
+	participants = [],
+}: {
+	participants?: string[];
+}) {
 	const { data } = useSWR("producers", getProducers);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+	const [rowSelection, setRowSelection] = useState<RowSelectionState>(
+		participants.reduce(
+			(accm, curr) => {
+				accm[curr] = true;
+				return accm;
+			},
+			{} as Record<string, boolean>,
+		),
+	);
+	const { setValue } = useFormContext();
 
 	const columns: ColumnDef<Producer>[] = useMemo(
 		() => [
@@ -47,18 +63,12 @@ export default function ProducerMenu() {
 							table.getIsAllPageRowsSelected() ||
 							(table.getIsSomePageRowsSelected() && "indeterminate")
 						}
-						onCheckedChange={(value) =>
-							table.toggleAllPageRowsSelected(!!value)
-						}
+						onCheckedChange={(value) => table.toggleAllRowsSelected(!!value)}
 						aria-label="Select all"
 					/>
 				),
 				cell: ({ row }) => (
-					<Checkbox
-						checked={row.getIsSelected()}
-						onCheckedChange={(value) => row.toggleSelected(!!value)}
-						aria-label="Select row"
-					/>
+					<Checkbox checked={row.getIsSelected()} aria-label="Select row" />
 				),
 			},
 			{
@@ -76,15 +86,28 @@ export default function ProducerMenu() {
 		getPaginationRowModel: getPaginationRowModel(),
 		onColumnFiltersChange: setColumnFilters,
 		getFilteredRowModel: getFilteredRowModel(),
+		onRowSelectionChange: setRowSelection,
+		getRowId: (row) => row.id,
 		state: {
 			columnFilters,
+			rowSelection,
 		},
 	});
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: I know what I'm doing ninja
+	useEffect(() => {
+		setValue("participants", Object.keys(rowSelection));
+	}, [rowSelection]);
 
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button className="bg-mantle border border-overlay-0 hover:bg-surface-0 text-text text-left line-clamp-1 text-ellipsis">{table.getSelectedRowModel().rows.map((row) => row.original.name).join(", ")}</Button>
+				<Button className="bg-mantle border border-overlay-0 hover:bg-surface-0 text-text text-left line-clamp-1 text-ellipsis">
+					{table
+						.getSelectedRowModel()
+						.rows.map((row) => row.original.name)
+						.join(", ")}
+				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) p-2.5 border border-surface-1 bg-mantle flex flex-col gap-2.5 shadow-md">
 				<div className="flex items-center justify-end space-x-2">
@@ -97,7 +120,11 @@ export default function ProducerMenu() {
 						}}
 					/>
 				</div>
-				<TableComponent table={table} columns={columns} />
+				<TableComponent
+					table={table}
+					columns={columns}
+					onRowClick={(row) => row.toggleSelected(!row.getIsSelected())}
+				/>
 				<div className="w-full flex items-center justify-end gap-2.5">
 					<div className="flex-1 px-2.5 text-sm text-subtext-0">
 						Page {table.getState().pagination.pageIndex + 1} of{" "}

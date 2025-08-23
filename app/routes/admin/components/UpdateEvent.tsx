@@ -29,15 +29,17 @@ import ProducerMenu from "./ProducerMenu";
 export type EventData = {
 	id: number;
 	name: string;
-	startDate: Date;
-	endDate: Date;
+	startDate: string;
+	endDate: string;
 	img: string;
+	participants: string[];
 };
 
 type EventForm = {
 	name: string;
 	dateRange?: DateRange;
 	img: FileList | null;
+	participants: string[];
 };
 
 const getEvent = async (id: number | null) => {
@@ -46,7 +48,11 @@ const getEvent = async (id: number | null) => {
 		const { data: event } = await axios.get<EventData>(
 			`${import.meta.env.VITE_BACKEND_API}/events/${id}`,
 		);
-		return event;
+		return {
+			...event,
+			startDate: new Date(event.startDate),
+			endDate: new Date(event.endDate),
+		};
 	} catch (e) {
 		console.error(e);
 		return null;
@@ -77,6 +83,7 @@ export default function UpdateEvent({
 				to: new Date(),
 			},
 			img: null,
+			participants: [],
 		},
 		values: {
 			name: data?.name ?? "",
@@ -85,6 +92,7 @@ export default function UpdateEvent({
 				to: data?.endDate,
 			},
 			img: null,
+			participants: data?.participants ?? [],
 		},
 	});
 
@@ -106,15 +114,23 @@ export default function UpdateEvent({
 				!formData.img
 			)
 				return;
-			const payload = new FormData();
-			payload.append("name", formData.name);
-			payload.append("startDate", formData.dateRange.from.toISOString());
-			payload.append("endDate", formData.dateRange.to.toISOString());
-			payload.append("img", formData.img[0]);
 
-			await axios.post(`${import.meta.env.VITE_BACKEND_API}/events`, payload, {
-				withCredentials: true,
-			});
+			await axios.post(
+				`${import.meta.env.VITE_BACKEND_API}/events`,
+				{
+					name: formData.name,
+					startDate: formData.dateRange.from.toISOString(),
+					endDate: formData.dateRange.to.toISOString(),
+					img: formData.img?.[0],
+					participants: [...formData.participants],
+				},
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+					withCredentials: true,
+				},
+			);
 
 			setOpen(false);
 			mutate("events");
@@ -126,7 +142,6 @@ export default function UpdateEvent({
 	};
 
 	const update = async (formData: EventForm) => {
-		console.log("Update");
 		setSubmitting(true);
 		try {
 			if (
@@ -135,16 +150,20 @@ export default function UpdateEvent({
 				!formData.dateRange.to
 			)
 				return;
-			const payload = new FormData();
-			payload.append("name", formData.name);
-			payload.append("startDate", formData.dateRange.from.toISOString());
-			payload.append("endDate", formData.dateRange.to.toISOString());
-			if (formData.img) payload.append("img", formData.img[0]);
 
 			await axios.patch(
 				`${import.meta.env.VITE_BACKEND_API}/events/${id}`,
-				payload,
 				{
+					name: formData.name,
+					startDate: formData.dateRange.from.toISOString(),
+					endDate: formData.dateRange.to.toISOString(),
+					img: formData.img?.[0],
+					participants: [...formData.participants],
+				},
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
 					withCredentials: true,
 				},
 			);
@@ -236,7 +255,7 @@ export default function UpdateEvent({
 								</div>
 								<div className="flex flex-col gap-2.5 col-span-full">
 									<Label>Participants</Label>
-									<ProducerMenu />
+									<ProducerMenu participants={data?.participants} />
 								</div>
 							</div>
 							<Button
