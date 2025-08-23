@@ -64,8 +64,20 @@ export default function Page() {
 				),
 			},
 			{
+				accessorKey: "tag",
+				header: "Tag",
+			},
+			{
 				accessorKey: "username",
 				header: "Username",
+				cell: (props) => (
+					<div className="flex flex-col">
+						<span>{props.getValue() as string}</span>
+						<span className="text-subtext-0 text-xs">
+							@{props.row.original.tag}
+						</span>
+					</div>
+				),
 			},
 			{
 				accessorKey: "role",
@@ -134,6 +146,9 @@ export default function Page() {
 		initialState: {
 			pagination: {
 				pageIndex: page,
+			},
+			columnVisibility: {
+				tag: false,
 			},
 		},
 		state: {
