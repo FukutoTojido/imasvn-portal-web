@@ -79,6 +79,7 @@ export function ComboBox({ options = [], onValueChange, placeholder, defaultValu
                 <CommandItem
                   key={option.value}
                   value={option.value}
+                  keywords={[option.label]}
                   onSelect={(currentValue) => {
                     setValue(value === currentValue ? "" : currentValue);
                     setOpen(false);

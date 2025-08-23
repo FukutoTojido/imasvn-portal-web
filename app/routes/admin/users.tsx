@@ -172,15 +172,16 @@ export default function Page() {
 		onColumnFiltersChange: setColumnFilters,
 		getFilteredRowModel: getFilteredRowModel(),
 		initialState: {
-			pagination: {
-				pageIndex: page,
-			},
 			columnVisibility: {
 				tag: false,
 			},
 		},
 		state: {
 			columnFilters,
+			pagination: {
+				pageIndex: page,
+                pageSize: 10
+			},
 		},
 	});
 
