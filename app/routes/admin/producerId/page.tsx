@@ -33,6 +33,17 @@ const columns: ColumnDef<Card>[] = [
 		header: "Card ID",
 	},
 	{
+		accessorKey: "img",
+		header: "Logo",
+		cell: (props) => (
+			<img
+				src={props.cell.getValue() as string}
+				alt=""
+				className="w-[80px] rounded-md"
+			/>
+		),
+	},
+	{
 		accessorKey: "name",
 		header: "Name on card",
 	},

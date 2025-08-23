@@ -8,6 +8,7 @@ import {
 } from "@tanstack/react-table";
 import axios from "axios";
 import { ChevronLeft, ChevronRight, Trash } from "lucide-react";
+import { DateTime } from "luxon";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { type Dispatch, type SetStateAction, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -27,7 +28,6 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import TableComponent from "./components/Table";
 import UpdateEvent, { type EventData } from "./components/UpdateEvent";
-import { DateTime } from "luxon";
 
 const columns: ColumnDef<EventData>[] = [
 	{
@@ -35,8 +35,14 @@ const columns: ColumnDef<EventData>[] = [
 		header: "Event ID",
 	},
 	{
+		accessorKey: "img",
+		header: "Logo",
+		cell: (props) => <img src={props.cell.getValue() as string} alt="" className="w-[80px] m-4"/>,
+	},
+	{
 		accessorKey: "name",
 		header: "Event Name",
+		cell: (props) => <div className="w-[500px] text-wrap">{props.cell.getValue() as string}</div>
 	},
 	{
 		accessorKey: "startDate",
@@ -47,7 +53,7 @@ const columns: ColumnDef<EventData>[] = [
 	{
 		accessorKey: "endDate",
 		header: "End Date",
-		cell:  (props) =>
+		cell: (props) =>
 			DateTime.fromISO(props.cell.getValue() as string).toFormat("dd-MM-yyyy"),
 	},
 	{
@@ -129,6 +135,9 @@ export default function Page() {
 			pagination: {
 				pageIndex: page,
 			},
+			columnVisibility: {
+				id: false
+			}
 		},
 		state: {
 			columnFilters,
