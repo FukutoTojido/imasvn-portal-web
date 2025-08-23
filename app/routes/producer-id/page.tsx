@@ -1,13 +1,20 @@
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import type { Route } from "./+types/page";
-import axios from "axios";
 
 export async function loader({ params: { id } }: Route.LoaderArgs) {
 	try {
-		const { data } = await axios.get(
+		const { data: cardData } = await axios.get(
 			`${import.meta.env.VITE_BACKEND_API}/producer-id/_/cards/${id}`,
 		);
-		return data;
+		const { data: userData } = await axios.get(
+			`${import.meta.env.VITE_BACKEND_API}/producer-id/${cardData.pid}`,
+		);
+
+		return {
+			cardData,
+			userData,
+		};
 	} catch (e) {
 		console.error(e);
 		return null;
@@ -42,7 +49,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 				fontFamily: "DFPOPMix, Rubik, sans-serif",
 			}}
 		>
-			<link rel="preload" href={loaderData.img} as="image"></link>
+			<link rel="preload" href={loaderData.cardData.img} as="image"></link>
 			<link rel="preload" href="/Base.svg" as="image"></link>
 			<link rel="preload" href="/Back.svg" as="image"></link>
 			<div
@@ -69,13 +76,13 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 									className="absolute top-[284px] left-[208px] w-[256px] h-[212px]"
 								/>
 								<div className="absolute text-[68px] top-[276px] left-[592px] leading-[68px]">
-									{loaderData.name}
+									{loaderData.cardData.name}
 								</div>
 								<div className="absolute text-[136px] top-[364px] left-[592px] leading-[136px]">
-									{loaderData.idol}
+									{loaderData.cardData.idol}
 								</div>
 								<img
-									src={loaderData.img}
+									src={loaderData.cardData.img}
 									alt=""
 									className="w-[1064px] h-[1024px] absolute left-[256px] top-[716px] rounded-[24px] object-cover object-center"
 								/>
@@ -85,7 +92,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 										fontFamily: `"DM Serif Text", Rubik, sans-serif`,
 									}}
 								>
-									{loaderData.title}
+									{loaderData.cardData.title}
 								</div>
 								<img
 									src="/rank.svg"
@@ -98,7 +105,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 										fontFamily: `"Victor Mono", Rubik, sans-serif`,
 									}}
 								>
-									Events participated: 0001
+									Events participated: {loaderData.userData.events.toString().padStart(4, "0")}
 								</div>
 								<div
 									className="absolute top-[2060px] left-[504px] font-bold text-[56px] leading-[76px]"
@@ -114,7 +121,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 										fontFamily: `"Victor Mono", Rubik, sans-serif`,
 									}}
 								>
-									{loaderData.id}
+									{loaderData.cardData.id}
 								</div>
 								<img
 									src="/NFC.svg"
