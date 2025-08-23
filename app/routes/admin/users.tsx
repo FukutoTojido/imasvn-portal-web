@@ -56,10 +56,8 @@ export default function Page() {
 				header: "Avatar",
 				cell: (props) => (
 					<Avatar className="w-10 h-10">
-						<AvatarFallback>
-							<div className="w-full h-full rounded-full bg-crust text-text">
-								<ImageOff />
-							</div>
+						<AvatarFallback className="w-full h-full rounded-full bg-crust text-subtext-0 flex items-center justify-center">
+							<ImageOff size={16} />
 						</AvatarFallback>
 						<AvatarImage src={props.cell.getValue() as string} />
 					</Avatar>
