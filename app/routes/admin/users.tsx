@@ -53,11 +53,13 @@ export default function Page() {
 				accessorKey: "avatar",
 				header: "Avatar",
 				cell: (props) => (
-					<img
-						src={props.cell.getValue() as string}
-						alt=""
-						className="w-[40px] rounded-full"
-					/>
+					<div className="w-10 h-10">
+						<img
+							src={props.cell.getValue() as string}
+							alt=""
+							className="w-full h-full rounded-full"
+						/>
+					</div>
 				),
 			},
 			{
