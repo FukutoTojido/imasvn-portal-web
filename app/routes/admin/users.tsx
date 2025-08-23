@@ -7,7 +7,7 @@ import {
 	useReactTable,
 } from "@tanstack/react-table";
 import axios from "axios";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useMemo, useState } from "react";
 import useSWR from "swr";
@@ -23,6 +23,8 @@ import {
 } from "~/components/ui/select";
 import { ROLE, type UserDto } from "~/types";
 import TableComponent from "./components/Table";
+import { Avatar, AvatarImage } from "~/components/ui/avatar";
+import { AvatarFallback } from "@radix-ui/react-avatar";
 
 const getUsers = async () => {
 	try {
@@ -53,13 +55,14 @@ export default function Page() {
 				accessorKey: "avatar",
 				header: "Avatar",
 				cell: (props) => (
-					<div className="w-10 h-10">
-						<img
-							src={props.cell.getValue() as string}
-							alt=""
-							className="w-full h-full rounded-full"
-						/>
-					</div>
+					<Avatar className="w-10 h-10">
+						<AvatarFallback>
+							<div className="w-full h-full rounded-full bg-crust text-text">
+								<ImageOff />
+							</div>
+						</AvatarFallback>
+						<AvatarImage src={props.cell.getValue() as string} />
+					</Avatar>
 				),
 			},
 			{
