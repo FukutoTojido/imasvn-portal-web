@@ -1,3 +1,4 @@
+import { AvatarFallback } from "@radix-ui/react-avatar";
 import {
 	type ColumnDef,
 	type ColumnFiltersState,
@@ -11,6 +12,7 @@ import { ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useMemo, useState } from "react";
 import useSWR from "swr";
+import { Avatar, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import {
@@ -23,8 +25,8 @@ import {
 } from "~/components/ui/select";
 import { ROLE, type UserDto } from "~/types";
 import TableComponent from "./components/Table";
-import { Avatar, AvatarImage } from "~/components/ui/avatar";
-import { AvatarFallback } from "@radix-ui/react-avatar";
+import { ComboBox } from "~/components/ui/combobox";
+import { getProducers } from "./components/ProducerMenu";
 
 const getUsers = async () => {
 	try {
@@ -41,15 +43,18 @@ const getUsers = async () => {
 
 export default function Page() {
 	const { data, mutate } = useSWR("users", getUsers);
+	const { data: producers } = useSWR("producers", getProducers);
+	const producersList = producers?.map(({ id, name }) => ({
+		value: id,
+		label: name,
+	}));
 
 	const columns: ColumnDef<UserDto>[] = useMemo(
 		() => [
 			{
 				accessorKey: "id",
 				header: "Discord ID",
-				cell: (props) => (
-					<div className="w-[40px]">{props.cell.getValue() as string}</div>
-				),
+				cell: (props) => props.cell.getValue() as string,
 			},
 			{
 				accessorKey: "avatar",
@@ -126,8 +131,31 @@ export default function Page() {
 					</Select>
 				),
 			},
+			{
+				accessorKey: "pid",
+				header: "Linked Producer ID",
+				cell: (props) => (
+					<ComboBox
+						defaultValue={props.getValue() as string}
+						placeholder="Link Producer"
+						options={producersList}
+						onValueChange={async (value) => {
+							try {
+								await axios.patch(
+									`${import.meta.env.VITE_BACKEND_API}/users/${props.row.original.id}/pid`,
+									{ pid: value === props.row.original.pid ? null : value },
+									{ withCredentials: true },
+								);
+								mutate();
+							} catch (e) {
+								console.error(e);
+							}
+						}}
+					></ComboBox>
+				),
+			},
 		],
-		[mutate],
+		[mutate, producersList],
 	);
 
 	const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(0));

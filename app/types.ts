@@ -15,7 +15,8 @@ export type UserDto = {
 	username: string,
 	avatar: string,
 	tag: string,
-	role: ROLE
+	role: ROLE,
+	pid?: string | null
 }
 
 export type UserData = {
