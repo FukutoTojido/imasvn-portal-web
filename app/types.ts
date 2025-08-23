@@ -5,6 +5,29 @@ export enum UserType {
 	UNAUTHORIZED = 3,
 }
 
+export enum ROLE { 
+	NORMAL = 0,
+	ADMIN = 1
+}
+
+export type UserDto = {
+	id: string,
+	username: string,
+	avatar: string,
+	role: ROLE
+}
+
+export type UserData = {
+	username: string;
+	global_name: string;
+	avatar: string;
+	banner?: string;
+	id: string;
+	isJoinedServer: boolean;
+	authType: UserType.OK;
+	role: number;
+};
+
 export type UserState =
 	| {
 			authType: UserType.NULL;
@@ -12,16 +35,7 @@ export type UserState =
 	| {
 			authType: UserType.LOADING;
 	  }
-	| {
-			username: string;
-			global_name: string;
-			avatar: string;
-			banner?: string;
-			id: string;
-			isJoinedServer: boolean;
-			authType: UserType.OK;
-			role: number
-	  };
+	| UserData;
 
 export interface UserFlairData {
 	id: string;
@@ -45,5 +59,5 @@ export interface Comment {
 	id: string;
 	user: UserFlairData;
 	content: string;
-	postId: string
+	postId: string;
 }

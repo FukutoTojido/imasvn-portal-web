@@ -1,4 +1,4 @@
-import { Calendar1, ChevronUp, IdCard } from "lucide-react";
+import { Calendar1, ChevronUp, IdCard, User } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
@@ -64,6 +64,27 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>
+				<SidebarGroup>
+					<SidebarGroupLabel className="text-subtext-0">
+						Users
+					</SidebarGroupLabel>
+					<SidebarGroupContent>
+						<SidebarMenu>
+							<SidebarMenuItem>
+								<SidebarMenuButton
+									asChild
+									className="hover:bg-surface-1 hover:text-text"
+								>
+									<a href="/admin/users">
+										<User />
+										Users
+									</a>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+	
+						</SidebarMenu>
+					</SidebarGroupContent>
+				</SidebarGroup>
 			</SidebarContent>
 			<SidebarFooter>
 				<SidebarMenu>
@@ -100,7 +121,10 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 								className="w-(--radix-dropdown-menu-trigger-width) bg-base text-text border-surface-1"
 							>
 								<DropdownMenuItem asChild>
-									<SidebarMenuButton onClick={() => dispatch(logOut())} className="text-red">
+									<SidebarMenuButton
+										onClick={() => dispatch(logOut())}
+										className="text-red"
+									>
 										Log Out
 									</SidebarMenuButton>
 								</DropdownMenuItem>

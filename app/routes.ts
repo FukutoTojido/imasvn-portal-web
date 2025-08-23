@@ -22,6 +22,7 @@ export default [
 		layout("routes/admin/layout.tsx", [
 			route("admin/producers", "routes/admin/producers.tsx"),
 			route("admin/events", "routes/admin/events.tsx"),
+			route("admin/users", "routes/admin/users.tsx"),
 			route("admin/producer-id/:id", "routes/admin/producerId/page.tsx"),
 		]),
 	]),

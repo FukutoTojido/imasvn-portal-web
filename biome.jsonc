@@ -1,5 +1,5 @@
 {
     "files": {
-        "includes": ["**", "!**/app/components/**/*.tsx", "!**/node_modules"]
+        "includes": ["**", "!**/app/components/**/*.tsx", "!**/node_modules/**/*"]
     }
 }
