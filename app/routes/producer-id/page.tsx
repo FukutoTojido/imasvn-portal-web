@@ -116,7 +116,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 									Number of fans:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9999
 								</div>
 								<div
-									className="absolute top-[2172px] left-[493px] font-bold text-[56px] leading-[76px] tracking-[0.415em]"
+									className="absolute top-[1086px] left-[246.5px] font-bold text-[28px] leading-[38px] tracking-[0.415em]"
 									style={{
 										fontFamily: `"Victor Mono", Rubik, sans-serif`,
 									}}
