@@ -1,5 +1,6 @@
 import { Calendar1, ChevronUp, IdCard, User } from "lucide-react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import {
 	DropdownMenu,
@@ -44,10 +45,10 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 									asChild
 									className="hover:bg-surface-1 hover:text-text"
 								>
-									<a href="/admin/producers">
+									<Link to="/admin/producers" prefetch="render">
 										<IdCard />
 										Producers
-									</a>
+									</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
 							<SidebarMenuItem>
@@ -55,10 +56,10 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 									asChild
 									className="hover:bg-surface-1 hover:text-text"
 								>
-									<a href="/admin/events">
+									<Link to="/admin/events" prefetch="render">
 										<Calendar1 />
 										Events
-									</a>
+									</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
 						</SidebarMenu>
@@ -75,13 +76,12 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 									asChild
 									className="hover:bg-surface-1 hover:text-text"
 								>
-									<a href="/admin/users">
+									<Link to="/admin/users" prefetch="render">
 										<User />
 										Users
-									</a>
+									</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
-	
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>

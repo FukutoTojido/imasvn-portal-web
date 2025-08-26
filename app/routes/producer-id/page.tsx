@@ -33,7 +33,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 
 			const width = ele.contentRect.width;
 			const height = ele.contentRect.height;
-			setScale(Math.min(height / 2572, width / 1600));
+			setScale(Math.min(height / 1286, width / 800));
 		});
 
 		resizeObserver.observe(ref.current);
@@ -57,7 +57,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 				ref={ref}
 			>
 				<div
-					className="w-[1600px] h-[2572px] relative shrink-0 producer-id"
+					className="w-[800px] h-[1286px] relative shrink-0 producer-id"
 					style={{
 						transform: `scale(${scale * 100}%)`,
 					}}
@@ -73,21 +73,21 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 								<img
 									src="/classification.svg"
 									alt=""
-									className="absolute top-[284px] left-[208px] w-[256px] h-[212px]"
+									className="absolute top-[142px] left-[104px] w-[128px] h-[106px]"
 								/>
-								<div className="absolute text-[68px] top-[276px] left-[592px] leading-[68px]">
+								<div className="absolute text-[34px] top-[138px] left-[296px] leading-[34px]">
 									{loaderData.cardData.name}
 								</div>
-								<div className="absolute text-[136px] top-[364px] left-[592px] leading-[136px]">
+								<div className="absolute text-[68px] top-[182px] left-[296px] leading-[68px]">
 									{loaderData.cardData.idol}
 								</div>
 								<img
 									src={loaderData.cardData.img}
 									alt=""
-									className="w-[1064px] h-[1024px] absolute left-[256px] top-[716px] rounded-[24px] object-cover object-center"
+									className="w-[532px] h-[512px] absolute left-[128px] top-[358px] rounded-[12px] object-cover object-center"
 								/>
 								<div
-									className="absolute text-[73px] leading-[100px] text-center left-0 right-0 mx-auto top-[1806px]"
+									className="absolute text-[36.5px] leading-[50px] text-center left-0 right-0 mx-auto top-[903px]"
 									style={{
 										fontFamily: `"DM Serif Text", Rubik, sans-serif`,
 									}}
@@ -97,10 +97,10 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 								<img
 									src="/rank.svg"
 									alt=""
-									className="absolute top-[1976px] left-[220px] w-[232px] h-[260px]"
+									className="absolute top-[988px] left-[110px] w-[116px] h-[130px]"
 								/>
 								<div
-									className="absolute top-[1992px] left-[504px] font-bold text-[56px] leading-[76px]"
+									className="absolute top-[996px] left-[252px] font-bold text-[28px] leading-[38px]"
 									style={{
 										fontFamily: `"Victor Mono", Rubik, sans-serif`,
 									}}
@@ -108,7 +108,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 									Events participated: {loaderData.userData.events.toString().padStart(4, "0")}
 								</div>
 								<div
-									className="absolute top-[2060px] left-[504px] font-bold text-[56px] leading-[76px]"
+									className="absolute top-[1030px] left-[252px] font-bold text-[28px] leading-[38px]"
 									style={{
 										fontFamily: `"Victor Mono", Rubik, sans-serif`,
 									}}
@@ -126,7 +126,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 								<img
 									src="/NFC.svg"
 									alt=""
-									className="absolute top-[2358.48px] left-[180px] w-[340px] h-[43.04px]"
+									className="absolute top-[1179.24px] left-[90px] w-[170px] h-[21.52px]"
 								/>
 							</div>
 							<div className="absolute w-full h-[20px] rounded-full blur bg-[#80ffaa] scanner"></div>

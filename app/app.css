@@ -911,7 +911,7 @@ label {
 
 .producer-id {
 	animation: cubic-bezier(0.22, 1, 0.36, 1) slideIn 1000ms 1000ms backwards;
-	perspective: 4000px;
+	perspective: 3000px;
 }
 
 .producer-id-inner {
@@ -982,12 +982,10 @@ label {
 
 .card-front,
 .card-back {
-	-webkit-backface-visibility: hidden; /* Safari */
+	-webkit-backface-visibility: hidden;
 	backface-visibility: hidden;
 }
 
 .card-back {
 	rotate: y -180deg;
-	translate: z -1px;
-	z-index: 1;
 }
