@@ -1,6 +1,16 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState, type RefObject } from "react";
 import type { Route } from "./+types/page";
+import {
+	flexRender,
+	getCoreRowModel,
+	getPaginationRowModel,
+	useReactTable,
+	type ColumnDef,
+} from "@tanstack/react-table";
+import type { EventData } from "../admin/components/UpdateEvent";
+import { DateTime } from "luxon";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export async function loader({ params: { id } }: Route.LoaderArgs) {
 	try {
@@ -20,6 +30,35 @@ export async function loader({ params: { id } }: Route.LoaderArgs) {
 		return null;
 	}
 }
+
+const columns: ColumnDef<EventData>[] = [
+	{
+		accessorKey: "img",
+		cell: (props) => (
+			<img
+				src={(props.cell.getValue() as string) ?? null}
+				alt=""
+				width={120}
+				height={120}
+			/>
+		),
+	},
+	{
+		id: "info",
+		cell: (props) => (
+			<div className="flex flex-col gap-2.5">
+				<div className="line-clamp-2">{props.row.original.name}</div>
+				<div>
+					{DateTime.fromISO(props.row.original.startDate).toFormat(
+						"dd LLL yyyy",
+					)}{" "}
+					-{" "}
+					{DateTime.fromISO(props.row.original.endDate).toFormat("dd LLL yyyy")}
+				</div>
+			</div>
+		),
+	},
+];
 
 export default function Page({ loaderData }: Route.ComponentProps) {
 	const ref = useRef<HTMLDivElement>(null);
@@ -41,6 +80,39 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 		return () => resizeObserver.disconnect();
 	}, []);
 
+	const table = useReactTable({
+		data: loaderData?.userData.events ?? [],
+		columns,
+		initialState: {
+			pagination: {
+				pageIndex: 0,
+				pageSize: 3,
+			},
+		},
+		getCoreRowModel: getCoreRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
+	});
+
+	const baseRef = useRef<HTMLDivElement>(null);
+	const infoRef = useRef<HTMLDivElement>(null);
+	const contRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		let ev: EventListenerOrEventListenerObject | undefined;
+
+		const timeout = setTimeout(() => {
+			ev = contRef.current?.addEventListener("click", () => {
+				baseRef.current?.classList.toggle("opacity-0");
+				infoRef.current?.classList.toggle("opacity-0");
+			}) as EventListenerOrEventListenerObject | undefined;
+		}, 7000);
+
+		return () => {
+			clearTimeout(timeout);
+			if (ev) contRef.current?.removeEventListener("click", ev);
+		};
+	}, []);
+
 	if (!loaderData) return "";
 	return (
 		<div
@@ -53,23 +125,89 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 			<link rel="preload" href="/Base.svg" as="image"></link>
 			<link rel="preload" href="/Back.svg" as="image"></link>
 			<div
-				className="w-[500px] max-w-full h-full flex items-center justify-center relative"
+				className="w-[500px] max-w-full h-full flex items-center justify-center relative select-none"
 				ref={ref}
 			>
 				<div
-					className="w-[800px] h-[1286px] relative shrink-0 producer-id"
+					className="w-[800px] h-[1286px] relative shrink-0 producer-id cursor-pointer"
 					style={{
 						transform: `scale(${scale * 100}%)`,
 					}}
+					ref={contRef}
 				>
-					<div className="absolute top-0 left-0 w-full h-full producer-id-inner">
+					<div className="absolute top-0 left-0 w-full h-full producer-id-inner pointer-events-none">
 						<div className="absolute top-0 left-0 w-full h-full card-front">
 							<img
 								src="/Base.svg"
 								alt=""
 								className="w-full h-full object-cover object-center block"
 							/>
-							<div className="absolute top-0 left-0 w-full h-full ink">
+							<div
+								className="absolute top-[96px] left-[90px] w-[613px] h-[1078px] bg-black text-[#57ff89] text-4xl opacity-0 transition-opacity"
+								style={{
+									fontFamily: "Classic Console Neue",
+								}}
+								ref={infoRef}
+							>
+								<div
+									className="w-full h-full overflow-auto flex flex-col p-5 gap-5"
+									style={{
+										filter: "drop-shadow(0 0 10px #57ff89)",
+									}}
+								>
+									Producer Info
+									<ul>
+										<li className="text-3xl list-disc list-inside">
+											ID: {loaderData.userData.id}
+										</li>
+										<li className="text-3xl list-disc list-inside">
+											Name: {loaderData.userData.name}
+										</li>
+										<li className="text-3xl list-disc list-inside">
+											Event Participated: {loaderData.userData.events.length}
+										</li>
+									</ul>
+									<div className="flex flex-col gap-2.5">
+										{(table.getRowModel().rows ?? []).map((row) => (
+											<div
+												className="w-full flex items-center gap-5 text-2xl border-2 border-[#57ff89] p-5"
+												key={row.id}
+											>
+												{row.getVisibleCells().map((cell) => (
+													<Fragment key={cell.id}>
+														{flexRender(
+															cell.column.columnDef.cell,
+															cell.getContext(),
+														)}
+													</Fragment>
+												))}
+											</div>
+										))}
+									</div>
+									<div className="w-full flex items-center justify-end gap-2.5">
+										<button
+											type="button"
+											className="p-5 border-2 border-[#57ff89] disabled:opacity-20"
+											onClick={() => table.previousPage()}
+											disabled={!table.getCanPreviousPage()}
+										>
+											<ChevronLeft />
+										</button>
+										<button
+											type="button"
+											className="p-5 border-2 border-[#57ff89] disabled:opacity-20"
+											onClick={() => table.nextPage()}
+											disabled={!table.getCanNextPage()}
+										>
+											<ChevronRight />
+										</button>
+									</div>
+								</div>
+							</div>
+							<div
+								className="absolute top-0 left-0 w-full h-full ink transition-opacity"
+								ref={baseRef}
+							>
 								<img
 									src="/classification.svg"
 									alt=""
@@ -105,7 +243,10 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 										fontFamily: `"Victor Mono", Rubik, sans-serif`,
 									}}
 								>
-									Events participated: {loaderData.userData.events.toString().padStart(4, "0")}
+									Events participated:{" "}
+									{loaderData.userData.events.length
+										.toString()
+										.padStart(4, "0")}
 								</div>
 								<div
 									className="absolute top-[1030px] left-[252px] font-bold text-[28px] leading-[38px]"
