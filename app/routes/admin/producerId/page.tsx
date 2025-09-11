@@ -64,7 +64,9 @@ const columns: ColumnDef<Card>[] = [
 					className="text-text bg-transparent hover:bg-text hover:text-base"
 					onClick={async (e) => {
 						e.stopPropagation();
-						await navigator.clipboard.writeText(props.row.original.id);
+						await navigator.clipboard.writeText(
+							props.row.original.id.match(/.{1,4}/g)?.join("-") ?? "",
+						);
 						toast("ID copied");
 					}}
 				>
@@ -148,9 +150,15 @@ export default function Page({ params }: Route.ComponentProps) {
 			const [{ data: producerData }, { data: cards }] = [
 				await axios.get<Producer>(
 					`${import.meta.env.VITE_BACKEND_API}/producer-id/${params.id}`,
+					{
+						withCredentials: true,
+					},
 				),
 				await axios.get<Card[]>(
 					`${import.meta.env.VITE_BACKEND_API}/producer-id/${params.id}/cards`,
+					{
+						withCredentials: true,
+					},
 				),
 			];
 			return { producerData, cards };
