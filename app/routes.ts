@@ -24,6 +24,7 @@ export default [
 			route("admin/events", "routes/admin/events.tsx"),
 			route("admin/users", "routes/admin/users.tsx"),
 			route("admin/producer-id/:id", "routes/admin/producerId/page.tsx"),
+			route("admin/cards/:id", "routes/admin/cards/page.tsx"),
 		]),
 	]),
 	route("producer-id/:id", "routes/producer-id/page.tsx"),

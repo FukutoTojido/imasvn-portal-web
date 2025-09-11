@@ -4,17 +4,12 @@ import {
 	useReactTable,
 } from "@tanstack/react-table";
 import axios from "axios";
-import { type Dispatch, type SetStateAction, useRef } from "react";
-import useSWR, { mutate } from "swr";
-import ErrorComponent from "~/routes/components/Error";
-import TableComponent from "../components/Table";
-import UpdateCard from "../components/UpdateCard";
-import type { Card, Producer } from "../types";
-import type { Route } from "./+types/page";
+import { Copy, IdCard, Link, LoaderCircle, Trash } from "lucide-react";
 import QRCode from "qrcode";
-import { Button } from "~/components/ui/button";
-import { Copy, IdCard, Link, Trash } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import useSWR, { mutate } from "swr";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -26,6 +21,11 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
+import { Button } from "~/components/ui/button";
+import ErrorComponent from "~/routes/components/Error";
+import TableComponent from "../components/Table";
+import type { Card, Producer } from "../types";
+import type { Route } from "./+types/page";
 
 const columns: ColumnDef<Card>[] = [
 	{
@@ -145,7 +145,9 @@ const columns: ColumnDef<Card>[] = [
 ];
 
 export default function Page({ params }: Route.ComponentProps) {
-	const { data, mutate } = useSWR(`producer-${params.id}`, async () => {
+	const navigate = useNavigate();
+
+	const { data } = useSWR(`producer-${params.id}`, async () => {
 		try {
 			const [{ data: producerData }, { data: cards }] = [
 				await axios.get<Producer>(
@@ -168,16 +170,25 @@ export default function Page({ params }: Route.ComponentProps) {
 		}
 	});
 
+	const [loading, setLoading] = useState(false);
+
 	const table = useReactTable({
 		data: data?.cards ?? [],
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 	});
 
-	const ref = useRef<{
-		setOpen: Dispatch<SetStateAction<boolean>>;
-		setCardId: Dispatch<SetStateAction<string | null>>;
-	}>(null);
+	const insertCard = async (id: string) => {
+		const { data } = await axios.post(
+			`${import.meta.env.VITE_BACKEND_API}/producer-id/${id}/cards`,
+			undefined,
+			{
+				withCredentials: true,
+			},
+		);
+
+		navigate(`/admin/cards/${data}`);
+	};
 
 	if (data === null) return <ErrorComponent />;
 	if (!data) return "";
@@ -195,17 +206,21 @@ export default function Page({ params }: Route.ComponentProps) {
 					table={table}
 					columns={columns}
 					onRowClick={(row) => {
-						ref.current?.setCardId(row.getValue("id"));
-						ref.current?.setOpen(true);
+						navigate(`/admin/cards/${row.getValue("id")}`);
 					}}
 				/>
 			</div>
-			<UpdateCard
-				ref={ref}
-				id={params.id}
-				mutate={mutate}
-				name={producerData.name}
-			/>
+			<Button
+				disabled={loading}
+				onClick={async () => {
+					setLoading(true);
+					await insertCard(producerData.id);
+					setLoading(false);
+				}}
+				className="bg-text text-crust hover:bg-base hover:text-text self-end font-normal"
+			>
+				{loading && <LoaderCircle className="animate-spin" />} Insert Card
+			</Button>
 		</>
 	);
 }

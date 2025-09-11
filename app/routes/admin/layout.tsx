@@ -21,8 +21,8 @@ export default function Page() {
 				<AdminSidebar me={me} />
 				<div className="max-w-full flex-1 flex flex-col items-center p-5 py-10">
 					<div className="w-[1200px] max-w-full flex flex-col gap-5">
-						<Toaster />
 						<Outlet />
+						<Toaster className="absolute" />
 					</div>
 				</div>
 			</div>

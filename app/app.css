@@ -4,6 +4,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -17,6 +18,18 @@
 @font-face {
 	font-family: Classic Console Neue;
 	src: url(/clacon2.woff2);
+}
+
+@font-face {
+	font-family: "Base Neue";
+	src: url("/fonts/BaseNeue-Variable.ttf");
+}
+
+@font-face {
+	font-family: "Karasuma Gothic";
+	font-weight: 900;
+	font-style: italic;
+	src: url("/fonts/KarasumaGothic-BlackItalic.otf");
 }
 
 @theme {
@@ -327,11 +340,8 @@ button {
 
 .gridLoop {
 	background-size: 40px 40px;
-	background-image: linear-gradient(
-			to right,
-			var(--color-surface-1) 1px,
-			transparent 1px
-		), linear-gradient(to bottom, var(--color-surface-1) 1px, transparent 1px);
+	background-image: linear-gradient(to right, black 1px, transparent 1px),
+		linear-gradient(to bottom, black 1px, transparent 1px);
 
 	animation: linear loopGrid 500ms infinite;
 }
@@ -396,6 +406,16 @@ button {
 
 .fadeIn {
 	animation: fadeIn ease-in-out 200ms forwards;
+}
+
+.card-gradient {
+	background-image: linear-gradient(
+		to right,
+		#fdd4ff 0%,
+		#fee2c2 33%,
+		#ffd9cf 67%,
+		#ffb3b4 100%
+	);
 }
 
 input[type="checkbox"] {

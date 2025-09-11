@@ -1,0 +1,8 @@
+.gridStatic {
+	background-size: 153px 153px;
+	background-image: linear-gradient(
+			to right,
+			var(--color-surface-1) 2px,
+			transparent 2px
+		), linear-gradient(to bottom, var(--color-surface-1) 2px, transparent 2px);
+}

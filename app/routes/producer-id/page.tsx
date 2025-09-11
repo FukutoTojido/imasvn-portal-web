@@ -1,16 +1,16 @@
-import axios from "axios";
-import { Fragment, useEffect, useRef, useState, type RefObject } from "react";
-import type { Route } from "./+types/page";
 import {
+	type ColumnDef,
 	flexRender,
 	getCoreRowModel,
 	getPaginationRowModel,
 	useReactTable,
-	type ColumnDef,
 } from "@tanstack/react-table";
-import type { EventData } from "../admin/components/UpdateEvent";
-import { DateTime } from "luxon";
+import axios from "axios";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { DateTime } from "luxon";
+import { Fragment, useEffect, useRef, useState } from "react";
+import type { EventData } from "../admin/components/UpdateEvent";
+import type { Route } from "./+types/page";
 
 export async function loader({ params: { id } }: Route.LoaderArgs) {
 	try {
@@ -217,7 +217,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 									{loaderData.cardData.name}
 								</div>
 								<div className="absolute text-[68px] top-[182px] left-[296px] leading-[68px]">
-									{loaderData.cardData.idol}
+									{loaderData.cardData.idolJapanese}
 								</div>
 								<img
 									src={loaderData.cardData.img}

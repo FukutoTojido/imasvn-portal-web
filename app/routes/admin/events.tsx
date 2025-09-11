@@ -104,7 +104,7 @@ const columns: ColumnDef<EventData>[] = [
 	},
 ];
 
-const getEvents = async () => {
+export const getEvents = async () => {
 	try {
 		const { data } = await axios.get<EventData[]>(
 			`${import.meta.env.VITE_BACKEND_API}/events`,
