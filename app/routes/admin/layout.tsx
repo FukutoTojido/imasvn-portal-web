@@ -19,7 +19,7 @@ export default function Page() {
 		<SidebarProvider>
 			<div className="w-screen h-screen flex bg-crust font-rubik text-text gridLoop">
 				<AdminSidebar me={me} />
-				<div className="max-w-full flex-1 flex flex-col items-center p-5 py-10">
+				<div className="max-w-full flex-1 flex flex-col items-center p-5 py-10 overflow-auto">
 					<div className="w-[1200px] max-w-full flex flex-col gap-5">
 						<Outlet />
 						<Toaster className="absolute" />

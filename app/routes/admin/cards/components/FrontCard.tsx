@@ -3,10 +3,13 @@ import { useWatch } from "react-hook-form";
 
 export default function FrontCard({
 	ref,
-	url
+	url,
+	zoom = 25
 }: {
 	ref?: RefObject<HTMLDivElement | null>;
-	url?: string
+	url?: string,
+	zoom?: number
+
 }) {
 	const name: string = useWatch({ name: "name" });
 	const idol: string = useWatch({ name: "idol" });
@@ -22,7 +25,7 @@ export default function FrontCard({
 	return (
 		<div
 			className="relative w-[2360px] h-[1528px] overflow-hidden rounded-[50px]"
-			style={{ zoom: "25%" }}
+			style={{ zoom: `${zoom}%` }}
 		>
 			<div
 				className="relative w-full h-full bg-gradient-to-right card-gradient flex flex-col shrink-0"
@@ -94,10 +97,10 @@ export default function FrontCard({
 						className="absolute bottom-[62px] left-[150px] text-[96px]/[96px] bg-gradient-to-r from-[#FF66B5] to-[#EFB240]"
 						style={{
 							fontVariationSettings: `
-                            "wdth" 150,
-                            "wght" 712.5,
-                            "obli" 1
-                        `,
+                            	"wdth" 150,
+                            	"wght" 712.5,
+                            	"obli" 1
+                        	`,
 							fontFamily: "Base Neue",
 							backgroundClip: "text",
 							WebkitTextStroke: "2px transparent",

@@ -1,45 +1,55 @@
-import { useMemo } from "react";
+import { useMemo, type RefObject } from "react";
 import { useWatch } from "react-hook-form";
 import type { EventData } from "../../components/UpdateEvent";
 
 export default function BackCard({
 	accessCode,
 	producerId,
-    events,
+	events,
 	qrCode,
-	url
+	url,
+	ref,
+	zoom = 25,
 }: {
 	accessCode?: string;
 	producerId?: string;
-    events: EventData[]
+	events: EventData[];
 	qrCode?: string;
-	url?: string
+	url?: string;
+	ref?: RefObject<HTMLDivElement | null>;
+	zoom?: number;
 }) {
 	const idol: string = useWatch({ name: "idolJapanese" });
-	const imgFile: FileList | null  = useWatch({ name: "backImg" });
-	const event: string  = useWatch({ name: "event" });
+	const imgFile: FileList | null = useWatch({ name: "backImg" });
+	const event: string = useWatch({ name: "event" });
 
 	const image = useMemo(() => {
 		if (!imgFile || !imgFile.length) return;
 		const file = imgFile[0];
 		const dataURL = URL.createObjectURL(new Blob([file]));
-        console.log(dataURL)
 		return dataURL;
 	}, [imgFile]);
 
 	return (
 		<div
 			className="relative w-[2360px] h-[1528px] overflow-hidden rounded-[50px]"
-			style={{ zoom: "25%" }}
+			style={{ zoom: `${zoom}%` }}
 		>
-			<div className="relative w-full h-full bg-white flex flex-col shrink-0 p-[110px] gap-[50px] overflow-hidden">
+			<div
+				className="relative w-full h-full bg-white flex flex-col shrink-0 p-[110px] gap-[50px] overflow-hidden"
+				ref={ref}
+			>
 				<div className="absolute w-[150%] h-[150%] inset-0 m-auto gridStatic opacity-[10%] -rotate-[5deg]"></div>
 				<div className="relative flex gap-[50px] w-full h-[640px]">
 					<div className="h-full aspect-square shrink-0 p-[30px] flex overflow-hidden">
 						<img
-							src={(events.find(e => e.id === +event)?.img ?? null) as string | undefined}
+							src={
+								(events.find((e) => e.id === +event)?.img ?? null) as
+									| string
+									| undefined
+							}
 							alt=""
-							className="size-full object-contain object-center"
+							className="relative size-full object-contain object-center"
 						/>
 					</div>
 					<div
@@ -97,7 +107,7 @@ export default function BackCard({
 						</div>
 						<div className="flex gap-[50px] flex-1 w-full">
 							<div
-								className="h-full aspect-square bg-[#3D3D3D] rounded-[50px] border-8 border-white"
+								className="h-full aspect-square bg-[#3D3D3D] rounded-[50px] border-8 border-white flex items-center justify-center"
 								style={{
 									boxShadow: "0 15px 30px 0 rgba(0 0 0 /.2)",
 								}}
