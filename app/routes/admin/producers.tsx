@@ -91,6 +91,7 @@ export const getProducers = async () => {
 	try {
 		const { data } = await axios.get<Producer[]>(
 			`${import.meta.env.VITE_BACKEND_API}/producer-id`,
+			{ withCredentials: true },
 		);
 		return data;
 	} catch (e) {
@@ -151,7 +152,8 @@ export default function Page() {
 				/>
 				<div className="w-full flex items-center justify-end gap-2.5">
 					<div className="flex-1 px-2.5 text-sm text-subtext-0">
-						Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+						Page {table.getState().pagination.pageIndex + 1} of{" "}
+						{table.getPageCount()}
 					</div>
 					<Button
 						className="bg-text text-mantle hover:bg-subtext-0 disabled:bg-crust disabled:text-text"
