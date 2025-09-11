@@ -198,7 +198,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 
 	return (
 		<FormProvider {...methods}>
-			<div className="w-full h-full flex md:flex-row flex-col gap-5 flex-col-reverse">
+			<div className="w-full h-full flex md:flex-row gap-5 flex-col-reverse">
 				<form
 					onSubmit={handleSubmit(update)}
 					className="max-w-full md:w-[500px] w-full h-full bg-base rounded-xl border border-surface-1 p-5 grid grid-cols-2 gap-5"
