@@ -190,8 +190,10 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 					withCredentials: true,
 				},
 			);
+			toast("Save completed!");
 		} catch (e) {
 			console.error(e);
+			toast.error("Save failed!");
 		}
 		setSubmitting(false);
 	};

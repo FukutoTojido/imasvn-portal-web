@@ -62,6 +62,16 @@ export default function BackCard({
 							className="relative size-full object-cover object-center"
 						/>
 						<div
+							className="absolute -bottom-[34px] right-[0px] text-right text-[190px]/[230px] text-black/20"
+							style={{
+								fontFamily: "Karasuma Gothic",
+								WebkitTextStroke: "3px rgba(0 0 0 / .2)",
+								filter: "blur(10px)",
+							}}
+						>
+							{idol}
+						</div>
+						<div
 							className="absolute -bottom-[30px] right-[0px] text-right text-[190px]/[230px] text-transparent"
 							style={{
 								fontFamily: "Karasuma Gothic",
@@ -69,7 +79,6 @@ export default function BackCard({
 								backdropFilter: "blur(120px)",
 								mask: "linear-gradient(#000 0 0) text",
 								WebkitMask: "linear-gradient(#000 0 0) text",
-								filter: "drop-shadow(0 4px 10px rgba(0 0 0 /1)",
 							}}
 						>
 							{idol}
