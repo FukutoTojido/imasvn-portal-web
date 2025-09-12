@@ -40,7 +40,7 @@ export default function BackCard({
 				ref={ref}
 			>
 				<div className="absolute w-[150%] h-[150%] inset-0 m-auto gridStatic opacity-[10%] -rotate-[5deg]"></div>
-				<div className="relative flex gap-[50px] w-full h-[640px]">
+				<div className="relative flex w-full h-[640px]">
 					<div className="h-full aspect-square shrink-0 p-[30px] flex overflow-hidden">
 						<img
 							src={
@@ -53,7 +53,7 @@ export default function BackCard({
 						/>
 					</div>
 					<div
-						className="relative flex-1 h-full overflow-hidden border-[8px] rounded-[50px] border-white"
+						className="relative flex-1 h-full overflow-hidden rounded-[50px]"
 						style={{ boxShadow: "0 15px 30px 0 rgba(0 0 0 /.2)" }}
 					>
 						<img
@@ -72,17 +72,75 @@ export default function BackCard({
 							{idol}
 						</div>
 						<div
-							className="absolute -bottom-[30px] right-[0px] text-right text-[190px]/[230px] text-transparent"
+							className="absolute inset-0 size-full bg-red"
 							style={{
-								fontFamily: "Karasuma Gothic",
-								WebkitTextStroke: "3px white",
-								backdropFilter: "blur(120px)",
-								mask: "linear-gradient(#000 0 0) text",
-								WebkitMask: "linear-gradient(#000 0 0) text",
+								clipPath: "url(#idolMask)",
 							}}
 						>
-							{idol}
+							<img
+								src={(image ?? url ?? null) as string | undefined}
+								alt=""
+								className="absolute inset-0 size-full object-cover object-center blur-[30px]"
+							/>
+							<div className="absolute inset-0 size-full bg-[#BCBCBC]/50"></div>
 						</div>
+						<svg
+							viewBox="0 0 1500 640"
+							xmlns="http://www.w3.org/2000/svg"
+							style={{
+								position: "absolute",
+								top: 0,
+								left: 0,
+								width: "100%",
+								height: "100%",
+							}}
+						>
+							<title>Troll Face</title>
+							<clipPath id="idolMask">
+								<text
+									x="1500"
+									y="626"
+									textAnchor="end"
+									style={{
+										fontFamily: "Karasuma Gothic",
+										fontSize: "190px",
+										lineHeight: "230px",
+									}}
+								>
+									{idol}
+								</text>
+							</clipPath>
+						</svg>
+						<svg
+							viewBox="0 0 1500 640"
+							xmlns="http://www.w3.org/2000/svg"
+							style={{
+								position: "absolute",
+								top: 0,
+								left: 0,
+								width: "100%",
+								height: "100%",
+							}}
+						>
+							<title>Troll Face 2</title>
+							<text
+								x="1500"
+								y="626"
+								textAnchor="end"
+								fill="none"
+								style={{
+									fontFamily: "Karasuma Gothic",
+									stroke: "white",
+									strokeWidth: "4px",
+									paintOrder: "stroke",
+									fontSize: "190px",
+									lineHeight: "230px",
+								}}
+							>
+								{idol}
+							</text>
+						</svg>
+						<div className="absolute top-0 left-0 w-full h-full border-[8px] rounded-[50px] border-white"></div>
 					</div>
 				</div>
 				<div className="relative flex-1 w-full flex gap-[50px] text-[#3D3D3D]">
@@ -165,7 +223,6 @@ export default function BackCard({
 							</div>
 						</div>
 					</div>
-
 					<ul
 						style={{
 							boxShadow: "0 15px 30px 0 rgba(0 0 0 /.2)",
