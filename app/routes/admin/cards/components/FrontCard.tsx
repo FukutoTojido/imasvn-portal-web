@@ -51,13 +51,13 @@ export default function FrontCard({
 						<img
 							src={(image ?? url ?? null) as string | undefined}
 							alt=""
-							className="absolute h-full -right-10"
+							className="absolute min-h-full -right-10 object-cover object-right-top"
 						/>
 					</div>
 					<img
 						src={(image ?? url ?? null) as string | undefined}
 						alt=""
-						className="absolute h-full right-0"
+						className="absolute min-h-full right-0 object-cover object-right-top"
 					/>
 					<div
 						className="absolute w-full h-full top-0 left-0 card-gradient"
