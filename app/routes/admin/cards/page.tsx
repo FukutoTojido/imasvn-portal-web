@@ -37,8 +37,14 @@ type FormType = {
 	img?: FileList | null;
 	frontImg?: FileList | null;
 	backImg?: FileList | null;
+	config?: {
+		x?: number;
+		y?: number;
+		scale?: number;
+	};
 };
 import { toast } from "sonner";
+import { Slider } from "~/components/ui/slider";
 
 export const loader = async ({ params: { id } }: Route.LoaderArgs) => {
 	try {
@@ -61,7 +67,19 @@ export const loader = async ({ params: { id } }: Route.LoaderArgs) => {
 	}
 };
 
+const safeJSONParse = (str: string) => {
+	if (!str) return null;
+
+	try {
+		return JSON.parse(str);
+	} catch (e) {
+		console.error(e);
+		return null;
+	}
+};
+
 export default function Page({ loaderData }: Route.ComponentProps) {
+	const config = safeJSONParse(loaderData?.cardData.config);
 	const frontRef = useRef<HTMLDivElement>(null);
 	const backRef = useRef<HTMLDivElement>(null);
 	const ref = useRef<HTMLDivElement>(null);
@@ -76,6 +94,11 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 			img: null,
 			frontImg: null,
 			backImg: null,
+			config: {
+				x: config?.x ? +config?.x : 0,
+				y: config?.y ? +config?.y : 0,
+				scale: config?.scale ? +config?.scale : 100,
+			},
 		},
 		values: {
 			name: loaderData?.cardData.name ?? loaderData?.userData.name ?? "",
@@ -86,9 +109,17 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 			img: null,
 			frontImg: null,
 			backImg: null,
+			config: {
+				x: config?.x ? +config?.x : 0,
+				y: config?.y ? +config?.y : 0,
+				scale: config?.scale ? +config?.scale : 100,
+			},
 		},
 	});
-	const { register, setValue, handleSubmit } = methods;
+	const { register, setValue, handleSubmit, watch } = methods;
+	const x = watch("config.x");
+	const y = watch("config.y");
+	const imgScale = watch("config.scale");
 
 	const copyImage = useCallback(
 		async (ref: RefObject<HTMLDivElement | null>) => {
@@ -149,7 +180,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 			if (!ele) return;
 
 			const width = ele.contentRect.width;
-			setScale(width / 2360 * 100);
+			setScale((width / 2360) * 100);
 		});
 
 		resizeObserver.observe(ref.current);
@@ -181,6 +212,14 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 
 			if (formData.backImg) {
 				payload.append("backImg", formData.backImg[0]);
+			}
+
+			if (formData.config) {
+				payload.append("config", JSON.stringify({
+				x: formData.config?.x?.toString() ?? "0",
+				y: formData.config?.y?.toString() ?? "0",
+				scale: formData.config?.scale?.toString() ?? "100" ,
+			}));
 			}
 
 			await axios.patch(
@@ -238,7 +277,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 							autoComplete="off"
 						/>
 					</div>
-					<div className="flex flex-col gap-2.5 col-span-full">
+					<div className="flex flex-col gap-2.5">
 						<Label>Event</Label>
 						<Select
 							defaultValue={loaderData?.cardData.event?.toString()}
@@ -268,6 +307,15 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 						</Select>
 					</div>
 					<div className="flex flex-col gap-2.5">
+						<Label>Back Image</Label>
+						<Input
+							{...register("backImg")}
+							type="file"
+							className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text file:text-subtext-0 cursor-pointer"
+							autoComplete="off"
+						/>
+					</div>
+					<div className="flex flex-col gap-2.5 col-span-full">
 						<Label>Front Image</Label>
 						<Input
 							{...register("frontImg")}
@@ -277,13 +325,31 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 						/>
 					</div>
 					<div className="flex flex-col gap-2.5">
-						<Label>Back Image</Label>
-						<Input
-							{...register("backImg")}
-							type="file"
-							className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text file:text-subtext-0 cursor-pointer"
-							autoComplete="off"
-						/>
+						<Label>Position X</Label>
+						<div className="flex gap-5">
+							<Slider {...register("config.x")} defaultValue={[config?.x ? +config?.x : 0]} max={100} min={-100} step={1} />
+							<span className="w-20 text-center">{x}%</span>
+						</div>
+					</div>
+					<div className="flex flex-col gap-2.5">
+						<Label>Position Y</Label>
+						<div className="flex gap-5">
+							<Slider {...register("config.y")} defaultValue={[config?.y ? +config?.y : 0]} max={100} min={-100} step={1} />
+							<span className="w-20 text-center">{y}%</span>
+						</div>
+					</div>
+					<div className="flex flex-col gap-2.5 col-span-full">
+						<Label>Scale</Label>
+						<div className="flex gap-5">
+							<Slider
+								{...register("config.scale")}
+								defaultValue={[config?.scale ? +config?.scale : 100]}
+								max={200}
+								min={50}
+								step={1}
+							/>
+							<span className="w-20 text-center">{imgScale}%</span>
+						</div>
 					</div>
 					<div className="flex flex-col gap-2.5">
 						<Label>ID Image</Label>
@@ -341,7 +407,11 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 					className="relative h-full overflow-hidden flex flex-col items-center gap-5 text-white md:flex-1 md:w-auto w-full flex-initial"
 					ref={ref}
 				>
-					<FrontCard ref={frontRef} url={loaderData?.cardData.frontImg} zoom={scale} />
+					<FrontCard
+						ref={frontRef}
+						url={loaderData?.cardData.frontImg}
+						zoom={scale}
+					/>
 					<BackCard
 						accessCode={loaderData?.cardData.id?.match(/.{1,4}/g).join("-")}
 						producerId={loaderData?.userData.id}

@@ -78,6 +78,7 @@ export default function Page() {
 					setCurrDate={setCurrDate}
 				/>
 				{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
+				{/** biome-ignore lint/a11y/noStaticElementInteractions: <explanation> */}
 				<div
 					className={`sm:hidden ${idols ? "fixed" : "hidden"} top-0 left-0 bg-black opacity-40 w-full h-full`}
 					tabIndex={-1}

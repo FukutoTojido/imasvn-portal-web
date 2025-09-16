@@ -4,16 +4,18 @@ import { useWatch } from "react-hook-form";
 export default function FrontCard({
 	ref,
 	url,
-	zoom = 25
+	zoom = 25,
 }: {
 	ref?: RefObject<HTMLDivElement | null>;
-	url?: string,
-	zoom?: number
-
+	url?: string;
+	zoom?: number;
 }) {
 	const name: string = useWatch({ name: "name" });
 	const idol: string = useWatch({ name: "idol" });
 	const imgFile: FileList | null = useWatch({ name: "frontImg" });
+	const x: number = useWatch({ name: "config.x" });
+	const y: number = useWatch({ name: "config.y" });
+	const scale: number = useWatch({ name: "config.scale" });
 
 	const image = useMemo(() => {
 		if (!imgFile || !imgFile.length) return;
@@ -51,13 +53,23 @@ export default function FrontCard({
 						<img
 							src={(image ?? url ?? null) as string | undefined}
 							alt=""
-							className="absolute min-h-full -right-10 object-cover object-right-top"
+							className="absolute min-h-full w-full -right-10 object-cover"
+							style={{
+								scale: `${scale ?? 100}%`,
+								right: `calc(${-x}% - 10px)`,
+								top: `${y}%`,
+							}}
 						/>
 					</div>
 					<img
 						src={(image ?? url ?? null) as string | undefined}
 						alt=""
-						className="absolute min-h-full right-0 object-cover object-right-top"
+						className="absolute min-h-full w-full right-0 object-cover"
+						style={{
+							scale: `${scale ?? 100}%`,
+							right: `${-x}%`,
+							top: `${y}%`,
+						}}
 					/>
 					<div
 						className="absolute w-full h-full top-0 left-0 card-gradient"
