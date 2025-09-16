@@ -27,6 +27,7 @@
     "@tanstack/react-table": "^8.21.3",
     "@types/luxon": "^3.7.1",
     "@types/qrcode": "^1.5.5",
+    "@vercel/og": "^0.8.5",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

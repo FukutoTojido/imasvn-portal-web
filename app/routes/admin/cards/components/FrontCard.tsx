@@ -106,7 +106,7 @@ export default function FrontCard({
 						}}
 					></div>
 					<div
-						className="absolute bottom-[62px] left-[150px] text-[96px]/[96px] bg-gradient-to-r from-[#FF66B5] to-[#EFB240]"
+						className="absolute bottom-[62px] left-[150px] text-[96px]/[96px] bg-gradient-to-r from-[#FF66B5] to-[#EFB240] text-white"
 						style={{
 							fontVariationSettings: `
                             	"wdth" 150,

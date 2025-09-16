@@ -46,6 +46,77 @@ type FormType = {
 import { toast } from "sonner";
 import { Slider } from "~/components/ui/slider";
 
+export const meta = ({ data }: Route.MetaArgs) => {
+	if (!data)
+		return [
+			{
+				title: `Not found | THE iDOLM@STER Vietnam Portal`,
+			},
+			{
+				name: "description",
+				content: `Please check if your card ID is correct`,
+			},
+			{
+				property: "og:title",
+				content: `Not found | THE iDOLM@STER Vietnam Portal`,
+			},
+			{
+				property: "og:description",
+				content: `Please check if your card ID is correct`,
+			},
+			{ property: "og:url", content: "https://live.tryz.id.vn" },
+			{ name: "twitter:card", content: "summary_large_image" },
+			{
+				name: "twitter:title",
+				content: `Not found | THE iDOLM@STER Vietnam Portal`,
+			},
+			{
+				name: "twitter:description",
+				content: `Please check if your card ID is correct`,
+			},
+			{ property: "twitter:url", content: "https://live.tryz.id.vn" },
+			{ property: "twitter:domain", content: "live.tryz.id.vn" },
+		];
+
+	return [
+		{
+			title: `Producer ID: ${data.userData.name} | THE iDOLM@STER Vietnam Portal`,
+		},
+		{
+			name: "description",
+			content: `ID sharing for Producer ${data.userData.name}`,
+		},
+		{
+			property: "og:title",
+			content: `Producer ID: ${data.userData.name} | THE iDOLM@STER Vietnam Portal`,
+		},
+		{
+			property: "og:description",
+			content: `ID sharing for Producer ${data.userData.name}`,
+		},
+		{
+			property: "og:image",
+			content: `${import.meta.env.VITE_BASE_URL}/og/${data.cardData.id}`,
+		},
+		{ property: "og:url", content: "https://live.tryz.id.vn" },
+		{ name: "twitter:card", content: "summary_large_image" },
+		{
+			name: "twitter:title",
+			content: `Producer ID: ${data.userData.name} | THE iDOLM@STER Vietnam Portal`,
+		},
+		{
+			name: "twitter:description",
+			content: `ID sharing for Producer ${data.userData.name}`,
+		},
+		{
+			name: "twitter:image",
+			content: `${import.meta.env.VITE_BASE_URL}/og/${data.cardData.id}`,
+		},
+		{ property: "twitter:url", content: "https://live.tryz.id.vn" },
+		{ property: "twitter:domain", content: "live.tryz.id.vn" },
+	];
+};
+
 export const loader = async ({ params: { id } }: Route.LoaderArgs) => {
 	try {
 		const { data: cardData } = await axios.get(
@@ -67,7 +138,7 @@ export const loader = async ({ params: { id } }: Route.LoaderArgs) => {
 	}
 };
 
-const safeJSONParse = (str: string) => {
+export const safeJSONParse = (str: string) => {
 	if (!str) return null;
 
 	try {
@@ -215,11 +286,14 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 			}
 
 			if (formData.config) {
-				payload.append("config", JSON.stringify({
-				x: formData.config?.x?.toString() ?? "0",
-				y: formData.config?.y?.toString() ?? "0",
-				scale: formData.config?.scale?.toString() ?? "100" ,
-			}));
+				payload.append(
+					"config",
+					JSON.stringify({
+						x: formData.config?.x?.toString() ?? "0",
+						y: formData.config?.y?.toString() ?? "0",
+						scale: formData.config?.scale?.toString() ?? "100",
+					}),
+				);
 			}
 
 			await axios.patch(
@@ -327,14 +401,26 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 					<div className="flex flex-col gap-2.5">
 						<Label>Position X</Label>
 						<div className="flex gap-5">
-							<Slider {...register("config.x")} defaultValue={[config?.x ? +config?.x : 0]} max={100} min={-100} step={1} />
+							<Slider
+								{...register("config.x")}
+								defaultValue={[config?.x ? +config?.x : 0]}
+								max={100}
+								min={-100}
+								step={1}
+							/>
 							<span className="w-20 text-center">{x}%</span>
 						</div>
 					</div>
 					<div className="flex flex-col gap-2.5">
 						<Label>Position Y</Label>
 						<div className="flex gap-5">
-							<Slider {...register("config.y")} defaultValue={[config?.y ? +config?.y : 0]} max={100} min={-100} step={1} />
+							<Slider
+								{...register("config.y")}
+								defaultValue={[config?.y ? +config?.y : 0]}
+								max={100}
+								min={-100}
+								step={1}
+							/>
 							<span className="w-20 text-center">{y}%</span>
 						</div>
 					</div>
