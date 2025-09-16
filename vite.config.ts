@@ -15,6 +15,11 @@ export default defineConfig({
 		noExternal: ["react-easy-crop", "tslib"],
 	},
 	server: {
-		host: "0.0.0.0"
-	}
+		host: "0.0.0.0",
+	},
+	build: {
+		rollupOptions: {
+			external: ["@takumi-rs/core"],
+		},
+	},
 });

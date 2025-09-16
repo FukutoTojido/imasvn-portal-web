@@ -24,6 +24,9 @@
     "@react-router/node": "^7.2.0",
     "@react-router/serve": "^7.2.0",
     "@reduxjs/toolkit": "^2.5.1",
+    "@takumi-rs/core": "^0.31.4",
+    "@takumi-rs/helpers": "^0.31.4",
+    "@takumi-rs/image-response": "^0.31.4",
     "@tanstack/react-table": "^8.21.3",
     "@types/luxon": "^3.7.1",
     "@types/qrcode": "^1.5.5",
@@ -54,6 +57,7 @@
     "sonner": "^2.0.7",
     "swr": "^2.3.2",
     "tailwind-merge": "^3.3.1",
+    "tw-to-css": "^0.0.12",
     "universal-cookie": "^7.2.2",
     "vite-plugin-image-optimizer": "^2.0.2"
   },
