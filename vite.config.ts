@@ -21,5 +21,6 @@ export default defineConfig({
 		rollupOptions: {
 			external: ["@takumi-rs/core"],
 		},
+		target: "esnext"
 	},
 });
