@@ -46,7 +46,28 @@ type FormType = {
 import { toast } from "sonner";
 import { Slider } from "~/components/ui/slider";
 
-export const meta = ({ data }: Route.MetaArgs) => {
+export const loader = async ({ params: { id } }: Route.LoaderArgs) => {
+	try {
+		const { data: cardData } = await axios.get(
+			`${import.meta.env.VITE_BACKEND_API}/producer-id/_/cards/${id}`,
+		);
+		const { data: userData } = await axios.get(
+			`${import.meta.env.VITE_BACKEND_API}/producer-id/${cardData.pid}`,
+		);
+		const events = await getEvents();
+
+		return {
+			cardData,
+			userData,
+			events,
+		};
+	} catch (e) {
+		console.error(e);
+		return null;
+	}
+};
+
+export function meta({ data }: Route.MetaArgs) {
 	if (!data)
 		return [
 			{
@@ -115,28 +136,7 @@ export const meta = ({ data }: Route.MetaArgs) => {
 		{ property: "twitter:url", content: "https://live.tryz.id.vn" },
 		{ property: "twitter:domain", content: "live.tryz.id.vn" },
 	];
-};
-
-export const loader = async ({ params: { id } }: Route.LoaderArgs) => {
-	try {
-		const { data: cardData } = await axios.get(
-			`${import.meta.env.VITE_BACKEND_API}/producer-id/_/cards/${id}`,
-		);
-		const { data: userData } = await axios.get(
-			`${import.meta.env.VITE_BACKEND_API}/producer-id/${cardData.pid}`,
-		);
-		const events = await getEvents();
-
-		return {
-			cardData,
-			userData,
-			events,
-		};
-	} catch (e) {
-		console.error(e);
-		return null;
-	}
-};
+}
 
 export const safeJSONParse = (str: string) => {
 	if (!str) return null;
