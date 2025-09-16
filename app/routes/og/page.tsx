@@ -12,30 +12,6 @@ const baseNeueUrl = `${import.meta.env.VITE_BASE_URL}/fonts/BaseNeue-WideBlack.t
 const baseNeue2Url = `${import.meta.env.VITE_BASE_URL}/fonts/BaseNeue-SuperExpBold.ttf`;
 const baseNeueVUrl = `${import.meta.env.VITE_BASE_URL}/fonts/BaseNeue-Variable.ttf`;
 
-const [{ data: baseNeue }, { data: baseNeue2 }, { data: baseNeueV }] =
-	await Promise.all([
-		axios.get(baseNeueUrl, {
-			responseType: "arraybuffer",
-		}),
-		axios.get(baseNeue2Url, {
-			responseType: "arraybuffer",
-		}),
-		axios.get(baseNeueVUrl, {
-			responseType: "arraybuffer",
-		}),
-	]);
-
-const fonts = [
-	{
-		name: "Base Neue",
-		data: baseNeue,
-	},
-	{
-		name: "Base Neue 2",
-		data: baseNeue2,
-	},
-];
-
 export const loader = async ({ params: { id }, request }: Route.LoaderArgs) => {
 	const url = new URL(request.url);
 	const takumi = url.searchParams.get("takumi");
@@ -48,6 +24,30 @@ export const loader = async ({ params: { id }, request }: Route.LoaderArgs) => {
 		return new Response("NOT_FOUND", {
 			status: 404,
 		});
+
+	const [{ data: baseNeue }, { data: baseNeue2 }, { data: baseNeueV }] =
+		await Promise.all([
+			axios.get(baseNeueUrl, {
+				responseType: "arraybuffer",
+			}),
+			axios.get(baseNeue2Url, {
+				responseType: "arraybuffer",
+			}),
+			axios.get(baseNeueVUrl, {
+				responseType: "arraybuffer",
+			}),
+		]);
+
+	const fonts = [
+		{
+			name: "Base Neue",
+			data: baseNeue,
+		},
+		{
+			name: "Base Neue 2",
+			data: baseNeue2,
+		},
+	];
 
 	return takumi
 		? new TakumiImageResponse(
