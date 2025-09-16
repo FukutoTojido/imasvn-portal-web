@@ -47,7 +47,7 @@ export default function FrontCardTemplate({
 							tw="absolute min-h-full right-0 object-cover object-right-top"
 							style={{
 								display: "flex",
-								scale: `${config?.scale ?? 100}%`,
+								transform: `scale(${(config?.scale ?? 100) / 100})`,
 								right: `${-(config?.x ?? 0)}%`,
 								top: `${config?.y ?? 0}%`,
 							}}
