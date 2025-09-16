@@ -53,7 +53,7 @@ export default function FrontCard({
 						<img
 							src={(image ?? url ?? null) as string | undefined}
 							alt=""
-							className="absolute min-h-full w-full -right-10 object-cover object-right-top"
+							className="absolute min-h-full -right-10 object-cover object-right-top"
 							style={{
 								scale: `${scale ?? 100}%`,
 								right: `calc(${-x}% - 10px)`,
@@ -64,7 +64,7 @@ export default function FrontCard({
 					<img
 						src={(image ?? url ?? null) as string | undefined}
 						alt=""
-						className="absolute min-h-full w-full right-0 object-cover object-right-top"
+						className="absolute min-h-full right-0 object-cover object-right-top"
 						style={{
 							scale: `${scale ?? 100}%`,
 							right: `${-x}%`,
