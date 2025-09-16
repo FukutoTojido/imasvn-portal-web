@@ -51,6 +51,7 @@ export default function FrontCardTemplate({
 								right: `${-(config?.x ?? 0)}%`,
 								top: `${config?.y ?? 0}%`,
 							}}
+							height={382}
 						/>
 					) : (
 						""
