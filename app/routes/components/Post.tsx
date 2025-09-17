@@ -150,6 +150,9 @@ export default function Post({
 						height={40}
 						alt=""
 						className="rounded-full"
+						style={{
+							imageRendering: "auto"
+						}}
 					/>
 					<div className="flex flex-col">
 						<div className="font-bold text-subtext-1">{data.user.name}</div>

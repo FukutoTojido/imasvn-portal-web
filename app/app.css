@@ -5,6 +5,7 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Victor+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Mono:ital,wght@0,300..700;1,300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -288,8 +289,7 @@ body {
 	overflow: overlay;
 	overflow-x: hidden;
 
-	/* biome-ignore lint/a11y/useGenericFontNames: <explanation> */
-	font-family: "Nunito";
+	font-family: "Inter", sans-serif;
 }
 
 @layer utilities {
