@@ -27,6 +27,7 @@ export const getProducers = async () => {
 	try {
 		const { data } = await axios.get<Producer[]>(
 			`${import.meta.env.VITE_BACKEND_API}/producer-id`,
+			{ withCredentials: true },
 		);
 		return data;
 	} catch (e) {

@@ -1,4 +1,4 @@
-import { Calendar1, ChevronUp, IdCard, User } from "lucide-react";
+import { Calendar1, ChevronUp, IdCard, User, Video } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
@@ -29,12 +29,9 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 	const dispatch = useDispatch();
 	return (
 		<Sidebar
-			className="bg-mantle border-surface-1 text-text h-full"
+			className="border-surface-1 text-text h-full"
 			collapsible="icon"
 		>
-			<SidebarHeader>
-				<SidebarTrigger className="w-8 h-8 hover:bg-surface-1 hover:text-text" />
-			</SidebarHeader>
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarGroupLabel className="text-subtext-0">Menu</SidebarGroupLabel>
@@ -79,6 +76,24 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 									<Link to="/admin/users" prefetch="render">
 										<User />
 										Users
+									</Link>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+						</SidebarMenu>
+					</SidebarGroupContent>
+				</SidebarGroup>
+				<SidebarGroup>
+					<SidebarGroupLabel className="text-subtext-0">Live</SidebarGroupLabel>
+					<SidebarGroupContent>
+						<SidebarMenu>
+							<SidebarMenuItem>
+								<SidebarMenuButton
+									asChild
+									className="hover:bg-surface-1 hover:text-text"
+								>
+									<Link to="/admin/live/preview" prefetch="render">
+										<Video />
+										Preview
 									</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>

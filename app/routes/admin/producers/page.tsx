@@ -26,9 +26,9 @@ import {
 } from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import AddProducer from "./components/AddProducer";
-import TableComponent from "./components/Table";
-import type { Producer } from "./types";
+import AddProducer from "../components/AddProducer";
+import TableComponent from "../components/Table";
+import type { Producer } from "../types";
 
 const columns: ColumnDef<Producer>[] = [
 	{
@@ -147,7 +147,7 @@ export default function Page() {
 					table={table}
 					columns={columns}
 					onRowClick={(row) =>
-						navigate(`/admin/producer-id/${row.getValue("id")}`)
+						navigate(`/admin/producers/${row.getValue("id")}`)
 					}
 				/>
 				<div className="w-full flex items-center justify-end gap-2.5">
