@@ -129,7 +129,7 @@ export default function Post({
 
 	return (
 		<div
-			className="w-full p-5 bg-base border border-surface-1 md:rounded-md flex flex-col gap-5"
+			className="w-full p-5 bg-base md:border border-surface-1 md:rounded-md flex flex-col gap-5"
 			style={{
 				cursor: redirect ? "pointer" : "initial",
 			}}

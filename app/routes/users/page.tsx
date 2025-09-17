@@ -80,39 +80,43 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 						</div>
 					</div>
 				</div>
-				<span className="self-start pt-5 text-text font-bold">
-					Producer IDs
-				</span>
-				<div className="w-full grid grid-cols-3 gap-2.5">
-					{cards?.map((card: Card) => (
-						<Link
-							to={`${import.meta.env.VITE_BASE_URL}/producer-id/${card.id}`}
-							target="_blank"
-							key={card.id}
-							className="p-5 w-full flex flex-col gap-5 items-center text-text bg-base border border-surface-1 rounded-md hover:bg-surface-0 cursor-pointer"
-						>
-							<div className="w-full aspect-square relative">
-								<img
-									src={card.img}
-									alt=""
-									className="absolute w-[80%] aspect-square top-0 right-0 rounded-lg"
-								/>
-								<img
-									src={
-										producerData?.events.find(
-											(event: EventData) => event.id === (card.event ?? 0),
-										).img
-									}
-									alt=""
-									className="absolute w-[60%] aspect-square bottom-0 left-0 object-contain"
-								/>
-							</div>
-							<div className="flex flex-col items-center">
-								<span className="font-bold">{card.idolJapanese}</span>
-								<span className="text-xs text-center line-clamp-1">{card.title}</span>
-							</div>
-						</Link>
-					))}
+				<div className="w-full flex flex-col gap-2.5 md:p-0 p-2.5">
+					<span className="self-start md:pt-5 text-text font-bold">
+						Producer IDs
+					</span>
+					<div className="w-full grid grid-cols-3 gap-2.5">
+						{cards?.map((card: Card) => (
+							<Link
+								to={`${import.meta.env.VITE_BASE_URL}/producer-id/${card.id}`}
+								target="_blank"
+								key={card.id}
+								className="p-5 w-full flex flex-col gap-5 items-center text-text bg-base border border-surface-1 rounded-md hover:bg-surface-0 cursor-pointer"
+							>
+								<div className="w-full aspect-square relative">
+									<img
+										src={card.img}
+										alt=""
+										className="absolute w-[80%] aspect-square top-0 right-0 rounded-lg"
+									/>
+									<img
+										src={
+											producerData?.events.find(
+												(event: EventData) => event.id === (card.event ?? 0),
+											).img
+										}
+										alt=""
+										className="absolute w-[60%] aspect-square bottom-0 left-0 object-contain"
+									/>
+								</div>
+								<div className="flex flex-col items-center">
+									<span className="font-bold">{card.idolJapanese}</span>
+									<span className="text-xs text-center line-clamp-1">
+										{card.title}
+									</span>
+								</div>
+							</Link>
+						))}
+					</div>
 				</div>
 			</div>
 			<div className="md:w-[650px] max-w-full w-full flex-1 flex flex-col gap-5">

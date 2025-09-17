@@ -8,7 +8,10 @@ import Post from "./Post";
 export default function Feed({
 	url,
 	indexedParam = "offset",
-}: { url: string; indexedParam?: string }) {
+}: {
+	url: string;
+	indexedParam?: string;
+}) {
 	const swr = useSWRInfinite(
 		(index) =>
 			`${import.meta.env.VITE_BACKEND_API}${url}?${indexedParam}=${index + 1}`,
@@ -18,7 +21,11 @@ export default function Feed({
 		},
 	);
 
-	return (
+	return !swr.data?.[0].length ? (
+		<div className="w-full h-[600px] border border-dashed border-surface-1 flex flex-col items-center justify-center text-subtext-0 rounded-md italic">
+			"It's so empty here"
+		</div>
+	) : (
 		<InfiniteScroll
 			swr={swr}
 			isReachingEnd={(swr) =>
