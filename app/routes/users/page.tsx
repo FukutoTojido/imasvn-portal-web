@@ -1,22 +1,34 @@
 import axios, { type AxiosError } from "axios";
-import { LogOut } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import { logOut } from "~/slices/auth";
-import type store from "~/store";
-import { UserType } from "~/types";
-import Button from "../components/Button";
 import Feed from "../components/Feed";
 import NotFound from "../components/NotFound";
 import OpenImage from "../components/OpenImage";
 import type { Route } from "./+types/page";
+import type { Card } from "../admin/types";
+import type { EventData } from "../admin/components/UpdateEvent";
+import { Link } from "react-router";
 
 export async function loader({ params }: Route.LoaderArgs) {
 	try {
-		const userData = await axios.get(
+		const { data: userData } = await axios.get(
 			`${import.meta.env.VITE_BACKEND_API}/users/${params.id}`,
 		);
 
-		return userData.data;
+		if (!userData.pid) return { userData };
+
+		const [{ data: producerData }, { data: cards }] = await Promise.all([
+			axios.get(
+				`${import.meta.env.VITE_BACKEND_API}/producer-id/${userData.pid}`,
+			),
+			axios.get(
+				`${import.meta.env.VITE_BACKEND_API}/producer-id/${userData.pid}/cards`,
+			),
+		]);
+
+		return {
+			userData,
+			producerData,
+			cards,
+		};
 	} catch (e) {
 		console.error((e as AxiosError).toJSON());
 		return null;
@@ -24,13 +36,13 @@ export async function loader({ params }: Route.LoaderArgs) {
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {
-	const userData = loaderData;
+	if (!loaderData) return <NotFound />;
 
-	if (!userData) return <NotFound />;
+	const { userData, producerData, cards } = loaderData;
 
 	return (
-		<div className="w-full flex flex-col gap-5 items-center">
-			<div className="md:w-[650px] w-full flex flex-col items-center gap-2.5 top-0">
+		<div className="max-w-full w-max flex gap-2.5 self-center sticky flex-col lg:flex-row">
+			<div className="md:w-[550px] max-w-full w-full h-max flex flex-col items-center gap-2.5 lg:sticky top-[90px]">
 				<div className="flex flex-col items-end justify-center md:rounded-md overflow-hidden p-0 w-full relative h-[300px] border border-surface-1">
 					<div className="relative w-full flex-1 overflow-hidden bg-black/20">
 						{userData.banner === "" ? (
@@ -68,8 +80,42 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 						</div>
 					</div>
 				</div>
+				<span className="self-start pt-5 text-text font-bold">
+					Producer IDs
+				</span>
+				<div className="w-full grid grid-cols-3 gap-2.5">
+					{cards?.map((card: Card) => (
+						<Link
+							to={`${import.meta.env.VITE_BASE_URL}/producer-id/${card.id}`}
+							target="_blank"
+							key={card.id}
+							className="p-5 w-full flex flex-col gap-5 items-center text-text bg-base border border-surface-1 rounded-md hover:bg-surface-0 cursor-pointer"
+						>
+							<div className="w-full aspect-square relative">
+								<img
+									src={card.img}
+									alt=""
+									className="absolute w-[80%] aspect-square top-0 right-0 rounded-lg"
+								/>
+								<img
+									src={
+										producerData?.events.find(
+											(event: EventData) => event.id === (card.event ?? 0),
+										).img
+									}
+									alt=""
+									className="absolute w-[60%] aspect-square bottom-0 left-0 object-contain"
+								/>
+							</div>
+							<div className="flex flex-col items-center">
+								<span className="font-bold">{card.idolJapanese}</span>
+								<span className="text-xs text-center line-clamp-1">{card.title}</span>
+							</div>
+						</Link>
+					))}
+				</div>
 			</div>
-			<div className="md:w-[650px] w-full flex-1 flex flex-col gap-5">
+			<div className="md:w-[650px] max-w-full w-full flex-1 flex flex-col gap-5">
 				<div className="flex flex-col gap-2.5">
 					<Feed url={`/users/${userData.id}/posts`} />
 				</div>
