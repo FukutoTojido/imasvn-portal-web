@@ -21,7 +21,6 @@ import { UserType } from "~/types";
 import "./Chat.css";
 import Input from "./Input";
 import ChatContainer from "./ChatContainer";
-import EmotesContainer from "./EmotesContainer";
 
 function useEmotes() {
 	const [emotes, setEmotes] = useState<
@@ -70,7 +69,6 @@ export default function Chat({
 	const [messages, setMessages] = useState<(Message | JoinLeaveMessage)[]>([]);
 	const chatRef = useRef<HTMLSpanElement>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
-	const emoteRef = useRef<HTMLDivElement>(null);
 	const emotes = useEmotes();
 
 	const { sendJsonMessage } = useWebSocket(
@@ -127,16 +125,11 @@ export default function Chat({
 
 	return (
 		<div
-			className={`bg-[#363753] md:rounded-xl ${isFullscreen ? "md:!rounded-none" : ""} flex flex-col overflow-hidden h-full w-full relative`}
+			className={`bg-base md:rounded-md border border-surface-1 ${isFullscreen ? "md:!rounded-none" : ""} flex flex-col overflow-hidden h-full w-full relative`}
 		>
 			<ChatContainer
 				containerRef={containerRef as RefObject<HTMLDivElement>}
 				messages={messages}
-				emotes={emotes}
-			/>
-			<EmotesContainer
-				chatRef={chatRef as RefObject<HTMLSpanElement>}
-				emoteRef={emoteRef as RefObject<HTMLDivElement>}
 				emotes={emotes}
 			/>
 			<Input

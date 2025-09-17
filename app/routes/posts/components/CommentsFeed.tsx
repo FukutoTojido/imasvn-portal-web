@@ -22,7 +22,7 @@ function Feed({
 		},
 	);
 	return (
-		<div className="flex flex-col gap-2.5">
+		<div className="flex flex-col gap-5">
 			<CommentInput postData={postData} mutate={swr.mutate} />
 			<InfiniteScroll
 				swr={swr}

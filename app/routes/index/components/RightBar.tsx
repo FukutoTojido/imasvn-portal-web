@@ -14,11 +14,11 @@ export default function RightBar() {
 		<div className="max-w-[300px] w-full h-min flex flex-col gap-2.5 self-start sticky top-[90px]">
 			<button
 				type="button"
-				className="lg:relative fixed bottom-0 right-0 lg:m-0 m-4 lg:shadow-none shadow-[0_10px_10px_0_rgba(0,0,0,0.5)] flex gap-5 justify-center px-5 py-[15px] font-bold rounded-lg bg-primary-5 hover:bg-primary-4 text-primary-3"
+				className="lg:relative fixed bottom-0 right-0 lg:m-0 m-4 lg:shadow-none shadow-md flex gap-5 justify-center px-5 py-[15px] font-bold rounded-lg bg-text hover:bg-subtext-1 text-base items-center"
 				onClick={() => dispatch(show())}
 			>
-				<Pen />
-				New post
+				<Pen size={16} />
+				<span className="lg:block hidden">New post</span>
 			</button>
 		</div>
 	) : (

@@ -7,6 +7,7 @@ import type store from "~/store";
 import UserFlair from "~/routes/components/UserFlair";
 import type { SWRInfiniteKeyedMutator } from "swr/infinite";
 import axios from "axios";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 
 export default function Comment({
 	data,
@@ -16,7 +17,7 @@ export default function Comment({
 	revalidator?: SWRInfiniteKeyedMutator<CommentType[]>;
 }) {
 	const popupRef = useRef<HTMLDivElement>(null);
-	const buttonRef = useRef<HTMLDivElement>(null);
+	const buttonRef = useRef<HTMLButtonElement>(null);
 	const [showMenu, setShowMenu] = useState<boolean>(false);
 
 	const currentUser = useSelector(
@@ -60,38 +61,37 @@ export default function Comment({
 	if (currentUser.authType !== UserType.OK) return "";
 
 	return (
-		<div className="w-full bg-primary-2 rounded-lg p-2.5 flex flex-col gap-[5px]">
+		<div className="w-full bg-base border border-surface-1 rounded-lg p-2.5 flex flex-col gap-[5px]">
 			<div className="flex w-full justify-between items-center">
 				<UserFlair data={data.user} />
 				{currentUser.id === data.user.id ? (
-					<div className="relative" ref={buttonRef}>
-						<button
-							type="button"
-							className="text-primary-6 relative p-2 hover:bg-primary-2 rounded-lg"
-							onClick={toggleMenu}
-						>
-							<Ellipsis />
-						</button>
-						<div
-							className="absolute top-[100%] right-0 flex flex-col p-2 gap-2.5 bg-primary-2 rounded-xl mt-1 drop-shadow-md z-50"
-							style={{
-								display: showMenu ? "block" : "none",
-							}}
-							ref={popupRef}
-						>
-							<Button
-								icon={<Trash2 />}
-								name="Delete"
-								variant="danger_menu"
+					<Popover>
+						<PopoverTrigger asChild>
+							<button
+								type="button"
+								className="text-primary-6 relative p-2 hover:bg-primary-2 rounded-lg"
+								onClick={toggleMenu}
+								ref={buttonRef}
+							>
+								<Ellipsis />
+							</button>
+						</PopoverTrigger>
+						<PopoverContent align="end" className="bg-base p-0 w-max min-w-[150px] border border-surface-1 overflow-hidden">
+							<button
+								type="button"
+								className="w-full text-red relative p-4 hover:bg-surface-0 flex items-center gap-4"
 								onClick={() => deletePost()}
-							/>
-						</div>
-					</div>
+							>
+								<Trash2 size={16} />
+								Delete
+							</button>
+						</PopoverContent>
+					</Popover>
 				) : (
 					""
 				)}
 			</div>
-			<span className="p-[5px] text-white">{data.content}</span>
+			<span className="p-[5px] text-text">{data.content}</span>
 		</div>
 	);
 }

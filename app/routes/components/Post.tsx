@@ -11,6 +11,11 @@ import PostSkeleton from "./PostSkeleton";
 import type { SWRInfiniteKeyedMutator } from "swr/infinite";
 import axios from "axios";
 import Anchorize from "./Anchorize";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "~/components/ui/popover";
 
 const size = {
 	4: "20vw",
@@ -55,7 +60,7 @@ export default function Post({
 	const userRef = useRef<HTMLAnchorElement>(null);
 	const imageRef = useRef<HTMLDivElement>(null);
 	const popupRef = useRef<HTMLDivElement>(null);
-	const buttonRef = useRef<HTMLDivElement>(null);
+	const buttonRef = useRef<HTMLButtonElement>(null);
 
 	const handleClick = (event: MouseEvent) => {
 		if (
@@ -67,7 +72,7 @@ export default function Post({
 			popupRef.current?.contains(event.target as Node) ||
 			buttonRef.current?.contains(event.target as Node) ||
 			(event.target as HTMLElement).tagName === "BUTTON" ||
-			(event.target as HTMLElement).tagName === "A" 
+			(event.target as HTMLElement).tagName === "A"
 		)
 			return;
 
@@ -124,7 +129,7 @@ export default function Post({
 
 	return (
 		<div
-			className="w-full p-5 bg-primary-3 md:rounded-lg flex flex-col gap-5"
+			className="w-full p-5 bg-base border border-surface-1 md:rounded-md flex flex-col gap-5"
 			style={{
 				cursor: redirect ? "pointer" : "initial",
 			}}
@@ -137,7 +142,7 @@ export default function Post({
 				<Link
 					ref={userRef}
 					to={`/users/${data.user.id}`}
-					className="hover:underline underline-offset-2 flex items-center gap-2.5"
+					className="hover:underline underline-offset-2 flex items-center gap-2.5 text-subtext-1"
 				>
 					<img
 						src={data.user.avatar}
@@ -147,42 +152,43 @@ export default function Post({
 						className="rounded-full"
 					/>
 					<div className="flex flex-col">
-						<div className="font-bold">{data.user.name}</div>
-						<div className="text-sm text-primary-5">@{data.user.tag}</div>
+						<div className="font-bold text-subtext-1">{data.user.name}</div>
+						<div className="text-sm text-subtext-0">@{data.user.tag}</div>
 					</div>
 				</Link>
 				{currentUser.authType === UserType.OK &&
 				currentUser.id === data.user.id ? (
-					<div className="relative" ref={buttonRef}>
-						<button
-							type="button"
-							className="text-primary-6 relative p-2 hover:bg-primary-2 rounded-lg"
-							onClick={toggleMenu}
-						>
-							<Ellipsis />
-						</button>
-						<div
-							className="absolute top-[100%] right-0 flex flex-col p-2 gap-2.5 bg-primary-2 rounded-xl mt-1 drop-shadow-md z-50"
-							style={{
-								display: showMenu ? "block" : "none",
-							}}
-							ref={popupRef}
-						>
-							<Button
-								icon={<Trash2 />}
-								name="Delete"
-								variant="danger_menu"
+					<Popover>
+						<PopoverTrigger asChild>
+							<button
+								type="button"
+								className="text-primary-6 relative p-2 hover:bg-primary-2 rounded-lg"
+								onClick={toggleMenu}
+								ref={buttonRef}
+							>
+								<Ellipsis />
+							</button>
+						</PopoverTrigger>
+						<PopoverContent align="end" className="bg-base p-0 w-max min-w-[150px] border border-surface-1 overflow-hidden">
+							<button
+								type="button"
+								className="w-full text-red relative p-4 hover:bg-surface-0 flex items-center gap-4"
 								onClick={() => deletePost()}
-							/>
-						</div>
-					</div>
+							>
+								<Trash2 size={16} />
+								Delete
+							</button>
+						</PopoverContent>
+					</Popover>
 				) : (
 					""
 				)}
 			</div>
 
 			{/* <div className="w-full">{<Anchorize input={data.content} />}</div> */}
-			<div className="w-full"><Anchorize input={data.content} /></div>
+			<div className="w-full text-text">
+				<Anchorize input={data.content} />
+			</div>
 			<div
 				className={`relative w-full gap-1 rounded-xl overflow-hidden ${data.images?.length === 0 ? "hidden" : ""} max-h-[700px] ${data.images?.length === 1 ? "flex" : "h-96 grid grid-cols-2 grid-rows-2"}`}
 				ref={imageRef}
@@ -191,7 +197,7 @@ export default function Post({
 					return (
 						<div
 							key={image.url}
-							className={`relative bg-primary-1 ${(arr.length < 4 && idx === 0) || (arr.length < 3) ? "row-span-2" : ""} ${arr.length === 1 ? "flex flex-1" : ""} overflow-hidden`}
+							className={`relative bg-mantle ${(arr.length < 4 && idx === 0) || (arr.length < 3) ? "row-span-2" : ""} ${arr.length === 1 ? "flex flex-1" : ""} overflow-hidden`}
 						>
 							<OpenImage imageSet={data.images ?? []} atIndex={idx}>
 								<img
@@ -208,10 +214,10 @@ export default function Post({
 				})}
 			</div>
 			<div className="w-full flex items-center justify-between">
-				<div className="text-primary-5 text-sm">
+				<div className="text-subtext-0 text-sm">
 					Posted at {parseTime(data.time)}
 				</div>
-				<div className="flex gap-2.5 items-center text-primary-5">
+				<div className="flex gap-2.5 items-center text-subtext-0">
 					<MessageCircle />
 					{data.commentsCount}
 				</div>

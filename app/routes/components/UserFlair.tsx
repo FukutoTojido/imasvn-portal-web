@@ -28,7 +28,7 @@ export default function UserFlair({
 	return (
 		<Link to={`/users/${data.id}`} className={`w-max userFlair ${className}`}>
 			<div
-				className={`bg-primary-2 hover:bg-primary-3 flex items-center ${!showName ? "rounded-full p-1 hover:outline-2 outline-primary-5" : "rounded-md p-2"}`}
+				className={`bg-transparent hover:bg-surface-1 flex items-center ${!showName ? "rounded-full p-1 hover:outline-2 outline-primary-5" : "rounded-md p-2"}`}
 			>
 				<img
 					src={data.avatar}
@@ -39,8 +39,8 @@ export default function UserFlair({
 				/>
 				{showName && (
 					<div className="flex flex-col justify-center px-2.5">
-						<div className="text-sm font-bold text-white">{data.name}</div>
-						<div className="text-xs text-primary-6">@{data.tag}</div>
+						<div className="text-sm font-bold text-text">{data.name}</div>
+						<div className="text-xs text-subtext-1">@{data.tag}</div>
 					</div>
 				)}
 			</div>

@@ -14,9 +14,9 @@ import Anchorize from "~/routes/components/Anchorize";
 import { renderToString } from "react-dom/server";
 import type { SendJsonMessage } from "react-use-websocket/dist/lib/types";
 import type store from "~/store";
-import ContentEditable, {
-	type ContentEditableEvent,
-} from "~/lib/react-contenteditable";
+import ContentEditable from "~/lib/react-contenteditable";
+import { Popover, PopoverTrigger, PopoverContent } from "~/components/ui/popover";
+import EmotesContainer from "./EmotesContainer";
 
 function isCaretEnd(editableDiv: HTMLElement) {
 	const selection = window.getSelection();
@@ -96,14 +96,7 @@ const Input = ({
 		};
 	}, [sendMessage]);
 
-	// // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-	// useEffect(() => {
-	// 	if (!chatRef.current) return;
-	// 	// console.log(chatRef.current.children, "\n", chatRef.current.innerText);
-	// 	console.log(getCaretPosition(chatRef.current));
-	// }, [html]);
-
-	const handleInput = (event: ContentEditableEvent) => {
+	const handleInput = () => {
 		if (!chatRef.current) return;
 		const chatContent = chatRef.current.textContent ?? "";
 
@@ -140,7 +133,7 @@ const Input = ({
 
 	if (userData.authType === UserType.OK && userData.isJoinedServer)
 		return (
-			<div className="flex w-full gap-5 items-center p-5 chatBox">
+			<div className="flex w-full gap-5 items-center p-5 chatBox border-t border-surface-1">
 				<ContentEditable
 					tagName="span"
 					html={html}
@@ -150,20 +143,34 @@ const Input = ({
 					onKeyDown={handleBackspace}
 					innerRef={chatRef as RefObject<HTMLSpanElement>}
 					contentEditable="plaintext-only"
-					className="flex-1 text-base focus:outline-none chatInput break-words overflow-hidden"
+					className="flex-1 text-text focus:outline-none chatInput break-words overflow-hidden"
 				/>
 
 				<div className="h-full border-r-2 border-[#56587d]" />
-				<button type="button" popoverTarget="emote-container">
-					<Smile />
-				</button>
+				<Popover>
+					<PopoverTrigger asChild>
+						<button type="button" popoverTarget="emote-container">
+							<Smile className="text-text" />
+						</button>
+					</PopoverTrigger>
+					<PopoverContent className="bg-mantle border border-surface-1 mb-2" align="end">
+						<EmotesContainer
+							chatRef={chatRef as RefObject<HTMLSpanElement>}
+							emotes={emotes}
+						/>
+					</PopoverContent>
+				</Popover>
 				<button type="button" onClick={() => sendMessage()}>
-					<SendHorizontal />
+					<SendHorizontal className="text-text" />
 				</button>
 			</div>
 		);
 
-	return <div className="flex w-full gap-5 items-center p-5 chatBox text-primary-45">You must be a member of THE iDOLM@STER Vietnam Discord Server to chat</div>;
+	return (
+		<div className="flex w-full gap-5 items-center p-5 chatBox text-text">
+			You must be a member of THE iDOLM@STER Vietnam Discord Server to chat
+		</div>
+	);
 };
 
 export default memo(Input);

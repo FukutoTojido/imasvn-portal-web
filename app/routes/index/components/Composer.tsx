@@ -105,7 +105,7 @@ export default function Composer() {
 			<form
 				action=""
 				onSubmit={handleSubmit}
-				className="md:w-[600px] w-full bg-primary-3 rounded-xl p-5 gap-2.5 flex drop-shadow-lg"
+				className="md:w-[600px] w-full bg-base border border-surface-1 rounded-lg p-5 gap-2.5 flex drop-shadow-lg"
 			>
 				<UserFlair
 					showName={false}
@@ -127,9 +127,10 @@ export default function Composer() {
 						hasIcon={false}
 						placeholder="What's on your mind?"
 						allowLineBreak={true}
-						variant="post"
+						variant="custom"
 						name="post-content"
 						id="post-content"
+						className="p-2.5 flex flex-1 items-center text-text "
 					/>
 					<div className="w-full overflow-auto">
 						{images.length === 0 ? (
@@ -176,8 +177,8 @@ export default function Composer() {
 						/>
 						<Button
 							name="Post"
-							variant="highlighted"
-							className="ml-auto w-max items-center gap-2.5"
+							variant="custom"
+							className="ml-auto w-max items-center gap-2.5 bg-surface-0 border border-surface-1 p-5 flex text-text rounded-lg py-2.5 cursor-pointer"
 							type="submit"
 							icon={
 								isLoading ? (
@@ -193,7 +194,7 @@ export default function Composer() {
 										</svg>
 									</div>
 								) : (
-									<Pen size={20} strokeWidth={3} />
+									<Pen size={16} strokeWidth={2} />
 								)
 							}
 						/>

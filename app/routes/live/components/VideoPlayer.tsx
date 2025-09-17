@@ -10,20 +10,21 @@ import {
 	VolumeX,
 } from "lucide-react";
 import {
+	type ChangeEvent,
+	type Dispatch,
+	type PointerEvent,
+	type RefObject,
+	type SetStateAction,
+	type TouchEvent,
 	useEffect,
 	useRef,
 	useState,
-	type Dispatch,
-	type RefObject,
-	type SetStateAction,
-	type PointerEvent,
-	type TouchEvent,
-	type ChangeEvent,
 } from "react";
-import { UserType, type UserState } from "~/types";
+import MediaMTXWebRTCReader from "~/lib/reader";
+import { type UserState, UserType } from "~/types";
 import type { Viewer } from "../types";
-import { SrsRtcWhipWhepAsync } from "~/lib/SRS";
 import ErrorComponent from "./Error";
+
 enum State {
 	HOVER = 0,
 	IDLE = 1,
@@ -144,16 +145,15 @@ export default function VideoPlayer({
 
 		pageRef.current?.requestFullscreen();
 		setIsFullscreen(true);
-		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		// biome-ignore lint/suspicious/noExplicitAny: I cant
 		(screen.orientation as any).lock("landscape");
 	};
 
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	const [sdk, setSdk] = useState<any>();
+	const [reader, setReader] = useState<MediaMTXWebRTCReader | null>(null);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Shhhhh
 	useEffect(() => {
-		sdk?.close();
+		reader?.close();
 
 		if (
 			!ref.current ||
@@ -167,30 +167,25 @@ export default function VideoPlayer({
 		const initPlayer = async () => {
 			if (!ref.current) return;
 
-			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-			const player: any = SrsRtcWhipWhepAsync();
-			ref.current.srcObject = player.stream;
+			const r = new MediaMTXWebRTCReader({
+				url: videoUrl,
+				onError: (err) => {
+					console.error(err);
+				},
+				onTrack: (evt) => {
+					if (!ref.current) return;
+					ref.current.srcObject = evt.streams[0];
+				},
+			});
 
-			setSdk(player);
-
-			try {
-				await player.play(
-					videoUrl,
-					{},
-					userData.authType !== UserType.OK ? "" : userData.id,
-				);
-			} catch (e) {
-				player?.close();
-				console.error(e);
-			}
+			setReader(r);
 		};
 
 		initPlayer();
 
 		return () => {
-			sdk?.close();
+			reader?.close();
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [userData?.authType]);
 
 	if (userData.authType === UserType.LOADING) {
@@ -222,6 +217,7 @@ export default function VideoPlayer({
 				className="md:flex-1 md:rounded-xl bg-black h-full w-full"
 				onPlay={() => setIsPlaying(true)}
 			/>
+			{/** biome-ignore lint/a11y/noStaticElementInteractions: Video Player duh */}
 			<div
 				className={"absolute top-0 left-0 w-full h-full focus:outline-none"}
 				ref={controlsRef}

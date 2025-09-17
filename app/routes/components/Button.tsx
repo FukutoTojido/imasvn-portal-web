@@ -10,7 +10,7 @@ export default function Button({ ...props }) {
 			"w-full flex gap-5 text-primary-6 font-semibold rounded-lg bg-primary-3 hover:bg-primary-2 px-5 py-2.5 cursor-pointer",
 		menu: "w-full flex gap-5 text-primary-6 font-semibold rounded-lg bg-primary-2 hover:bg-primary-3 px-5 py-2.5 cursor-pointer",
 		outlined:
-			"w-full flex gap-5 text-primary-6 font-semibold rounded-lg border-2 border-primary-5 hover:bg-primary-3 px-5 py-2.5 cursor-pointer",
+			"w-full flex gap-5 text-text font-semibold rounded-lg border-1 border-overlay-0 hover:bg-base px-5 py-2.5 cursor-pointer",
 		highlighted:
 			"w-full flex gap-5 text-primary-1 font-semibold rounded-lg bg-primary-5 hover:bg-primary-4.5 px-5 py-2.5 cursor-pointer",
 		disabled:
@@ -19,6 +19,7 @@ export default function Button({ ...props }) {
 			"w-full flex gap-5 text-red font-semibold rounded-lg bg-primary-3 hover:bg-primary-2 px-5 py-2.5 hover:bg-red hover:text-primary-1 cursor-pointer",
 		danger_menu:
 			"w-full flex gap-5 text-red font-semibold rounded-lg bg-primary-2 hover:bg-primary-2 px-5 py-2.5 hover:bg-red hover:text-primary-1 cursor-pointer",
+		custom: "",
 	};
 
 	return (

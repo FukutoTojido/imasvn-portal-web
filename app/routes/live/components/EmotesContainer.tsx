@@ -1,4 +1,4 @@
-import {  memo, type RefObject } from "react";
+import { memo, type RefObject } from "react";
 import { renderToString } from "react-dom/server";
 import Anchorize from "~/routes/components/Anchorize";
 
@@ -42,11 +42,9 @@ const setPosition = (contentEle: HTMLElement, targetPosition: number) => {
 };
 
 const EmotesContainer = ({
-	emoteRef,
 	emotes,
 	chatRef,
 }: {
-	emoteRef: RefObject<HTMLDivElement>;
 	emotes: {
 		id: string;
 		name: string;
@@ -54,45 +52,36 @@ const EmotesContainer = ({
 	chatRef: RefObject<HTMLSpanElement>;
 }) => {
 	return (
-		<div
-			className="absolute emoteContainer w-[400px]"
-			id="emote-container"
-			// @ts-ignore
-			popover="auto"
-			ref={emoteRef}
-		>
-			<div className="bg-primary-3 rounded-md p-5 w-full grid grid-cols-9 h-80 overflow-auto gap-2 shadow-xl">
-				{emotes.map((emote) => (
-					<button
-						type="button"
-						key={emote.id}
-						onClick={() => {
-							if (!chatRef.current) return;
-							chatRef.current.innerHTML += renderToString(
-								<Anchorize
-									input={`:${emote.name}: `}
-									emoteList={emotes}
-									decorate={true}
-								/>,
-							);
-							emoteRef.current?.hidePopover();
-							chatRef.current.focus();
-							setPosition(
-								chatRef.current,
-								chatRef.current.textContent?.length ?? 0,
-							);
-						}}
-					>
-						<img
-							src={`${import.meta.env.VITE_BACKEND_API}/emojis/${emote.name}`}
-							width={40}
-							height={40}
-							className="object-contain w-full h-full aspect-square rounded-sm bg-black/20 select-none"
-							alt={emote.name}
-						/>
-					</button>
-				))}
-			</div>
+		<div className="w-full grid grid-cols-5 h-80 overflow-auto gap-2 shadow-xl pr-2">
+			{emotes.map((emote) => (
+				<button
+					type="button"
+					key={emote.id}
+					onClick={() => {
+						if (!chatRef.current) return;
+						chatRef.current.innerHTML += renderToString(
+							<Anchorize
+								input={`:${emote.name}: `}
+								emoteList={emotes}
+								decorate={true}
+							/>,
+						);
+						chatRef.current.focus();
+						setPosition(
+							chatRef.current,
+							chatRef.current.textContent?.length ?? 0,
+						);
+					}}
+				>
+					<img
+						src={`${import.meta.env.VITE_BACKEND_API}/emojis/${emote.name}`}
+						width={40}
+						height={40}
+						className="object-contain w-10 h-10 aspect-square rounded-sm bg-black/20 select-none"
+						alt={emote.name}
+					/>
+				</button>
+			))}
 		</div>
 	);
 };

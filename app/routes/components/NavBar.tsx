@@ -13,7 +13,7 @@ export default function NavBar() {
 		{
 			alias: ["/", "/blog", "/compose", "/posts"],
 			href: "/",
-			name: "Blog Space",
+			name: "Feeds",
 			icon: <AtSign size={16} />,
 		},
 		{
@@ -51,7 +51,7 @@ export default function NavBar() {
 	const pathname = `/${useLocation().pathname.split("/").at(1)}`;
 
 	return (
-		<div className="sticky top-0 self-start w-full h-[80px] flex gap-5 md:items-center overflow-hidden md:overflow-visible p-2.5 md:px-5 md:flex-row flex-col bg-primary-3 border-b-primary-4 border-b-2 z-50">
+		<div className="sticky top-0 self-start w-full h-[80px] flex gap-5 md:items-center overflow-hidden md:overflow-visible p-2.5 md:px-5 md:flex-row flex-col bg-base border-b-surface-1 border-b-1 z-50">
 			<img
 				src="/imasvn.png"
 				alt="THE iDOLM@STER Vietnam Logo"
@@ -66,8 +66,8 @@ export default function NavBar() {
 				{routes.map(({ alias, href, name, icon }) => (
 					<Link to={href} key={href}>
 						<div
-							className={`relative h-full p-4 flex gap-5 items-center rounded-xl bg-primary-3 opacity-50 hover:opacity-100 transition nav text-primary-6 ${
-								alias.includes(pathname) ? "navHighlighted" : ""
+							className={`relative h-full p-4 flex gap-5 items-center rounded-md hover:bg-mantle opacity-50 hover:opacity-100 transition nav text-text ${
+								alias.includes(pathname) ? "bg-surface-0 opacity-100 border border-surface-1 navHighlighted" : "bg-transparent"
 							}`}
 						>
 							{icon}

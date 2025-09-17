@@ -11,6 +11,7 @@ const styles: {
 	post: "p-2.5 flex flex-1 items-center text-primary-6 bg-primary-3 rounded-lg",
 	characters:
 		"p-2.5 px-5 flex flex-1 items-center text-alt-accent bg-white rounded-full focus-within:outline-2 outline-alt-accent text-sm overflow-hidden shadow-md focus-within:transition-shadow",
+	custom: ""
 };
 
 export default function Input({

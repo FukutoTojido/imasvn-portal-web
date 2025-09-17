@@ -276,7 +276,7 @@
 
 body {
 	color: white;
-	background: #25263a;
+	background: var(--color-mantle);
 
 	display: flex;
 	flex-direction: column;
@@ -305,19 +305,6 @@ button {
 .nav {
 	font-size: 0.8em;
 	font-weight: bold;
-}
-
-.nav:hover {
-	background-color: #2b2c43;
-}
-
-.navHighlighted {
-	opacity: 100%;
-	background-color: #56587d;
-}
-
-.navHighlighted:hover {
-	background-color: #2b2c43;
 }
 
 .nav:not(.navHighlighted) span {

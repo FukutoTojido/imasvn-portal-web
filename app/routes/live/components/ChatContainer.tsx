@@ -16,7 +16,7 @@ const ChatContainer = ({
 }) => {
 	return (
 		<div
-			className="flex-1 w-full p-5 bg-[#2B2C43] flex flex-col gap-5 overflow-auto overflow-x-hidden"
+			className="flex-1 w-full p-5 bg-base flex flex-col gap-5 overflow-auto overflow-x-hidden"
 			ref={containerRef}
 		>
 			{messages.map((message, idx) => {
@@ -25,7 +25,7 @@ const ChatContainer = ({
 					return (
 						<div
 							key={`${mes.username}${idx}`}
-							className="flex gap-2.5 items-start text-white w-full break-words"
+							className="flex gap-2.5 items-start text-subtext-0 w-full break-words"
 						>
 							<img
 								src={mes.avatar}
@@ -37,7 +37,7 @@ const ChatContainer = ({
 							<div className="flex-1 flex items-center min-h-[30px] break-words overflow-hidden">
 								<div className="w-full break-words overflow-hidden text-sm">
 									<span className="font-bold pr-2.5">{mes.global_name}</span>
-									<span className="align-middle break-words">
+									<span className="align-middle break-words text-text">
 										{<Anchorize input={mes.content} emoteList={emotes} />}
 									</span>
 								</div>

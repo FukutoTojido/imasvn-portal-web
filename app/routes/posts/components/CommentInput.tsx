@@ -16,7 +16,10 @@ import { SendHorizontal } from "lucide-react";
 export default function CommentInput({
 	postData,
 	mutate,
-}: { postData: PostData; mutate: SWRInfiniteKeyedMutator<Comment[]> }) {
+}: {
+	postData: PostData;
+	mutate: SWRInfiniteKeyedMutator<Comment[]>;
+}) {
 	const formRef = useRef<HTMLFormElement>(null);
 	const userData = useSelector(
 		(state: ReturnType<typeof store.getState>) => state.auth.user,
@@ -79,26 +82,29 @@ export default function CommentInput({
 		<form
 			action=""
 			onSubmit={handleComment}
-			className="w-full bg-primary-2 flex gap-2.5 p-2.5 rounded-lg items-center"
+			className="w-full flex gap-2.5 items-start"
 			ref={formRef}
 		>
-			<UserFlair data={flairData} showName={false} />
+			<div className="h-[41px] flex items-center">
+				<UserFlair data={flairData} showName={false} />
+			</div>
 			<Input
 				placeholder="Comment"
 				hasIcon={false}
-				variant="midRounded"
+				variant="custom"
 				allowShiftBreak={true}
 				name="comment-content"
 				id="comment-content"
 				onEnter={handleEnter}
+				className="p-2.5 flex flex-1 items-center text-text focus-within:border-overlay-0 border-b border-surface-1 text-sm"
 			/>
-			<button className="text-primary-6" type="submit">
+			<button className="text-text h-[41px]" type="submit">
 				<SendHorizontal />
 			</button>
 		</form>
 	) : (
-		<div className="w-full bg-primary-2 gap-2.5 p-2.5 rounded-lg text-center text-primary-45">
-			You must be in THE iDOLM@STER Vietnam Discord Server to interact
+		<div className="w-full gap-2.5 p-2.5 rounded-lg text-center text-text">
+			You must be a member of THE iDOLM@STER Vietnam Discord Server to interact
 		</div>
 	);
 }
