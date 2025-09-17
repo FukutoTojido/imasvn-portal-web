@@ -95,7 +95,8 @@ export default function Chat({
 			},
 			onClose: () => {
 				console.log(`${new Date().toISOString()} - WebSocket disconnected!`);
-			}
+			},
+			reconnectInterval: 5000
 		},
 	);
 
