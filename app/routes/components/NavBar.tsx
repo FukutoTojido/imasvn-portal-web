@@ -64,7 +64,7 @@ export default function NavBar() {
 			/>
 			<div className="flex-1 flex items-center gap-2.5">
 				{routes.map(({ alias, href, name, icon }) => (
-					<Link to={href} key={href}>
+					<Link to={href} key={href} viewTransition>
 						<div
 							className={`relative h-full p-4 flex gap-5 items-center rounded-md hover:bg-mantle opacity-50 hover:opacity-100 transition nav text-text ${
 								alias.includes(pathname) ? "bg-surface-0 opacity-100 border border-surface-1 navHighlighted" : "bg-transparent"

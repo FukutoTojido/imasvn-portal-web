@@ -142,12 +142,12 @@ export default function Calendar({
 
 		const chars = birthdays.filter((char) => {
 			return (
-				char.Birthday?.month === date.getMonth() + 1 &&
-				char.Birthday?.day === date.getDate()
+				char.birthmonth === date.getMonth() + 1 &&
+				char.birthdate === date.getDate()
 			);
 		});
 
-		if (chars.length === 0 || chars[0].Birthday?.month !== month + 1) return;
+		if (chars.length === 0 || chars[0].birthmonth !== month + 1) return;
 
 		setIdols?.(chars);
 		setCurrDate(date);
@@ -246,8 +246,8 @@ export default function Calendar({
 								setIdols?.(
 									birthdays.filter((char) => {
 										return (
-											char.Birthday?.month === day.date.getMonth() + 1 &&
-											char.Birthday?.day === day.date.getDate()
+											char.birthmonth === day.date.getMonth() + 1 &&
+											char.birthdate === day.date.getDate()
 										);
 									}),
 								);
@@ -262,17 +262,17 @@ export default function Calendar({
 								{birthdays
 									.filter((char) => {
 										return (
-											char.Birthday?.month === day.date.getMonth() + 1 &&
-											char.Birthday?.day === day.date.getDate()
+											char.birthmonth === day.date.getMonth() + 1 &&
+											char.birthdate === day.date.getDate()
 										);
 									})
 									.map((idol) => (
 										<div
 											className="rounded-full h-2.5 w-2.5"
 											style={{
-												backgroundColor: idol["Image Color"] ?? "#DBDCFF",
+												backgroundColor: idol.imageColor ?? "#DBDCFF",
 											}}
-											key={idol.Index}
+											key={idol.id}
 										/>
 									))}
 							</div>

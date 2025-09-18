@@ -2,11 +2,9 @@ import axios, { type AxiosError, CanceledError } from "axios";
 import { Outlet } from "react-router";
 import Store from "~/routes/components/Store";
 import type { Route } from "./+types/layout";
-import { setCookies } from "./auth";
 import Auth from "./components/Auth";
 
-// biome-ignore lint/correctness/noEmptyPattern: <explanation>
-export function meta({}: Route.MetaArgs) {
+export function meta() {
 	return [
 		{ title: "Portal | THE iDOLM@STER Vietnam Portal" },
 		{ name: "description", content: "Welcome to THE iDOLM@STER Vietnam" },
@@ -40,14 +38,15 @@ export function meta({}: Route.MetaArgs) {
 
 export async function clientLoader() {
 	try {
+		await axios.post(`${import.meta.env.VITE_BACKEND_API}/auth/refresh`, null, {
+			withCredentials: true,
+		});
+
 		const result = (
 			await axios.get(`${import.meta.env.VITE_BACKEND_API}/auth/@me`, {
 				withCredentials: true,
 			})
 		).data;
-
-		const { tokens } = result;
-		setCookies(tokens);
 
 		return result;
 	} catch (e) {

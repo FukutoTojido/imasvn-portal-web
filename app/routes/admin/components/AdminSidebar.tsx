@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Calendar1, ChevronUp, IdCard, User, Video } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router";
@@ -15,12 +16,10 @@ import {
 	SidebarGroup,
 	SidebarGroupContent,
 	SidebarGroupLabel,
-	SidebarHeader,
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 	SidebarRail,
-	SidebarTrigger,
 } from "~/components/ui/sidebar";
 import { logOut } from "~/slices/auth";
 import { type UserState, UserType } from "~/types";
@@ -28,10 +27,7 @@ import { type UserState, UserType } from "~/types";
 export default function AdminSidebar({ me }: { me: UserState }) {
 	const dispatch = useDispatch();
 	return (
-		<Sidebar
-			className="border-surface-1 text-text h-full"
-			collapsible="icon"
-		>
+		<Sidebar className="border-surface-1 text-text h-full" collapsible="icon">
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarGroupLabel className="text-subtext-0">Menu</SidebarGroupLabel>
@@ -137,7 +133,14 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 							>
 								<DropdownMenuItem asChild>
 									<SidebarMenuButton
-										onClick={() => dispatch(logOut())}
+										onClick={async () => {
+											await axios.post(
+												`${import.meta.env.VITE_BACKEND_API}/auth/logOut`,
+												null,
+												{ withCredentials: true },
+											);
+											dispatch(logOut());
+										}}
 										className="text-red"
 									>
 										Log Out

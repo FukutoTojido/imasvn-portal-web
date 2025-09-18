@@ -76,7 +76,7 @@ export default function Post({
 		)
 			return;
 
-		navigate(`/posts/${data.id}`);
+		navigate(`/posts/${data.id}`, { viewTransition: true });
 	};
 
 	const handlePopup = (event: MouseEvent) => {

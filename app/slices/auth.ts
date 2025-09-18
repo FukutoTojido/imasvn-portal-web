@@ -23,11 +23,6 @@ export const authSlice = createSlice({
 			state.user = action.payload;
 		},
 		logOut: (state) => {
-			const cookie = new Cookies(null);
-
-			cookie.remove("access_token", { path: "/" });
-			cookie.remove("refresh_token", { path: "/" });
-
 			state.user.authType = UserType.NULL;
 		},
 	},

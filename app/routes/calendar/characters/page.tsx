@@ -1,16 +1,14 @@
-import { useState } from "react";
-import useIdolPopup from "../hooks/useIdolPopup";
-import type { Route } from "./+types/page";
-import useSWRInfinite from "swr/infinite";
 import axios from "axios";
-import InfiniteScroll from "~/lib/react-swr-infinite-scroll";
+import { useMemo, useState } from "react";
+import useSWR from "swr";
+import Input from "~/routes/components/Input";
 import Dialog from "../components/Dialog";
 import Idol from "../components/Idol";
-import Input from "~/routes/components/Input";
+import useIdolPopup from "../hooks/useIdolPopup";
 import type { CharacterData } from "../types";
+import Fuse from "fuse.js";
 
-// biome-ignore lint/correctness/noEmptyPattern: <explanation>
-export function meta({}: Route.MetaArgs) {
+export function meta() {
 	return [
 		{ title: "Characters | THE iDOLM@STER Vietnam Portal" },
 		{ name: "description", content: "THE iDOLM@STER Characters Lookup" },
@@ -42,10 +40,10 @@ export function meta({}: Route.MetaArgs) {
 	];
 }
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+// biome-ignore lint/suspicious/noExplicitAny: hehe
 const debounce = (fn: (...agrs: any) => void, timeout = 300) => {
 	let timer: string | number | NodeJS.Timeout | undefined;
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	// biome-ignore lint/suspicious/noExplicitAny: he
 	return (...agrs: any) => {
 		clearTimeout(timer);
 		timer = setTimeout(() => {
@@ -63,56 +61,58 @@ export default function Page() {
 		cardRefList,
 		popupRefList,
 	} = useIdolPopup();
+
+	const { data } = useSWR("characters", async () => {
+		const res = await axios.get(
+			`${import.meta.env.VITE_BACKEND_API}/characters`,
+		);
+		return res.data;
+	});
+
+	const fuse = useMemo(() => {
+		if (!data) return null;
+		return new Fuse<CharacterData>(data, {
+			keys: ["name", "japaneseName", "VA", "japaneseVA"],
+		});
+	}, [data]);
+
 	const [query, setQuery] = useState("");
 
-	const swr = useSWRInfinite(
-		(index) =>
-			`${import.meta.env.VITE_BACKEND_API}/characters?offset=${index + 1}&query=${query}`,
-		async (key) => {
-			const res = await axios.get(key);
-			return res.data;
-		},
-	);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: No need
+	const result: CharacterData[] = useMemo(() => {
+		if (!fuse) return [];
+		if (!query.trim()) return data;
+		return fuse.search(query).map(({ item }) => item);
+	}, [fuse, query]);
 
 	return (
 		<div className="max-w-[1024px] w-full h-full flex flex-col p-5 gap-5 mx-auto overflow-auto">
-			<div className="font-bold text-xl text-primary-6">THE iDOLM@STER Characters List</div>
+			<div className="font-bold text-xl text-primary-6">
+				THE iDOLM@STER Characters List
+			</div>
 			<div className="w-full flex items-center justify-between gap-5 flex-wrap md:flex-row flex-col">
 				<div className="md:w-auto w-full flex-1">
 					<Input
-						variant="normal"
+						variant="custom"
 						placeholder="Search Characters..."
 						onInput={debounce((inputObject: HTMLTextAreaElement) => {
 							setQuery(inputObject.value);
 						})}
+						className="flex flex-1 p-3 bg-base border border-surface-1 rounded-md text-text"
 					/>
 				</div>
 			</div>
 			<div className="w-full grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-2.5">
-				<InfiniteScroll
-					swr={swr}
-					isReachingEnd={(swr) =>
-						swr.data?.[0]?.length === 0 ||
-						swr.data?.[swr.data?.length - 1]?.length < 13
-					}
-					loadingIndicator={<Idol />}
-					endingIndicator={<div className="hidden" />}
-				>
-					{(charsData: CharacterData[]) => {
-						return charsData
-							? charsData.map((charData) => (
-									<Idol
-										charInfo={charData}
-										key={charData.Character}
-										popupRefList={popupRefList}
-										cardRefList={cardRefList}
-										setShowPopup={setShowPopup}
-										setIdolInfo={setIdolInfo}
-									/>
-								))
-							: "";
-					}}
-				</InfiniteScroll>
+				{result?.map((characterData) => (
+					<Idol
+						charInfo={characterData}
+						key={characterData.id}
+						popupRefList={popupRefList}
+						cardRefList={cardRefList}
+						setShowPopup={setShowPopup}
+						setIdolInfo={setIdolInfo}
+					/>
+				))}
 			</div>
 			<Dialog
 				showPopup={showPopup}

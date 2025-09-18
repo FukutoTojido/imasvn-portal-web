@@ -149,42 +149,25 @@ export default function VideoPlayer({
 		(screen.orientation as any).lock("landscape");
 	};
 
-	const [reader, setReader] = useState<MediaMTXWebRTCReader | null>(null);
-
 	// biome-ignore lint/correctness/useExhaustiveDependencies: Shhhhh
 	useEffect(() => {
-		reader?.close();
-
-		if (
-			!ref.current ||
-			userData.authType !== UserType.OK ||
-			!userData.isJoinedServer
-		)
-			return;
-
 		const videoUrl = `${import.meta.env.VITE_BACKEND_API}/whep/`;
 
-		const initPlayer = async () => {
-			if (!ref.current) return;
+		if (!ref.current) return;
 
-			const r = new MediaMTXWebRTCReader({
-				url: videoUrl,
-				onError: (err) => {
-					console.error(err);
-				},
-				onTrack: (evt) => {
-					if (!ref.current) return;
-					ref.current.srcObject = evt.streams[0];
-				},
-			});
-
-			setReader(r);
-		};
-
-		initPlayer();
+		const r = new MediaMTXWebRTCReader({
+			url: videoUrl,
+			onError: (err) => {
+				console.error(err);
+			},
+			onTrack: (evt) => {
+				if (!ref.current) return;
+				ref.current.srcObject = evt.streams[0];
+			},
+		});
 
 		return () => {
-			reader?.close();
+			r?.close();
 		};
 	}, [userData?.authType]);
 

@@ -1,15 +1,16 @@
+import axios from "axios";
+import { LogOut, User2 } from "lucide-react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
-import { UserType, type UserState } from "~/types";
-import type store from "~/store";
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from "~/components/ui/popover";
-import { LogOut, User2 } from "lucide-react";
-import { useState } from "react";
 import { logOut } from "~/slices/auth";
+import type store from "~/store";
+import { UserType } from "~/types";
 
 export default function UserBadge() {
 	const userData = useSelector(
@@ -81,6 +82,7 @@ export default function UserBadge() {
 					to={`/users/${userData.id}`}
 					className="w-full hover:bg-surface-0 flex items-center p-3 px-5 gap-3 border-surface-1 border-b"
 					onClick={() => setPopOpen(false)}
+					viewTransition
 				>
 					<User2 size={16} />
 					Profile
@@ -88,8 +90,13 @@ export default function UserBadge() {
 				<button
 					className="w-full hover:bg-surface-0 flex items-center p-3 px-5 gap-3 text-red"
 					type="button"
-					onClick={() => {
+					onClick={async () => {
 						setPopOpen(false);
+						await axios.post(
+							`${import.meta.env.VITE_BACKEND_API}/auth/logOut`,
+							null,
+							{ withCredentials: true },
+						);
 						dispatch(logOut());
 					}}
 				>

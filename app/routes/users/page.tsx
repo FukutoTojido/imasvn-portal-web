@@ -1,11 +1,11 @@
 import axios, { type AxiosError } from "axios";
+import { Link } from "react-router";
+import type { EventData } from "../admin/components/UpdateEvent";
+import type { Card } from "../admin/types";
 import Feed from "../components/Feed";
 import NotFound from "../components/NotFound";
 import OpenImage from "../components/OpenImage";
 import type { Route } from "./+types/page";
-import type { Card } from "../admin/types";
-import type { EventData } from "../admin/components/UpdateEvent";
-import { Link } from "react-router";
 
 export async function loader({ params }: Route.LoaderArgs) {
 	try {

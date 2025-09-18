@@ -96,28 +96,29 @@ export default function Idol({
 				});
 			}}
 			type="button"
-			className="rounded-md flex gap-5 p-5 text-primary-6 transition-all select-none cursor-pointer hover:bg-primary-2 bg-primary-3"
+			className="rounded-md flex items-center text-text transition-all select-none cursor-pointer hover:bg-surface-0 bg-base border border-surface-1 overflow-hidden"
 		>
 			<img
 				ref={avaRef}
-				src={charInfo.ImgURL}
+				src={charInfo.icon}
 				alt=""
-				width={50}
-				height={50}
-				className="w-[50px] h-[50px] rounded-md bg-primary-2 object-cover object-top shrink-0 avatar"
+				className="h-[100px] aspect-square rounded-md object-cover object-top shrink-0 avatar scale-125"
+				style={{
+					maskImage: "linear-gradient(to right, white 60%, transparent 90%)"
+				}}
 			/>
-			<div className="flex-1 flex flex-col text-left">
-				<div className="text-lg font-bold character" ref={characterRef}>
-					{charInfo.Character}
+			<div className="flex-1 flex flex-col text-left p-5">
+				<div className="text-lg font-medium character" ref={characterRef}>
+					{charInfo.name}
 				</div>
 				<div className="text-sm line-clamp-1 name" ref={nameRef}>
-					{charInfo.Name.split("(")[0]}
+					{charInfo.japaneseName}
 				</div>
-				{charInfo["Image Color"] ? (
+				{charInfo.imageColor ? (
 					<div
 						className="w-8 h-2 rounded-full mt-2"
 						style={{
-							backgroundColor: charInfo["Image Color"] ?? "",
+							backgroundColor: charInfo.imageColor ?? "",
 						}}
 					/>
 				) : (
