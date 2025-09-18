@@ -87,7 +87,7 @@ export default function Page({
 					</CardHeader>
 					<CardContent className="grid grid-cols-2 gap-5">
 						<div className="col-span-full aspect-square">
-							<PreviewImage url={watch("icon")} cropper={false} />
+							<PreviewImage url={watch("icon")} cropper={false} className="w-full aspect-square" />
 						</div>
 						<div className="flex flex-col gap-2.5">
 							<Label>Name</Label>

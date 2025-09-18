@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import { ChevronLeft, ChevronRight, Trash } from "lucide-react";
 import { parseAsInteger, useQueryState } from "nuqs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import useSWR, { mutate } from "swr";
 import {
@@ -143,8 +143,17 @@ export default function Page() {
 		},
 		state: {
 			columnFilters,
+			pagination: {
+				pageIndex: page,
+				pageSize: 10,
+			},
 		},
 	});
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Reset page counter after query
+	useEffect(() => {
+		setPage(0);
+	}, [filter, setPage]);
 
 	return (
 		<>
