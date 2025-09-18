@@ -48,9 +48,10 @@ type ComboBoxProps = {
     onValueChange?: (value: string) => void,
     placeholder?: string,
     defaultValue: string
+    className?: string
 }
 
-export function ComboBox({ options = [], onValueChange, placeholder, defaultValue }: ComboBoxProps) {
+export function ComboBox({ options = [], onValueChange, placeholder, defaultValue, className }: ComboBoxProps) {
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState(defaultValue ?? "")
  
@@ -61,7 +62,7 @@ export function ComboBox({ options = [], onValueChange, placeholder, defaultValu
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={cn("w-[200px] justify-between bg-mantle border-surface-1 hover:bg-base hover:text-text font-normal", !!value ? "text-text" : "text-subtext-0")}
+          className={cn("w-[200px] justify-between bg-mantle border-surface-1 hover:bg-base hover:text-text font-normal", !!value ? "text-text" : "text-subtext-0", className)}
         >
           {value
             ? options.find((option) => option.value === value)?.label

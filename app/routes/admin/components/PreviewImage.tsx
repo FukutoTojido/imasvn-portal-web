@@ -25,7 +25,7 @@ export default function PreviewImage({
 	className = ""
 }: {
 	url?: string;
-	ref: RefObject<{ getImage: () => Promise<File | null> } | null>;
+	ref?: RefObject<{ getImage: () => Promise<File | null> } | null>;
 	cropper?: boolean;
 	className?: ClassValue
 }) {

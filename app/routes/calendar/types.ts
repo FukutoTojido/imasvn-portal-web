@@ -8,6 +8,7 @@ export type CharacterData = {
 	imageColor?: string;
 	icon: string;
 	id: number;
+	age: number;
 };
 
 export type RefList = {

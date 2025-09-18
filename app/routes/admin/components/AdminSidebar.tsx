@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Calendar1, ChevronUp, IdCard, User, Video } from "lucide-react";
+import { Calendar1, ChevronUp, IdCard, Sparkle, User, Video } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
@@ -52,6 +52,17 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 									<Link to="/admin/events" prefetch="render">
 										<Calendar1 />
 										Events
+									</Link>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+							<SidebarMenuItem>
+								<SidebarMenuButton
+									asChild
+									className="hover:bg-surface-1 hover:text-text"
+								>
+									<Link to="/admin/idols" prefetch="render">
+										<Sparkle />
+										Idols
 									</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>

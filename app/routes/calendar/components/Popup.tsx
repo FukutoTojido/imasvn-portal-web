@@ -1,10 +1,6 @@
-import {
-	type HTMLProps,
-	type RefObject,
-	useEffect,
-	useRef
-} from "react";
+import { type HTMLProps, type RefObject, useEffect, useRef } from "react";
 import type { CharacterData, RefList } from "../types";
+import { DateTime } from "luxon";
 
 export default function Popup({
 	idolInfo,
@@ -56,7 +52,25 @@ export default function Popup({
 				<div className="flex-1 bg-surface-0 w-full p-5 rounded-xl text-sm border border-surface-1">
 					<ul className="w-full" ref={descriptionRef}>
 						<li>
-							<span className="font-bold"></span>:{" "}
+							<span className="font-bold">Voice Actor</span>: {idolInfo?.VA} (
+							{idolInfo?.japaneseVA})
+						</li>
+						<li>
+							<span className="font-bold">Birthday</span>:{" "}
+							{DateTime.fromFormat(
+								`${idolInfo?.birthdate}/${idolInfo?.birthmonth}`,
+								"d/m",
+							).toFormat("dd LLL")}
+						</li>
+						<li>
+							<span className="font-bold">Image Color</span>:{" "}
+							<span
+								className="rounded-sm leading-[10px] inline-block"
+								style={{ backgroundColor: idolInfo?.imageColor }}
+							>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							</span>{" "}
+							{idolInfo?.imageColor}
 						</li>
 					</ul>
 				</div>
