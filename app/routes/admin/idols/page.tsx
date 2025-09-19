@@ -27,33 +27,27 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import type { CharacterData } from "~/routes/calendar/types";
 import TableComponent from "../components/Table";
-import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 const columns: ColumnDef<CharacterData>[] = [
 	{
 		accessorKey: "icon",
 		header: "",
 		cell: (props) => (
-			<Link to={`/admin/idols/${props.row.original.id}`} viewTransition>
-				<img
-					src={props.cell.getValue() as string}
-					alt=""
-					className="w-[50px] aspect-square object-top object-cover"
-				/>
-			</Link>
+			<img
+				src={props.cell.getValue() as string}
+				alt=""
+				className="w-[50px] aspect-square object-top object-cover"
+			/>
 		),
 	},
 	{
 		accessorKey: "name",
 		header: "Name",
 		cell: (props) => (
-			<Link
-				to={`/admin/idols/${props.row.original.id}`}
-				className="w-[500px] text-wrap"
-				viewTransition
-			>
+			<div className="w-[500px] text-wrap">
 				{props.cell.getValue() as string}
-			</Link>
+			</div>
 		),
 	},
 	{
@@ -119,6 +113,7 @@ export const getCharacters = async () => {
 
 export default function Page() {
 	const { data } = useSWR("characters", getCharacters);
+	const navigate = useNavigate();
 
 	const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(0));
 	const [filter, setFilter] = useQueryState("filter");
@@ -150,8 +145,8 @@ export default function Page() {
 		},
 	});
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: Reset page counter after query
 	useEffect(() => {
+		if (!filter) return;
 		setPage(0);
 	}, [filter, setPage]);
 
@@ -170,7 +165,15 @@ export default function Page() {
 						}}
 					/>
 				</div>
-				<TableComponent table={table} columns={columns} />
+				<TableComponent
+					table={table}
+					columns={columns}
+					onRowClick={(row) =>
+						navigate(`/admin/idols/${row.original.id}`, {
+							viewTransition: true,
+						})
+					}
+				/>
 				<div className="w-full flex items-center justify-end gap-2.5">
 					<div className="flex-1 px-2.5 text-sm text-subtext-0">
 						Page {table.getState().pagination.pageIndex + 1} of{" "}

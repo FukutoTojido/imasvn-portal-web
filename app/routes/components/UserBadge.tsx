@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LogOut, User2 } from "lucide-react";
+import { LogOut, ShieldUser, User2 } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
@@ -10,7 +10,7 @@ import {
 } from "~/components/ui/popover";
 import { logOut } from "~/slices/auth";
 import type store from "~/store";
-import { UserType } from "~/types";
+import { ROLE, UserType } from "~/types";
 
 export default function UserBadge() {
 	const userData = useSelector(
@@ -75,6 +75,7 @@ export default function UserBadge() {
 				</div>
 			</PopoverTrigger>
 			<PopoverContent
+				onOpenAutoFocus={(e) => e.preventDefault()}
 				align="end"
 				className="bg-base border-surface-1 overflow-hidden p-0 w-max min-w-[200px] text-text"
 			>
@@ -87,6 +88,17 @@ export default function UserBadge() {
 					<User2 size={16} />
 					Profile
 				</Link>
+				{userData.role === ROLE.ADMIN && (
+					<Link
+						to={`/admin`}
+						className="w-full hover:bg-surface-0 flex items-center p-3 px-5 gap-3 border-surface-1 border-b"
+						onClick={() => setPopOpen(false)}
+						viewTransition
+					>
+						<ShieldUser size={16} />
+						Admin Dashboard
+					</Link>
+				)}
 				<button
 					className="w-full hover:bg-surface-0 flex items-center p-3 px-5 gap-3 text-red"
 					type="button"

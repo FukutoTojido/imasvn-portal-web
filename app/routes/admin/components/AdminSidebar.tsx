@@ -1,5 +1,12 @@
 import axios from "axios";
-import { Calendar1, ChevronUp, IdCard, Sparkle, User, Video } from "lucide-react";
+import {
+	Calendar1,
+	ChevronUp,
+	IdCard,
+	Sparkle,
+	User,
+	Video,
+} from "lucide-react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
@@ -29,6 +36,20 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 	return (
 		<Sidebar className="border-surface-1 text-text h-full" collapsible="icon">
 			<SidebarContent>
+				<SidebarGroup>
+					<Link to="/" viewTransition>
+						<img
+							src="/imasvn.png"
+							alt="THE iDOLM@STER Vietnam Logo"
+							width={230}
+							height={50}
+							className="md:block hidden h-auto"
+							style={{
+								objectFit: "contain",
+							}}
+						/>
+					</Link>
+				</SidebarGroup>
 				<SidebarGroup>
 					<SidebarGroupLabel className="text-subtext-0">Menu</SidebarGroupLabel>
 					<SidebarGroupContent>
