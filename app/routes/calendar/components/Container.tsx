@@ -25,7 +25,7 @@ export default function Container({
 	const { setIdolInfo, setShowPopup, cardRefList, popupRefList } = idolProps;
 	return (
 		<div
-			className={`bg-primary-3 sm:rounded-2xl shadow-md rounded-t-2xl p-2.5 flex flex-col gap-2.5 transition-all overflow-hidden ${idols ? "infoOut" : "infoOff"} sm:relative fixed sm:w-[400px] w-full bottom-0 left-0`}
+			className={`bg-base border border-surface-1 sm:rounded-lg shadow-md rounded-t-lg p-2.5 flex flex-col gap-2.5 transition-all overflow-hidden ${idols ? "infoOut" : "infoOff"} sm:relative fixed sm:w-[400px] w-full bottom-0 left-0`}
 		>
 			<div className="w-full flex justify-between p-2.5">
 				<div className="font-bold">
@@ -50,7 +50,7 @@ export default function Container({
 						return (
 							<Idol
 								charInfo={idol}
-								key={idol.Character}
+								key={idol.id}
 								setIdolInfo={setIdolInfo}
 								setShowPopup={setShowPopup}
 								cardRefList={cardRefList}
