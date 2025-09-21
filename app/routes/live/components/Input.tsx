@@ -147,7 +147,7 @@ const Input = ({
 				/>
 
 				<div className="h-full border-r-2 border-[#56587d]" />
-				<Popover>
+				<Popover modal>
 					<PopoverTrigger asChild>
 						<button type="button" popoverTarget="emote-container">
 							<Smile className="text-text" />

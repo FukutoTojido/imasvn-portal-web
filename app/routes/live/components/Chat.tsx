@@ -1,26 +1,26 @@
 import axios, { CanceledError } from "axios";
 import {
-	useEffect,
-	useRef,
-	useState,
 	type Dispatch,
 	type RefObject,
 	type SetStateAction,
+	useEffect,
+	useRef,
+	useState,
 } from "react";
 import { useSelector } from "react-redux";
 import useWebSocket from "react-use-websocket";
 import type store from "~/store";
+import { UserType } from "~/types";
 import {
-	SOCKET_ENUM,
 	type JoinLeaveMessage,
 	type Message,
+	SOCKET_ENUM,
 	type Viewer,
 } from "../types";
-import { UserType } from "~/types";
 
 import "./Chat.css";
-import Input from "./Input";
 import ChatContainer from "./ChatContainer";
+import Input from "./Input";
 
 function useEmotes() {
 	const [emotes, setEmotes] = useState<
@@ -96,11 +96,11 @@ export default function Chat({
 			onClose: () => {
 				console.log(`${new Date().toISOString()} - WebSocket disconnected!`);
 			},
-			reconnectInterval: 5000
+			reconnectInterval: 5000,
+			shouldReconnect: () => true
 		},
 	);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (userData.authType !== UserType.OK) return;
 		sendJsonMessage?.({
@@ -117,9 +117,9 @@ export default function Chat({
 		return () => {
 			clearInterval(interval);
 		}
-	}, [sendJsonMessage, userData.authType]);
+	}, [sendJsonMessage, userData]);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies: Only care about chat length
 	useEffect(() => {
 		containerRef.current?.scrollTo(0, containerRef.current.scrollHeight);
 	}, [messages.length]);

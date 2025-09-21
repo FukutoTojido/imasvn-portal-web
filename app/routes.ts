@@ -17,7 +17,12 @@ export default [
 		layout("routes/login/layout.tsx", [
 			route("login", "routes/login/page.tsx"),
 		]),
-		layout("routes/live/layout.tsx", [route("live", "routes/live/page.tsx")]),
+		layout("routes/live/layout.tsx", [
+			route("live", "routes/live/page.tsx"),
+		]),
+		layout("routes/live/chat/layout.tsx", [
+			route("live/chat", "routes/live/chat/page.tsx"),
+		]),
 		layout("routes/admin/layout.tsx", [
 			route("admin", "routes/admin/page.tsx"),
 			route("admin/producers", "routes/admin/producers/page.tsx"),
