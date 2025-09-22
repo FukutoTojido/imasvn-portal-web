@@ -29,10 +29,10 @@ export async function loader() {
 
 export function meta({ data: { title, url } }: Route.MetaArgs) {
 	return [
-		{ title: "Live | THE iDOLM@STER Vietnam Portal" },
-		{ name: "description", content: title },
-		{ property: "og:title", content: "Live | THE iDOLM@STER Vietnam Portal" },
-		{ property: "og:description", content: title },
+		{ title },
+		{ name: "description", content: "Live | THE iDOLM@STER Vietnam Portal" },
+		{ property: "og:title", content: title },
+		{ property: "og:description", content: "Live | THE iDOLM@STER Vietnam Portal" },
 		{
 			property: "og:image",
 			content: url,
@@ -41,11 +41,11 @@ export function meta({ data: { title, url } }: Route.MetaArgs) {
 		{ name: "twitter:card", content: "summary_large_image" },
 		{
 			name: "twitter:title",
-			content: "Live | THE iDOLM@STER Vietnam Portal",
+			content: title,
 		},
 		{
 			name: "twitter:description",
-			content: title,
+			content: "Live | THE iDOLM@STER Vietnam Portal",
 		},
 		{
 			name: "twitter:image",
