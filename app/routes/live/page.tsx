@@ -7,6 +7,7 @@ import VideoPlayer from "./components/VideoPlayer";
 import Viewers from "./components/Viewers";
 import type { Route } from "./+types/page";
 import axios from "axios";
+import { Dialog, DialogPortal } from "~/components/ui/dialog";
 
 export async function loader() {
 	try {
@@ -32,7 +33,10 @@ export function meta({ data: { title, url } }: Route.MetaArgs) {
 		{ title },
 		{ name: "description", content: "Live | THE iDOLM@STER Vietnam Portal" },
 		{ property: "og:title", content: title },
-		{ property: "og:description", content: "Live | THE iDOLM@STER Vietnam Portal" },
+		{
+			property: "og:description",
+			content: "Live | THE iDOLM@STER Vietnam Portal",
+		},
 		{
 			property: "og:image",
 			content: url,
@@ -70,22 +74,24 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 			className={`w-full h-full flex-1 flex md:gap-2.5 flex-col md:flex-row overflow-hidden ${isFullscreen ? "md:!gap-0" : ""}`}
 			ref={pageRef}
 		>
-			<VideoPlayer
-				title={loaderData.title}
-				userData={userData}
-				pageRef={pageRef as RefObject<HTMLDivElement>}
-				isFullscreen={isFullscreen}
-				setIsFullscreen={setIsFullscreen}
-				hideChat={hideChat}
-				setHideChat={setHideChat}
-				viewers={viewers}
-			/>
-			<div
-				className={`lg:w-[400px] md:w-[300px] w-full flex flex-col overflow-hidden md:flex-none flex-1 ${hideChat ? "hidden" : ""}`}
-			>
-				<Chat isFullscreen={isFullscreen} setViewers={setViewers} />
-			</div>
-			<Viewers viewers={viewers} />
+			<Dialog>
+				<VideoPlayer
+					title={loaderData.title}
+					userData={userData}
+					pageRef={pageRef as RefObject<HTMLDivElement>}
+					isFullscreen={isFullscreen}
+					setIsFullscreen={setIsFullscreen}
+					hideChat={hideChat}
+					setHideChat={setHideChat}
+					viewers={viewers}
+				/>
+				<div
+					className={`lg:w-[400px] md:w-[300px] w-full flex flex-col overflow-hidden md:flex-none flex-1 ${hideChat ? "hidden" : ""}`}
+				>
+					<Chat isFullscreen={isFullscreen} setViewers={setViewers} />
+				</div>
+				<Viewers viewers={viewers} container={pageRef.current as HTMLElement} />
+			</Dialog>
 		</div>
 	);
 }

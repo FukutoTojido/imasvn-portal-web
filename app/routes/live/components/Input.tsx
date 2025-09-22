@@ -6,6 +6,7 @@ import {
 	type RefObject,
 	useCallback,
 	useEffect,
+	useRef,
 	useState,
 } from "react";
 import { useSelector } from "react-redux";
@@ -131,9 +132,11 @@ const Input = ({
 		// console.log(chatRef.current.childNodes);
 	};
 
+	const inputRef = useRef<HTMLDivElement>(null);
+
 	if (userData.authType === UserType.OK && userData.isJoinedServer)
 		return (
-			<div className="flex w-full gap-5 items-center p-5 chatBox border-t border-surface-1">
+			<div className="flex w-full gap-5 items-center p-5 chatBox border-t border-surface-1" ref={inputRef}>
 				<ContentEditable
 					tagName="span"
 					html={html}
@@ -153,7 +156,7 @@ const Input = ({
 							<Smile className="text-text" />
 						</button>
 					</PopoverTrigger>
-					<PopoverContent className="bg-mantle border border-surface-1 mb-2" align="end">
+					<PopoverContent className="bg-mantle border border-surface-1 mb-2" align="end" container={inputRef.current as HTMLElement}>
 						<EmotesContainer
 							chatRef={chatRef as RefObject<HTMLSpanElement>}
 							emotes={emotes}

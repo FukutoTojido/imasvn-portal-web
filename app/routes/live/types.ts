@@ -27,7 +27,8 @@ export enum SOCKET_ENUM {
 
 export type Viewer = {
 	username: string;
-    id: string
+    id: string;
+	displayName: string;
 };
 
 export type Alert = {

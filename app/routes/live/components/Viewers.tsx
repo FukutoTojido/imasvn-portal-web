@@ -1,47 +1,50 @@
 import { memo } from "react";
+import { Link } from "react-router";
+import { Avatar, AvatarImage } from "~/components/ui/avatar";
+import {
+	DialogContent,
+	DialogDescription,
+	DialogTitle,
+} from "~/components/ui/dialog";
 import type { Viewer } from "../types";
-import { X } from "lucide-react";
 
-function Viewers({
-	viewers,
-}: {
-	viewers: Viewer[];
-}) {
+function Viewers({ viewers, container }: { viewers: Viewer[], container?: HTMLElement }) {
 	return (
-		<div
-			// @ts-ignore
-			popover="auto"
-			id="viewers"
-			className="bg-primary-3 p-5 rounded-lg absolute inset-0 m-auto w-[400px] max-w-[100%] h-[500px] max-h-[100%] shadow-2xl shadow-black/80 flex-col gap-5 text-primary-6"
+		<DialogContent
+			className="bg-base border-surface-1 text-text"
+			onOpenAutoFocus={(e) => e.preventDefault()}
+			container={container}
 		>
-			<div className="w-full flex items-center font-bold">
-				Viewers
-				<button
-					type="button"
-					/* @ts-ignore */
-					popoverTarget="viewers"
-					className="ml-auto"
-				>
-					<X />
-				</button>
+			<div className="flex flex-col gap-2">
+				<DialogTitle>{viewers.length} Viewer{viewers.length > 1 ? "s" : ""}</DialogTitle>
+				<DialogDescription className="text-subtext-0">
+					その目、だれの目？
+				</DialogDescription>
 			</div>
-			<div className="flex flex-col w-full gap-2.5 flex-1 overflow-auto">
-				{viewers.map(({ username, id }) => {
+			<div className="w-full grid grid-cols-2 gap-2.5 flex-1 overflow-auto">
+				{viewers.map(({ username, id, displayName }) => {
 					return (
-						<div key={id} className="text-sm w-full flex items-center gap-2.5">
-							<img
-								src={`${import.meta.env.VITE_BACKEND_API}/users/${id}/avatar`}
-								alt=""
-								width={20}
-								height={20}
-								className="w-5 h-5 rounded-full object-cover object-center"
-							/>{" "}
-							{username}
-						</div>
+						<Link
+							to={`/users/${id}`}
+							target="_blank"
+							rel="noreferrer noopener nofollow"
+							key={id}
+							className="text-sm w-full flex items-center gap-2.5 p-2.5 rounded-md hover:bg-surface-0 transition-all border border-transparent hover:border-surface-1"
+						>
+							<Avatar>
+								<AvatarImage
+									src={`${import.meta.env.VITE_BACKEND_API}/users/${id}/avatar`}
+								/>
+							</Avatar>
+							<div className="flex flex-col">
+								<span className="font-semibold">{displayName}</span>
+								<span className="text-xs">@{username}</span>
+							</div>
+						</Link>
 					);
 				})}
 			</div>
-		</div>
+		</DialogContent>
 	);
 }
 

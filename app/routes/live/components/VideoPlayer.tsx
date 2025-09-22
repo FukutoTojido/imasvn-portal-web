@@ -24,6 +24,7 @@ import MediaMTXWebRTCReader from "~/lib/reader";
 import { type UserState, UserType } from "~/types";
 import type { Viewer } from "../types";
 import ErrorComponent from "./Error";
+import { DialogTrigger } from "~/components/ui/dialog";
 
 enum State {
 	HOVER = 0,
@@ -220,18 +221,18 @@ export default function VideoPlayer({
 						<div className="flex flex-col">
 							<div className="flex-1 line-clamp-1 font-bold">{title}</div>
 							<div className="flex items-center gap-5">
-								<button
-									type="button"
-									// @ts-ignore
-									popoverTarget="viewers"
-									className="w-full flex gap-2.5 items-center hover:underline underline-offset-2"
-								>
-									<Users className="pointer-events-none" size={14} />
-									<span className="pointer-events-none text-xs">
-										{viewers.length} viewer{viewers.length > 1 ? "s" : ""}{" "}
-										watching
-									</span>
-								</button>
+								<DialogTrigger asChild>
+									<button
+										type="button"
+										className="w-full flex gap-2.5 items-center hover:underline underline-offset-2"
+									>
+										<Users className="pointer-events-none" size={14} />
+										<span className="pointer-events-none text-xs">
+											{viewers.length} viewer{viewers.length > 1 ? "s" : ""}{" "}
+											watching
+										</span>
+									</button>
+								</DialogTrigger>
 							</div>
 						</div>
 
