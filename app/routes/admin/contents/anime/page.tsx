@@ -7,7 +7,7 @@ import {
 	useReactTable,
 } from "@tanstack/react-table";
 import axios from "axios";
-import { ChevronLeft, ChevronRight, Trash } from "lucide-react";
+import { ChevronLeft, ChevronRight, LoaderCircle, Trash } from "lucide-react";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -26,18 +26,14 @@ import {
 } from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import AddProducer from "../components/AddProducer";
-import TableComponent from "../components/Table";
-import type { Producer } from "../types";
+import type { Anime } from "~/types";
+import TableComponent from "../../components/Table";
 
-const columns: ColumnDef<Producer>[] = [
+const columns: ColumnDef<Anime>[] = [
+	{ accessorKey: "id" },
 	{
-		accessorKey: "id",
-		header: "Producer ID",
-	},
-	{
-		accessorKey: "name",
-		header: "Producer Name",
+		accessorKey: "title",
+		header: "Title",
 	},
 	{
 		id: "actions",
@@ -52,14 +48,14 @@ const columns: ColumnDef<Producer>[] = [
 					</AlertDialogTrigger>
 					<AlertDialogContent className="bg-base border-surface-1 text-text">
 						<AlertDialogHeader>
-							<AlertDialogTitle>Deleting Producer?</AlertDialogTitle>
+							<AlertDialogTitle>Deleting Anime?</AlertDialogTitle>
 							<AlertDialogDescription className="text-subtext-0">
 								This action cannot be undone and will permanently delete this
-								producer entry from the server.
+								anime entry from the server.
 							</AlertDialogDescription>
 						</AlertDialogHeader>
 						<AlertDialogFooter>
-							<AlertDialogCancel className="bg-text text-mantle hover:bg-subtext-0">
+							<AlertDialogCancel className="dark:bg-text dark:text-mantle hover:dark:bg-subtext-0">
 								Cancel
 							</AlertDialogCancel>
 							<AlertDialogAction
@@ -67,14 +63,14 @@ const columns: ColumnDef<Producer>[] = [
 								onClick={async () => {
 									try {
 										await axios.delete(
-											`${import.meta.env.VITE_BACKEND_API}/producer-id/${props.row.original.id}`,
+											`${import.meta.env.VITE_BACKEND_API}/anime/${props.row.original.id}`,
 											{ withCredentials: true },
 										);
-										toast("Producer deleted");
-										mutate("producers");
+										toast("Anime deleted");
+										mutate("animes");
 									} catch (e) {
 										console.error(e);
-										toast.error("Cannot remove producer");
+										toast.error("Cannot remove anime");
 									}
 								}}
 							>
@@ -88,10 +84,10 @@ const columns: ColumnDef<Producer>[] = [
 	},
 ];
 
-export const getProducers = async () => {
+export const getAnimes = async () => {
 	try {
-		const { data } = await axios.get<Producer[]>(
-			`${import.meta.env.VITE_BACKEND_API}/producer-id`,
+		const { data } = await axios.get<Anime[]>(
+			`${import.meta.env.VITE_BACKEND_API}/anime`,
 			{ withCredentials: true },
 		);
 		return data;
@@ -102,12 +98,16 @@ export const getProducers = async () => {
 };
 
 export default function Page() {
-	const { data, mutate } = useSWR("producers", getProducers);
+	const navigate = useNavigate();
+
+	const { data } = useSWR("animes", getAnimes);
 	const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(0));
 	const [filter, setFilter] = useQueryState("filter");
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
 		filter ? [{ id: "name", value: filter }] : [],
 	);
+
+	const [loading, setLoading] = useState(false);
 
 	const table = useReactTable({
 		data: data ?? [],
@@ -123,33 +123,55 @@ export default function Page() {
 		},
 		state: {
 			columnFilters,
+			columnVisibility: {
+				id: false,
+			},
 		},
 	});
 
-	const navigate = useNavigate();
+	const newAnime = async () => {
+		const { data } = await axios.post(
+			`${import.meta.env.VITE_BACKEND_API}/anime`,
+			undefined,
+			{
+				withCredentials: true,
+			},
+		);
+
+		navigate(`/admin/anime/${data}`);
+	};
 
 	return (
 		<>
-			<div className="text-5xl font-medium text-text">Producer ID Manager</div>
 			<div className="w-full p-2.5 border border-surface-1 rounded-xl bg-base flex flex-col gap-2.5">
 				<div className="flex items-center justify-end space-x-2">
 					<Input
-						className="flex-1 bg-mantle border border-overlay-0 text-text h-full"
+						className="flex-1 !bg-mantle border border-overlay-0 text-text h-full"
 						placeholder="Search producer..."
-						value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+						value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
 						onChange={(event) => {
-							table.getColumn("name")?.setFilterValue(event.target.value);
+							table.getColumn("title")?.setFilterValue(event.target.value);
 							setFilter(event.target.value ? event.target.value : null);
 						}}
 					/>
-					<AddProducer mutate={mutate} />
+					<Button
+						disabled={loading}
+						onClick={async () => {
+							setLoading(true);
+							await newAnime();
+							setLoading(false);
+						}}
+						className="bg-text text-crust hover:bg-base hover:text-text self-end font-normal"
+					>
+						{loading && <LoaderCircle className="animate-spin" />} New Anime
+					</Button>
 				</div>
 				<TableComponent
 					table={table}
 					columns={columns}
-					onRowClick={(row) =>
-						navigate(`/admin/producers/${row.getValue("id")}`)
-					}
+					onRowClick={(row) => {
+						navigate(`/admin/anime/${row.getValue("id")}`);
+					}}
 				/>
 				<div className="w-full flex items-center justify-end gap-2.5">
 					<div className="flex-1 px-2.5 text-sm text-subtext-0">

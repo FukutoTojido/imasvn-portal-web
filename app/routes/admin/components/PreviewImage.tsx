@@ -1,37 +1,34 @@
+import type { ClassValue } from "clsx";
 import {
+	type RefObject,
 	useCallback,
 	useImperativeHandle,
 	useMemo,
 	useState,
-	type RefObject,
 } from "react";
 import Cropper, { type Area } from "react-easy-crop";
 import { useWatch } from "react-hook-form";
 import { cn } from "~/lib/utils";
 import getCroppedImg from "../utils";
-import type { ClassValue } from "clsx";
-
-type FormType = {
-	name: string;
-	idol: string;
-	title: string;
-	img?: FileList | null;
-};
 
 export default function PreviewImage({
 	url,
 	ref,
 	cropper = true,
-	className = ""
+	className = "",
+	imgClassName = "",
+	name = "img",
 }: {
 	url?: string;
 	ref?: RefObject<{ getImage: () => Promise<File | null> } | null>;
 	cropper?: boolean;
-	className?: ClassValue
+	className?: ClassValue;
+	imgClassName?: ClassValue;
+	name?: string;
 }) {
-	const img = useWatch<FormType>({ name: "img" });
+	const img = useWatch({ name: name });
 	const objectUrl = useMemo(
-		() => (img ? URL.createObjectURL(new Blob([img[0]])) : null),
+		() => (img?.[0] ? URL.createObjectURL(new Blob([img[0]])) : null),
 		[img],
 	);
 	const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -71,7 +68,7 @@ export default function PreviewImage({
 					"relative col-span-full bg-mantle rounded-md border-dashed border-overlay-0 bg-center bg-cover overflow-hidden p-5",
 					url || objectUrl ? "" : "border-1",
 					cropper ? "aspect-square" : "",
-					className
+					className,
 				)}
 			>
 				<div className="relative w-full h-full rounded-xl overflow-hidden">
@@ -80,7 +77,10 @@ export default function PreviewImage({
 						<img
 							src={url ?? objectUrl ?? undefined}
 							alt=""
-							className="w-full h-full object-contain object-center rounded-xl"
+							className={cn(
+								"w-full h-full object-contain object-center rounded-xl",
+								imgClassName,
+							)}
 						/>
 					) : (
 						""

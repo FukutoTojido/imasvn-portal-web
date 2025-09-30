@@ -17,11 +17,14 @@ export default [
 		layout("routes/login/layout.tsx", [
 			route("login", "routes/login/page.tsx"),
 		]),
-		layout("routes/live/layout.tsx", [
-			route("live", "routes/live/page.tsx"),
-		]),
+		layout("routes/live/layout.tsx", [route("live", "routes/live/page.tsx")]),
 		layout("routes/live/chat/layout.tsx", [
 			route("live/chat", "routes/live/chat/page.tsx"),
+		]),
+		layout("routes/contents/layout.tsx", [
+			route("anime", "routes/contents/anime/page.tsx"),
+			route("anime/:id", "routes/contents/anime/[anime-id].tsx"),
+			route("anime/:id/episode/:episode", "routes/contents/anime/[episode-id].tsx"),
 		]),
 		layout("routes/admin/layout.tsx", [
 			route("admin", "routes/admin/page.tsx"),
@@ -33,6 +36,8 @@ export default [
 			route("admin/events", "routes/admin/events.tsx"),
 			route("admin/users", "routes/admin/users.tsx"),
 			route("admin/live/preview", "routes/admin/live/preview.tsx"),
+			route("admin/anime", "routes/admin/contents/anime/page.tsx"),
+			route("admin/anime/:id", "routes/admin/contents/anime/[anime-id].tsx"),
 		]),
 	]),
 	route("producer-id/:id", "routes/producer-id/page.tsx"),

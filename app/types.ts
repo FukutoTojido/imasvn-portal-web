@@ -1,3 +1,5 @@
+import type { DateTime } from "luxon";
+
 export enum UserType {
 	NULL = 0,
 	LOADING = 1,
@@ -5,19 +7,19 @@ export enum UserType {
 	UNAUTHORIZED = 3,
 }
 
-export enum ROLE { 
+export enum ROLE {
 	NORMAL = 0,
-	ADMIN = 1
+	ADMIN = 1,
 }
 
 export type UserDto = {
-	id: string,
-	username: string,
-	avatar: string,
-	tag: string,
-	role: ROLE,
-	pid?: string | null
-}
+	id: string;
+	username: string;
+	avatar: string;
+	tag: string;
+	role: ROLE;
+	pid?: string | null;
+};
 
 export type UserData = {
 	username: string;
@@ -63,3 +65,21 @@ export interface Comment {
 	content: string;
 	postId: string;
 }
+
+export type Anime = {
+	id: number;
+	title?: string;
+	titleJapanese?: string;
+	sypnosis?: string;
+	time?: DateTime;
+	bg?: string;
+	episodes?: AnimeEpisode[];
+};
+
+export type AnimeEpisode = {
+	id: number;
+	animeId: number;
+	title?: string;
+	index?: string;
+	odr?: number;
+};

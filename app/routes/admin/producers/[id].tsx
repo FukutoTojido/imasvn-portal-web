@@ -125,6 +125,7 @@ const columns: ColumnDef<Card>[] = [
 									try {
 										await axios.delete(
 											`${import.meta.env.VITE_BACKEND_API}/producer-id/${props.row.original.pid}/cards/${props.row.original.id}`,
+											{ withCredentials: true },
 										);
 										toast("Card deleted");
 										mutate(`producer-${props.row.original.pid}`);

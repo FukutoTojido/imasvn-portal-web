@@ -2,6 +2,7 @@ import axios from "axios";
 import {
 	Calendar1,
 	ChevronUp,
+	Film,
 	IdCard,
 	Sparkle,
 	User,
@@ -122,6 +123,24 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 									<Link to="/admin/live/preview" prefetch="render">
 										<Video />
 										Preview
+									</Link>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+						</SidebarMenu>
+					</SidebarGroupContent>
+				</SidebarGroup>
+				<SidebarGroup>
+					<SidebarGroupLabel className="text-subtext-0">Contents</SidebarGroupLabel>
+					<SidebarGroupContent>
+						<SidebarMenu>
+							<SidebarMenuItem>
+								<SidebarMenuButton
+									asChild
+									className="hover:bg-surface-1 hover:text-text"
+								>
+									<Link to="/admin/anime" prefetch="render">
+										<Film />
+										Anime
 									</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>

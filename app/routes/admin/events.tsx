@@ -37,12 +37,22 @@ const columns: ColumnDef<EventData>[] = [
 	{
 		accessorKey: "img",
 		header: "Logo",
-		cell: (props) => <img src={props.cell.getValue() as string} alt="" className="w-[80px] m-4"/>,
+		cell: (props) => (
+			<img
+				src={props.cell.getValue() as string}
+				alt=""
+				className="w-[80px] m-4"
+			/>
+		),
 	},
 	{
 		accessorKey: "name",
 		header: "Event Name",
-		cell: (props) => <div className="w-[500px] text-wrap">{props.cell.getValue() as string}</div>
+		cell: (props) => (
+			<div className="w-[500px] text-wrap">
+				{props.cell.getValue() as string}
+			</div>
+		),
 	},
 	{
 		accessorKey: "startDate",
@@ -85,6 +95,7 @@ const columns: ColumnDef<EventData>[] = [
 									try {
 										await axios.delete(
 											`${import.meta.env.VITE_BACKEND_API}/events/${props.row.original.id}`,
+											{ withCredentials: true },
 										);
 										toast("Event deleted");
 										mutate("events");
@@ -136,8 +147,8 @@ export default function Page() {
 				pageIndex: page,
 			},
 			columnVisibility: {
-				id: false
-			}
+				id: false,
+			},
 		},
 		state: {
 			columnFilters,
