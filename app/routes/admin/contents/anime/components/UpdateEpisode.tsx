@@ -188,7 +188,7 @@ export default function UpdateEpisode({
 						{submitting && (
 							<div className="h-2 rounded-full col-span-full bg-crust relative">
 								<div
-									className="absolute top-0 left-0 h-full rounded-full bg-text transitional-all"
+									className="absolute top-0 left-0 h-full rounded-full bg-text transition-all"
 									style={{
 										width: `${loadingProgress * 100}%`,
 									}}

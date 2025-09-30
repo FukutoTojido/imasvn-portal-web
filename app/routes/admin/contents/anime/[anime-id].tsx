@@ -21,6 +21,7 @@ import { Button } from "~/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import Episodes from "./components/Episodes";
+import { toast } from "sonner";
 
 export type AnimeDto = Omit<Anime, "time"> & { time: string };
 
@@ -88,6 +89,8 @@ export default function Page({
 				data,
 				{ withCredentials: true },
 			);
+
+			toast("Update completed!")
 		} catch (e) {
 			console.error(e);
 		}
