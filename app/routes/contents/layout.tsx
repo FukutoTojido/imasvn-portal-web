@@ -10,8 +10,14 @@ export default function Page() {
 		(state: ReturnType<typeof store.getState>) => state.auth.user,
 	);
 
-	if (me.authType !== UserType.OK) return "";
-	if (me.authType === UserType.OK && !me.isJoinedServer) return <ErrorComponent />;
+	if (me.authType === UserType.LOADING) return "";
+	if (me.authType === UserType.NULL || me.authType === UserType.OK && !me.isJoinedServer)
+		return (
+			<>
+				<NavBar />
+				<ErrorComponent />
+			</>
+		);
 
 	return (
 		<>
