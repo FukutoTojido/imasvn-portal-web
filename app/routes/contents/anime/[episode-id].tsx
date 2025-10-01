@@ -32,9 +32,15 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 	}
 };
 
-export const meta = ({ data, params: { episode } }: Route.MetaArgs) => {
+export const meta = ({
+	data,
+	params: { episode },
+	...rest
+}: Route.MetaArgs) => {
+	// biome-ignore lint/suspicious/noExplicitAny: IDK dawg
+	const parentMeta = rest.matches.flatMap((match: any) => match.meta ?? []);
 	const episodeData = data?.episodes?.[+episode];
-	if (!episodeData) return undefined;
+	if (!episodeData) return [...parentMeta];
 
 	const title = `Episode ${episodeData?.index} - ${episodeData?.title} | ${data?.title ?? "Anime"} | THE iDOLM@STER Vietnam Portal`;
 	const desc = data?.sypnosis ?? "";
