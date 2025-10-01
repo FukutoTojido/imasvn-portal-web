@@ -87,8 +87,8 @@ export default function UpdateEpisode({
 		formData: Omit<AnimeEpisode, "id" | "animeId"> & { video: FileList | null },
 	) => {
 		const payload = new FormData();
-		if (formData.title) payload.append("title", formData.title);
-		if (formData.index) payload.append("index", formData.index);
+		if (formData.title) payload.append("title", formData.title.trim());
+		if (formData.index) payload.append("index", formData.index.trim());
 		if (formData.video?.length) payload.append("video", formData.video[0]);
 
 		setSubmitting(true);
