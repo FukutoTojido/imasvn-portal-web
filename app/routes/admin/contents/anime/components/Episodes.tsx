@@ -166,7 +166,7 @@ export default function Episodes({ id }: { id: number }) {
 								{isLoading || loading ? (
 									<TableRow className="hover:bg-surface-0">
 										<TableCell
-											colSpan={4}
+											colSpan={5}
 											className="h-24 text-center text-text"
 										>
 											<Loader2 className="animate-spin mx-auto" />
@@ -227,7 +227,7 @@ export default function Episodes({ id }: { id: number }) {
 								) : (
 									<TableRow className="hover:bg-surface-0">
 										<TableCell
-											colSpan={4}
+											colSpan={5}
 											className="h-24 text-center text-text"
 										>
 											No results.
