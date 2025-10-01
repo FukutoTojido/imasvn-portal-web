@@ -10,7 +10,7 @@ import {
 } from "~/components/ui/breadcrumb";
 
 import axios from "axios";
-import type { Anime } from "~/types";
+import { EPISODE_STATE, type Anime } from "~/types";
 import type { Route } from "./+types/[anime-id]";
 import ErrorComponent from "~/routes/components/Error";
 import { DateTime } from "luxon";
@@ -66,7 +66,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 						<div className="text-lg">{titleJapanese}</div>
 					</div>
 					<div className="w-full flex sm:flex-row flex-col items-center gap-2.5 justify-center">
-						{episodes?.length ? (
+						{episodes?.filter(
+							(episodes) => episodes.state === EPISODE_STATE.READY,
+						).length ? (
 							<>
 								<Button
 									className="w-[200px] bg-mantle border border-surface-1 text-text hover:bg-surface-0 p-5"

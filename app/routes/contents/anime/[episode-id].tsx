@@ -14,6 +14,7 @@ import ErrorComponent from "~/routes/components/Error";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import axios from "axios";
 import type { AnimeDto } from "~/routes/admin/contents/anime/[anime-id]";
+import { EPISODE_STATE } from "~/types";
 
 export const clientLoader = async ({ params }: Route.LoaderArgs) => {
 	try {
@@ -36,7 +37,8 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 
 	if (!loaderData) return <ErrorComponent />;
 
-	const { id, episodeId, title, episodes } = loaderData;
+	const { id, episodeId, title, episodes: _e } = loaderData;
+	const episodes = _e?.filter((episodes) => episodes.state === EPISODE_STATE.READY)
 
 	const currIndex =
 		episodes?.findIndex((episode) => episode.id === +episodeId) ?? -1;
