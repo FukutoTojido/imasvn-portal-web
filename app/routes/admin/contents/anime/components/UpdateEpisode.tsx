@@ -54,7 +54,7 @@ export default function UpdateEpisode({
 		async () => await getEpisode(id, animeId),
 	);
 
-	const { register, handleSubmit, watch } = useForm<
+	const { register, handleSubmit, watch, reset } = useForm<
 		Omit<AnimeEpisode, "id" | "animeId"> & { video: FileList | null }
 	>({
 		defaultValues: {
@@ -123,6 +123,7 @@ export default function UpdateEpisode({
 			setLoadingProgress(0);
 			mutate(`episodes-${animeId}`);
 			setOpen(false);
+			reset();
 		} catch (e) {
 			console.error(e);
 		}
@@ -135,7 +136,10 @@ export default function UpdateEpisode({
 			open={open}
 			onOpenChange={(val) => {
 				setOpen(val);
-				if (!val) setEpisodeId(null);
+				if (!val) {
+					setEpisodeId(null);
+					reset();
+				}
 			}}
 		>
 			<DialogContent
