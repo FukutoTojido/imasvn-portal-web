@@ -77,7 +77,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 				<BreadcrumbList>
 					<BreadcrumbItem className="text-subtext-0">
 						<BreadcrumbLink asChild className="hover:text-text">
-							<Link to="/anime">Anime</Link>
+							<Link to="/anime" viewTransition>Anime</Link>
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator className="text-subtext-0" />
