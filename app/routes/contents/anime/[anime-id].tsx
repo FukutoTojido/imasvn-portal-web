@@ -1,19 +1,18 @@
+import axios from "axios";
 import { Play, Sparkle } from "lucide-react";
+import { DateTime } from "luxon";
 import { Link } from "react-router";
-import { Button } from "~/components/ui/button";
 import {
 	Breadcrumb,
-	BreadcrumbList,
 	BreadcrumbItem,
 	BreadcrumbLink,
+	BreadcrumbList,
 	BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
-
-import axios from "axios";
-import { EPISODE_STATE, type Anime } from "~/types";
-import type { Route } from "./+types/[anime-id]";
+import { Button } from "~/components/ui/button";
 import ErrorComponent from "~/routes/components/Error";
-import { DateTime } from "luxon";
+import { type Anime, EPISODE_STATE } from "~/types";
+import type { Route } from "./+types/[anime-id]";
 
 export const clientLoader = async ({ params }: Route.ClientLoaderArgs) => {
 	try {
@@ -28,6 +27,42 @@ export const clientLoader = async ({ params }: Route.ClientLoaderArgs) => {
 		console.error(e);
 		return null;
 	}
+};
+
+export const meta = ({ data }: Route.MetaArgs) => {
+	const title = `${data?.title ?? "Anime"} | THE iDOLM@STER Vietnam Portal`;
+	const desc = data?.sypnosis ?? "";
+	const url = data?.bg;
+
+	return [
+		{ title },
+		{ name: "description", content: desc },
+		{ property: "og:title", content: title },
+		{
+			property: "og:description",
+			content: desc,
+		},
+		{
+			property: "og:image",
+			content: url,
+		},
+		{ property: "og:url", content: "https://live.tryz.id.vn" },
+		{ name: "twitter:card", content: "summary_large_image" },
+		{
+			name: "twitter:title",
+			content: title,
+		},
+		{
+			name: "twitter:description",
+			content: desc,
+		},
+		{
+			name: "twitter:image",
+			content: url,
+		},
+		{ property: "twitter:url", content: "https://live.tryz.id.vn" },
+		{ property: "twitter:domain", content: "live.tryz.id.vn" },
+	];
 };
 
 export default function Page({ loaderData }: Route.ComponentProps) {

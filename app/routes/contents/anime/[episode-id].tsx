@@ -32,13 +32,54 @@ export const clientLoader = async ({ params }: Route.LoaderArgs) => {
 	}
 };
 
+export const meta = ({ data, params: { episode } }: Route.MetaArgs) => {
+	const episodeData = data?.episodes?.[+episode];
+	if (!episodeData) return undefined;
+	
+	const title = `Episode ${episodeData?.index} - ${episodeData?.title} | ${data?.title ?? "Anime"} | THE iDOLM@STER Vietnam Portal`;
+	const desc = data?.sypnosis ?? "";
+	const url = data?.bg;
+
+	return [
+		{ title: `${data?.title ?? "Anime"} | THE iDOLM@STER Vietnam Portal` },
+		{ name: "description", content: desc },
+		{ property: "og:title", content: title },
+		{
+			property: "og:description",
+			content: "Live | THE iDOLM@STER Vietnam Portal",
+		},
+		{
+			property: "og:image",
+			content: url,
+		},
+		{ property: "og:url", content: "https://live.tryz.id.vn" },
+		{ name: "twitter:card", content: "summary_large_image" },
+		{
+			name: "twitter:title",
+			content: title,
+		},
+		{
+			name: "twitter:description",
+			content: desc,
+		},
+		{
+			name: "twitter:image",
+			content: url,
+		},
+		{ property: "twitter:url", content: "https://live.tryz.id.vn" },
+		{ property: "twitter:domain", content: "live.tryz.id.vn" },
+	];
+};
+
 export default function Page({ loaderData }: Route.ComponentProps) {
 	const navigate = useNavigate();
 
 	if (!loaderData) return <ErrorComponent />;
 
 	const { id, episodeId, title, episodes: _e } = loaderData;
-	const episodes = _e?.filter((episodes) => episodes.state === EPISODE_STATE.READY)
+	const episodes = _e?.filter(
+		(episodes) => episodes.state === EPISODE_STATE.READY,
+	);
 
 	const currIndex =
 		episodes?.findIndex((episode) => episode.id === +episodeId) ?? -1;
@@ -67,7 +108,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 				</BreadcrumbList>
 			</Breadcrumb>
 			<div className="w-full aspect-video rounded-md overflow-hidden">
-				<VideoPlayer animeId={id} episodeId={+episodeId}/>
+				<VideoPlayer animeId={id} episodeId={+episodeId} />
 			</div>
 			<div className="w-full flex flex-col items-center gap-2.5">
 				<div className="flex gap-2.5">
