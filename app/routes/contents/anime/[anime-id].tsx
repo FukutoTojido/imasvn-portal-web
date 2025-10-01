@@ -73,11 +73,13 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 
 	return (
 		<div className="w-[960px] max-w-full mx-auto flex flex-col gap-5 sm:p-5 text-text">
-			<Breadcrumb>
+			<Breadcrumb className="md:pt-0 md:px-0 pt-5 px-5">
 				<BreadcrumbList>
 					<BreadcrumbItem className="text-subtext-0">
 						<BreadcrumbLink asChild className="hover:text-text">
-							<Link to="/anime" viewTransition>Anime</Link>
+							<Link to="/anime" viewTransition>
+								Anime
+							</Link>
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator className="text-subtext-0" />

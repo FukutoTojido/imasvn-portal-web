@@ -93,8 +93,8 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 	const nextEpisode = episodes?.[currIndex + 1]?.id;
 
 	return (
-		<div className="w-[960px] max-w-full mx-auto p-5 flex flex-col gap-5">
-			<Breadcrumb>
+		<div className="w-[960px] max-w-full mx-auto md:p-5 p-0 flex flex-col gap-5">
+			<Breadcrumb className="md:pt-0 md:px-0 pt-5 px-5">
 				<BreadcrumbList>
 					<BreadcrumbItem className="text-subtext-0">
 						<BreadcrumbLink asChild className="hover:text-text">
