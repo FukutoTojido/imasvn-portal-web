@@ -13,6 +13,7 @@ import { Button } from "~/components/ui/button";
 import ErrorComponent from "~/routes/components/Error";
 import { type Anime, EPISODE_STATE } from "~/types";
 import type { Route } from "./+types/[anime-id]";
+import { cn } from "~/lib/utils";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 	try {
@@ -71,6 +72,10 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 
 	if (!loaderData) return <ErrorComponent />;
 
+	const eps = episodes?.filter(
+		(episodes) => episodes.state === EPISODE_STATE.READY,
+	);
+
 	return (
 		<div className="w-[960px] max-w-full mx-auto flex flex-col gap-5 sm:p-5 text-text">
 			<Breadcrumb className="md:pt-0 md:px-0 pt-5 px-5">
@@ -103,20 +108,18 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 						<div className="text-lg">{titleJapanese}</div>
 					</div>
 					<div className="w-full flex sm:flex-row flex-col items-center gap-2.5 justify-center">
-						{episodes?.filter(
-							(episodes) => episodes.state === EPISODE_STATE.READY,
-						).length ? (
+						{eps?.length ? (
 							<>
 								<Button
 									className="w-[200px] bg-mantle border border-surface-1 text-text hover:bg-surface-0 p-5"
 									asChild
 								>
 									<Link
-										to={`/anime/${id}/episode/${episodes?.[0]?.id}`}
+										to={`/anime/${id}/episode/${eps?.[0]?.id}`}
 										viewTransition
 									>
 										<Play />
-										Episode {episodes?.[0]?.index}
+										Episode {eps?.[0]?.index}
 									</Link>
 								</Button>
 								<Button
@@ -124,7 +127,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 									asChild
 								>
 									<Link
-										to={`/anime/${id}/episode/${episodes?.at(-1)?.id}`}
+										to={`/anime/${id}/episode/${eps?.at(-1)?.id}`}
 										viewTransition
 									>
 										<Sparkle />
@@ -142,31 +145,32 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 						)}
 					</div>
 					<div className="w-full flex md:flex-row flex-col gap-2.5 justify-center">
-						<div className="md:w-[400px] w-full p-5 bg-mantle rounded-md flex flex-col gap-2.5 text-sm border border-surface-1">
+						<div
+							className={cn(
+								"md:w-[400px] w-full p-5 bg-mantle rounded-md flex flex-col gap-2.5 text-sm border border-surface-1",
+								!eps?.length && "md:w-full" 
+							)}
+						>
 							<span>
 								<span className="font-bold">Year:</span>{" "}
 								{time ? DateTime.fromISO(time).year : "TBD"}
 							</span>
 							<p>{sypnosis}</p>
 						</div>
-						{episodes?.filter(
-							(episodes) => episodes.state === EPISODE_STATE.READY,
-						).length ? (
+						{eps?.length ? (
 							<div className="flex-1 overflow-auto h-min grid grid-cols-4 gap-2.5">
-								{episodes
-									?.filter((episodes) => episodes.state === EPISODE_STATE.READY)
-									.map(({ id: episodeId, index }) => {
-										return (
-											<Link
-												viewTransition
-												key={episodeId}
-												to={`/anime/${id}/episode/${episodeId}`}
-												className="w-full h-[50px] bg-surface-0 hover:bg-surface-1 transition-all rounded-md border-surface-1 border flex justify-center items-center p-5 text-sm font-semibold gap-2.5 line-clamp-1"
-											>
-												{index}
-											</Link>
-										);
-									})}
+								{eps.map(({ id: episodeId, index }) => {
+									return (
+										<Link
+											viewTransition
+											key={episodeId}
+											to={`/anime/${id}/episode/${episodeId}`}
+											className="w-full h-[50px] bg-surface-0 hover:bg-surface-1 transition-all rounded-md border-surface-1 border flex justify-center items-center p-5 text-sm font-semibold gap-2.5 line-clamp-1"
+										>
+											{index}
+										</Link>
+									);
+								})}
 							</div>
 						) : (
 							""
