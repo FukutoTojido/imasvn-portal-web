@@ -1,12 +1,18 @@
-import { Link } from "react-router";
+import { Link, useViewTransitionState } from "react-router";
 import type { Anime } from "~/types";
 
 export default function AnimeCard({ title, time, bg, id }: Anime) {
+	const url = `/anime/${id}`;
+	const vt = useViewTransitionState(url);
+
 	return (
 		<Link
 			className="relative w-full h-[300px] flex flex-col text-white group bg-base border border-surface-1 rounded-3xl overflow-hidden hover:bg-surface-0 hover:rounded-md transition-all justify-end"
-			to={`/anime/${id}`}
+			to={url}
 			viewTransition
+			style={{
+				viewTransitionName: vt ? `anime-${id}` : undefined,
+			}}
 		>
 			<img
 				src={bg}

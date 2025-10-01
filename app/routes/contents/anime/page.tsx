@@ -1,9 +1,12 @@
-import { DateTime } from "luxon";
-import { Input } from "~/components/ui/input";
-import type { Anime } from "~/types";
-import AnimeCard from "./components/AnimeCard";
-import type { Route } from "./+types/page";
 import axios from "axios";
+import Fuse from "fuse.js";
+import { DateTime } from "luxon";
+import { type ChangeEvent, useMemo, useState } from "react";
+import { Input } from "~/components/ui/input";
+import { debounce } from "~/routes/calendar/characters/page";
+import type { Anime } from "~/types";
+import type { Route } from "./+types/page";
+import AnimeCard from "./components/AnimeCard";
 
 export const genMockAnime = (id: number) => {
 	const Mock: Anime = {
@@ -24,13 +27,16 @@ export const genMockAnime = (id: number) => {
 	return Mock;
 };
 
+type AnimeDto = Omit<Anime, "time"> & { time?: string };
+
 export const clientLoader = async () => {
 	try {
-		const { data: animes } = await axios.get<
-			(Omit<Anime, "time"> & { time?: string })[]
-		>(`${import.meta.env.VITE_BACKEND_API}/anime`, {
-			withCredentials: true,
-		});
+		const { data: animes } = await axios.get<AnimeDto[]>(
+			`${import.meta.env.VITE_BACKEND_API}/anime`,
+			{
+				withCredentials: true,
+			},
+		);
 
 		return animes;
 	} catch (e) {
@@ -40,16 +46,35 @@ export const clientLoader = async () => {
 };
 
 export default function Page({ loaderData }: Route.ComponentProps) {
+	const fuse = useMemo(() => {
+		if (!loaderData) return null;
+		return new Fuse<AnimeDto>(loaderData, {
+			keys: ["title", "titleJapanese"],
+		});
+	}, [loaderData]);
+
+	const [query, setQuery] = useState("");
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: No need
+	const result: AnimeDto[] = useMemo(() => {
+		if (!fuse) return [];
+		if (!query.trim()) return loaderData;
+		return fuse.search(query).map(({ item }) => item);
+	}, [fuse, query]);
+
 	return (
 		<div className="w-[1200px] max-w-full flex flex-col mx-auto p-5 flex-1 gap-5">
 			<div className="w-full">
 				<Input
 					className="text-text placeholder:italic h-[50px]"
 					placeholder="Search for anime here..."
+					onInput={debounce((inputObject: ChangeEvent<HTMLInputElement>) => {
+						setQuery(inputObject.target?.value);
+					})}
 				/>
 			</div>
 			<div className="w-full grid md:grid-cols-3 grid-cols-1 gap-5">
-				{loaderData.map((data) => (
+				{result.map((data) => (
 					<AnimeCard
 						{...{
 							...data,

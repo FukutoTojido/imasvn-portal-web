@@ -93,7 +93,12 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 					</BreadcrumbItem>
 				</BreadcrumbList>
 			</Breadcrumb>
-			<div className="w-full rounded-2xl overflow-hidden flex flex-col border border-surrface-1">
+			<div
+				className="w-full rounded-2xl overflow-hidden flex flex-col border border-surrface-1"
+				style={{
+					viewTransitionName: `anime-${id}`,
+				}}
+			>
 				<div className="relative w-full h-[300px]">
 					<img
 						src={bg}
@@ -148,7 +153,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 						<div
 							className={cn(
 								"md:w-[400px] w-full p-5 bg-mantle rounded-md flex flex-col gap-2.5 text-sm border border-surface-1",
-								!eps?.length && "md:w-full" 
+								!eps?.length && "md:w-full",
 							)}
 						>
 							<span>

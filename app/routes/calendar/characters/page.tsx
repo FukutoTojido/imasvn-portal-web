@@ -41,7 +41,7 @@ export function meta() {
 }
 
 // biome-ignore lint/suspicious/noExplicitAny: hehe
-const debounce = (fn: (...agrs: any) => void, timeout = 300) => {
+export const debounce = (fn: (...agrs: any) => void, timeout = 300) => {
 	let timer: string | number | NodeJS.Timeout | undefined;
 	// biome-ignore lint/suspicious/noExplicitAny: he
 	return (...agrs: any) => {
