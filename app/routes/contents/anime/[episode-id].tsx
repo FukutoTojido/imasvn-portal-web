@@ -109,7 +109,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 					</BreadcrumbItem>
 					<BreadcrumbSeparator className="text-subtext-0" />
 					<BreadcrumbItem className="text-text font-semibold">
-						Episode {episodes?.[0]?.index} - {episodes?.[0]?.title}
+						Episode {episodes?.[currIndex]?.index} - {episodes?.[currIndex]?.title}
 					</BreadcrumbItem>
 				</BreadcrumbList>
 			</Breadcrumb>
