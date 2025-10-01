@@ -106,7 +106,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 							</span>
 							<p>{sypnosis}</p>
 						</div>
-						{episodes?.length ? (
+						{episodes?.filter(
+							(episodes) => episodes.state === EPISODE_STATE.READY,
+						).length ? (
 							<div className="flex-1 overflow-auto h-min grid grid-cols-4 gap-2.5">
 								{episodes
 									?.filter((episodes) => episodes.state === EPISODE_STATE.READY)
