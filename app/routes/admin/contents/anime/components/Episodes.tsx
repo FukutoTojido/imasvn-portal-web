@@ -43,7 +43,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "~/components/ui/table";
-import type { AnimeEpisode } from "~/types";
+import { EPISODE_STATE, type AnimeEpisode } from "~/types";
 import UpdateEpisode from "./UpdateEpisode";
 
 const Delete = ({ id, animeId }: { id: number; animeId: number }) => {
@@ -157,6 +157,7 @@ export default function Episodes({ id }: { id: number }) {
 								<TableHead className="w-[50px] bg-transparent" />
 								<TableHead className="text-text">Index</TableHead>
 								<TableHead className="text-text">Title</TableHead>
+								<TableHead className="text-text">State</TableHead>
 								<TableHead className="text-text">Actions</TableHead>
 							</TableRow>
 						</TableHeader>
@@ -203,6 +204,19 @@ export default function Episodes({ id }: { id: number }) {
 													}}
 												>
 													{row.title}
+												</TableCell>
+												<TableCell
+													className="text-text cursor-pointer"
+													onClick={() => {
+														stateRef.current?.setEpisodeId(row.id);
+														stateRef.current?.setOpen(true);
+													}}
+												>
+													{row.state === EPISODE_STATE.PROCESSING &&
+														"Processing"}
+													{row.state === EPISODE_STATE.READY && "Ready"}
+													{row.state === null ||
+														(row.state === undefined && "Unknown")}
 												</TableCell>
 												<TableCell className="text-text cursor-pointer">
 													<Delete animeId={id} id={row.id} />

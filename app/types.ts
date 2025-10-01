@@ -76,10 +76,16 @@ export type Anime = {
 	episodes?: AnimeEpisode[];
 };
 
+export enum EPISODE_STATE {
+	PROCESSING = 0,
+	READY = 1
+}
+
 export type AnimeEpisode = {
 	id: number;
 	animeId: number;
 	title?: string;
 	index?: string;
 	odr?: number;
+	state?: EPISODE_STATE
 };
