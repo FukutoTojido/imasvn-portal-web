@@ -6,6 +6,7 @@ export default function AnimeCard({ title, time, bg, id }: Anime) {
 		<Link
 			className="relative w-full h-[300px] flex flex-col text-white group bg-base border border-surface-1 rounded-3xl overflow-hidden hover:bg-surface-0 hover:rounded-md transition-all justify-end"
 			to={`/anime/${id}`}
+			viewTransition
 		>
 			<img
 				src={bg}

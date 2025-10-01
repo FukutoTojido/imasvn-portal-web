@@ -170,7 +170,9 @@ export default function Page() {
 					table={table}
 					columns={columns}
 					onRowClick={(row) => {
-						navigate(`/admin/anime/${row.getValue("id")}`);
+						navigate(`/admin/anime/${row.getValue("id")}`, {
+							viewTransition: true,
+						});
 					}}
 				/>
 				<div className="w-full flex items-center justify-end gap-2.5">

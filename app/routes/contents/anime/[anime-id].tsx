@@ -109,7 +109,10 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 									className="w-[200px] bg-mantle border border-surface-1 text-text hover:bg-surface-0 p-5"
 									asChild
 								>
-									<Link to={`/anime/${id}/episode/${episodes?.[0]?.id}`}>
+									<Link
+										to={`/anime/${id}/episode/${episodes?.[0]?.id}`}
+										viewTransition
+									>
 										<Play />
 										Episode {episodes?.[0]?.index}
 									</Link>
@@ -118,7 +121,10 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 									className="w-[200px] bg-text border border-surface-1 text-mantle hover:bg-subtext-0 p-5"
 									asChild
 								>
-									<Link to={`/anime/${id}/episode/${episodes?.at(-1)?.id}`}>
+									<Link
+										to={`/anime/${id}/episode/${episodes?.at(-1)?.id}`}
+										viewTransition
+									>
 										<Sparkle />
 										Latest Episode
 									</Link>
@@ -150,6 +156,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 									.map(({ id: episodeId, index }) => {
 										return (
 											<Link
+												viewTransition
 												key={episodeId}
 												to={`/anime/${id}/episode/${episodeId}`}
 												className="w-full h-[50px] bg-surface-0 hover:bg-surface-1 transition-all rounded-md border-surface-1 border flex justify-center items-center p-5 text-sm font-semibold gap-2.5 line-clamp-1"

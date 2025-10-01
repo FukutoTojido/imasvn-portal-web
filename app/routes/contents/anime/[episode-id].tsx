@@ -145,7 +145,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 								+episodeId === _id && "bg-text text-mantle hover:bg-subtext-0",
 							)}
 						>
-							<Link to={`/anime/${id}/episode/${_id}`}>{index}</Link>
+							<Link to={`/anime/${id}/episode/${_id}`} viewTransition>{index}</Link>
 						</Button>
 					))}
 				</div>
