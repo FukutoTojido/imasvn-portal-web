@@ -34,12 +34,14 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 
 export const meta = ({
 	data,
-	params: { episode },
+	params: { episodeId },
 	...rest
 }: Route.MetaArgs) => {
 	// biome-ignore lint/suspicious/noExplicitAny: IDK dawg
 	const parentMeta = rest.matches.flatMap((match: any) => match.meta ?? []);
-	const episodeData = data?.episodes?.[+episode];
+	const episodeData = data?.episodes?.find(
+		(episode) => episode.id === +(episodeId ?? -1),
+	);
 	if (!episodeData) return [...parentMeta];
 
 	const title = `Episode ${episodeData?.index} - ${episodeData?.title} | ${data?.title ?? "Anime"} | THE iDOLM@STER Vietnam Portal`;
