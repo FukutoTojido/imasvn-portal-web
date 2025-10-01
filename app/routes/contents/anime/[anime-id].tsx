@@ -160,7 +160,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 								<span className="font-bold">Year:</span>{" "}
 								{time ? DateTime.fromISO(time).year : "TBD"}
 							</span>
-							<p>{sypnosis}</p>
+							<p className="whitespace-pre-wrap">{sypnosis}</p>
 						</div>
 						{eps?.length ? (
 							<div className="flex-1 overflow-auto h-min grid grid-cols-4 gap-2.5">
