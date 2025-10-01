@@ -14,7 +14,7 @@ import ErrorComponent from "~/routes/components/Error";
 import { type Anime, EPISODE_STATE } from "~/types";
 import type { Route } from "./+types/[anime-id]";
 
-export const clientLoader = async ({ params }: Route.ClientLoaderArgs) => {
+export const loader = async ({ params }: Route.ClientLoaderArgs) => {
 	try {
 		const { data: animes } = await axios.get<
 			Omit<Anime, "time"> & { time?: string }

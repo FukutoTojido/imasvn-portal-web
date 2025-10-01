@@ -16,7 +16,7 @@ import axios from "axios";
 import type { AnimeDto } from "~/routes/admin/contents/anime/[anime-id]";
 import { EPISODE_STATE } from "~/types";
 
-export const clientLoader = async ({ params }: Route.LoaderArgs) => {
+export const loader = async ({ params }: Route.LoaderArgs) => {
 	try {
 		const { data: anime } = await axios.get<AnimeDto>(
 			`${import.meta.env.VITE_BACKEND_API}/anime/${params.id}`,
@@ -35,7 +35,7 @@ export const clientLoader = async ({ params }: Route.LoaderArgs) => {
 export const meta = ({ data, params: { episode } }: Route.MetaArgs) => {
 	const episodeData = data?.episodes?.[+episode];
 	if (!episodeData) return undefined;
-	
+
 	const title = `Episode ${episodeData?.index} - ${episodeData?.title} | ${data?.title ?? "Anime"} | THE iDOLM@STER Vietnam Portal`;
 	const desc = data?.sypnosis ?? "";
 	const url = data?.bg;
