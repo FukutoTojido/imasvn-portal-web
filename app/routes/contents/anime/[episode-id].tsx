@@ -52,7 +52,7 @@ export const meta = ({
 		{ property: "og:title", content: title },
 		{
 			property: "og:description",
-			content: "Live | THE iDOLM@STER Vietnam Portal",
+			content: desc,
 		},
 		{
 			property: "og:image",
