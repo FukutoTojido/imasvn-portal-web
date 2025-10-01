@@ -43,7 +43,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "~/components/ui/table";
-import { EPISODE_STATE, type AnimeEpisode } from "~/types";
+import { type AnimeEpisode, EPISODE_STATE } from "~/types";
 import UpdateEpisode from "./UpdateEpisode";
 
 const Delete = ({ id, animeId }: { id: number; animeId: number }) => {

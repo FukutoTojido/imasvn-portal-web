@@ -168,7 +168,7 @@ export default function UpdateEpisode({
 							<Label className="text-text">Video File</Label>
 							<Input
 								type="file"
-								{...register("video", { required: true })}
+								{...register("video", { required: !id })}
 								className="dark:text-text dark:bg-mantle"
 							/>
 						</div>
