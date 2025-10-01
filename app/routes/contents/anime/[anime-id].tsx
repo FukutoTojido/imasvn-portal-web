@@ -108,17 +108,19 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 						</div>
 						{episodes?.length ? (
 							<div className="flex-1 overflow-auto h-min grid grid-cols-4 gap-2.5">
-								{episodes?.map(({ id: episodeId, index }) => {
-									return (
-										<Link
-											key={episodeId}
-											to={`/anime/${id}/episode/${episodeId}`}
-											className="w-full h-[50px] bg-surface-0 hover:bg-surface-1 transition-all rounded-md border-surface-1 border flex justify-center items-center p-5 text-sm font-semibold gap-2.5 line-clamp-1"
-										>
-											{index}
-										</Link>
-									);
-								})}
+								{episodes
+									?.filter((episodes) => episodes.state === EPISODE_STATE.READY)
+									.map(({ id: episodeId, index }) => {
+										return (
+											<Link
+												key={episodeId}
+												to={`/anime/${id}/episode/${episodeId}`}
+												className="w-full h-[50px] bg-surface-0 hover:bg-surface-1 transition-all rounded-md border-surface-1 border flex justify-center items-center p-5 text-sm font-semibold gap-2.5 line-clamp-1"
+											>
+												{index}
+											</Link>
+										);
+									})}
 							</div>
 						) : (
 							""
