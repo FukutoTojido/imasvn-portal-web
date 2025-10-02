@@ -1,6 +1,34 @@
 import { Fragment, type RefObject, useMemo } from "react";
 import { useWatch } from "react-hook-form";
 
+const extractJapanese = (str: string) => {
+	const regex =
+		/([\u3000-\u303F]+|[\u3040-\u309F]+|[\u30A0-\u30FF]+|[\uFF00-\uFFEF]+|[\u4E00-\u9FAF]+|[\u2605-\u2606]+|[\u2190-\u2195]+|\u203B+)/;
+	const arr = str.split(regex);
+
+	const accm: {
+		str: string;
+		type: "JP" | "LATIN";
+	}[] = [];
+
+	for (const str of arr) {
+		if (!str) continue;
+		if (regex.test(str)) {
+			accm.push({
+				str,
+				type: "JP",
+			});
+			continue;
+		}
+		accm.push({
+			str,
+			type: "LATIN",
+		});
+	}
+
+	return accm;
+};
+
 export default function FrontCard({
 	ref,
 	url,
@@ -23,6 +51,8 @@ export default function FrontCard({
 		const dataURL = URL.createObjectURL(new Blob([file]));
 		return dataURL;
 	}, [imgFile]);
+
+	const nameArr = extractJapanese(name);
 
 	return (
 		<div
@@ -171,7 +201,7 @@ export default function FrontCard({
                                 "wdth" 115
                             `,
 							fontFamily: "Base Neue, Karasuma Gothic",
-							clipPath: "url(#nameMask)"
+							clipPath: "url(#nameMask)",
 						}}
 					>
 						<span className="w-[170px] h-full"></span>
@@ -185,17 +215,37 @@ export default function FrontCard({
 							>
 								<title>Troll Face 2</title>
 								<clipPath id="nameMask">
-									<text
-										x="170"
-										y="200"
-										alignmentBaseline="text-before-edge"
-										style={{
-											fontFamily: "Base Neue",
-											fontSize: "128px",
-											lineHeight: "128px",
-										}}
-									>
-										{name}
+									<text x="170" y="200" alignmentBaseline="text-before-edge">
+										{nameArr.map(({ str, type }) => {
+											if (type === "JP") {
+												return (
+													<tspan
+														y="210"
+														key={Math.random()}
+														alignmentBaseline="text-before-edge"
+														style={{
+															fontFamily: "Karasuma Gothic",
+														}}
+													>
+														{str}
+													</tspan>
+												);
+											}
+											return (
+												<tspan
+													y="200"
+													key={Math.random()}
+													alignmentBaseline="text-before-edge"
+													style={{
+														fontFamily: "Base Neue",
+														fontSize: "128px",
+														lineHeight: "128px",
+													}}
+												>
+													{str}
+												</tspan>
+											);
+										})}
 									</text>
 								</clipPath>
 							</svg>
