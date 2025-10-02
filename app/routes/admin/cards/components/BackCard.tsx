@@ -67,12 +67,13 @@ export default function BackCard({
 								fontFamily: "Karasuma Gothic",
 								WebkitTextStroke: "3px rgba(0 0 0 / .2)",
 								filter: "blur(10px)",
+								fontStyle: "italic",
 							}}
 						>
 							{idol}
 						</div>
 						<div
-							className="absolute inset-0 size-full bg-red"
+							className="absolute inset-0 size-full"
 							style={{
 								clipPath: "url(#idolMask)",
 							}}
@@ -82,7 +83,7 @@ export default function BackCard({
 								alt=""
 								className="absolute inset-0 size-full object-cover object-center blur-[30px]"
 							/>
-							<div className="absolute inset-0 size-full bg-[#424242]/50"></div>
+							<div className="absolute inset-0 size-full bg-[#000000]/50"></div>
 						</div>
 						<svg
 							viewBox="0 0 1500 640"
@@ -105,6 +106,7 @@ export default function BackCard({
 										fontFamily: "Karasuma Gothic",
 										fontSize: "190px",
 										lineHeight: "230px",
+										fontStyle: "italic",
 									}}
 								>
 									{idol}
@@ -135,6 +137,7 @@ export default function BackCard({
 									paintOrder: "stroke",
 									fontSize: "190px",
 									lineHeight: "230px",
+									fontStyle: "italic",
 								}}
 							>
 								{idol}
@@ -212,9 +215,7 @@ export default function BackCard({
 										{producerId}
 									</div>
 								</div>
-								<div
-									className="w-[1665px] flex-1 flex items-center justify-center px-[80px] py-2.5 overflow-hidden gap-[100px]"
-								>
+								<div className="w-[1665px] flex-1 flex items-center justify-center px-[80px] py-2.5 overflow-hidden gap-[100px]">
 									<img src="/Vector2.svg" alt="" className="block w-[450px]" />
 									<img src="/FB.png" alt="" className="block" />
 									<img src="/Discord.png" alt="" className="block" />

@@ -163,7 +163,6 @@ export default function FrontCard({
 					<div
 						className="absolute text-[128px]/[128px] text-transparent w-full h-full flex"
 						style={{
-							backgroundClip: "text",
 							backgroundImage:
 								"linear-gradient(to right, black, black), linear-gradient(to right, #FFEDD3, #FFC0E8)",
 							backgroundBlendMode: "overlay, normal",
@@ -172,12 +171,34 @@ export default function FrontCard({
                                 "wdth" 115
                             `,
 							fontFamily: "Base Neue, Karasuma Gothic",
+							clipPath: "url(#nameMask)"
 						}}
 					>
 						<span className="w-[170px] h-full"></span>
 						<div className="flex flex-col flex-1">
 							<span className="w-full h-[224px]"></span>
-							{name}
+							{/* {name} */}
+							<svg
+								viewBox="0 0 2473 516"
+								xmlns="http://www.w3.org/2000/svg"
+								className="absolute top-0 left-0"
+							>
+								<title>Troll Face 2</title>
+								<clipPath id="nameMask">
+									<text
+										x="170"
+										y="200"
+										alignmentBaseline="text-before-edge"
+										style={{
+											fontFamily: "Base Neue, Karasuma Gothic",
+											fontSize: "128px",
+											lineHeight: "128px",
+										}}
+									>
+										{name}
+									</text>
+								</clipPath>
+							</svg>
 						</div>
 					</div>
 				</div>
