@@ -9,7 +9,7 @@ import {
 import axios from "axios";
 import { ChevronLeft, ChevronRight, Trash } from "lucide-react";
 import { parseAsInteger, useQueryState } from "nuqs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import useSWR, { mutate } from "swr";
@@ -125,6 +125,11 @@ export default function Page() {
 			columnFilters,
 		},
 	});
+
+	useEffect(() => {
+		if (!filter) return;
+		setPage(0);
+	}, [filter, setPage]);
 
 	const navigate = useNavigate();
 

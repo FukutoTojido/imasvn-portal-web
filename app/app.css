@@ -33,6 +33,12 @@
 	src: url("/fonts/KarasumaGothic-BlackItalic.otf");
 }
 
+@font-face {
+	font-family: "Karasuma Gothic";
+	font-weight: 900;
+	src: url("/fonts/KarasumaGothic-Black.otf");
+}
+
 @theme {
 	--color-primary-1: #25263a;
 	--color-primary-2: #2b2c43;

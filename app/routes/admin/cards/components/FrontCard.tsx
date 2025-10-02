@@ -171,7 +171,7 @@ export default function FrontCard({
                                 "wght" 900,
                                 "wdth" 115
                             `,
-							fontFamily: "Base Neue",
+							fontFamily: "Base Neue, Karasuma Gothic",
 						}}
 					>
 						<span className="w-[170px] h-full"></span>

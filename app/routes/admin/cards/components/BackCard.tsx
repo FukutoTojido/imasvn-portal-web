@@ -82,7 +82,7 @@ export default function BackCard({
 								alt=""
 								className="absolute inset-0 size-full object-cover object-center blur-[30px]"
 							/>
-							<div className="absolute inset-0 size-full bg-[#BCBCBC]/50"></div>
+							<div className="absolute inset-0 size-full bg-[#424242]/50"></div>
 						</div>
 						<svg
 							viewBox="0 0 1500 640"
@@ -184,7 +184,7 @@ export default function BackCard({
 									alt="w-full h-full object-cover object-center"
 								/>
 							</div>
-							<div className="flex-1 h-full flex flex-col gap-[50px]">
+							<div className="w-[585px] flex-1 h-full flex flex-col gap-[50px]">
 								<div
 									className="w-full h-[150px] bg-white rounded-[50px] px-20 flex items-center justify-between"
 									style={{
@@ -213,12 +213,11 @@ export default function BackCard({
 									</div>
 								</div>
 								<div
-									className="w-full flex-1 bg-[#3D3D3D] rounded-[50px] border-8 border-white flex items-center justify-center px-[70px] overflow-hidden"
-									style={{
-										boxShadow: "0 15px 30px 0 rgba(0 0 0 /.2)",
-									}}
+									className="w-[1665px] flex-1 flex items-center justify-center px-[80px] py-2.5 overflow-hidden gap-[100px]"
 								>
-									<img src="/Vector.svg" alt="" className="block" />
+									<img src="/Vector2.svg" alt="" className="block w-[450px]" />
+									<img src="/FB.png" alt="" className="block" />
+									<img src="/Discord.png" alt="" className="block" />
 								</div>
 							</div>
 						</div>
@@ -232,16 +231,8 @@ export default function BackCard({
                             "wght" 488
                         `,
 						}}
-						className="list-disc list-inside flex flex-col justify-center gap-2.5 flex-1 h-full bg-white rounded-[50px] px-[80px] text-[31px]/[56px]"
+						className="list-disc list-inside flex flex-col justify-center gap-2.5 flex-1 h-[344px] bg-white rounded-[50px] px-[80px] text-[31px]/[56px]"
 					>
-						<li>
-							Thẻ này được sử dụng để truy cập THE iDOLM@STER Vietnam Portal
-							thông qua công nghệ NFC.
-						</li>
-						<li>
-							Trong trường hợp điện thoại của bạn không có NFC, xin hãy sử dụng
-							mã QR bên cạnh.
-						</li>
 						<li>
 							Nếu xảy ra lỗi trong quá trình truy cập Portal, vui lòng liên hệ
 							@fukutotojido trên Discord THE iDOLM@STER Vietnam.
