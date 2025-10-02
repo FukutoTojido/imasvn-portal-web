@@ -190,7 +190,7 @@ export default function FrontCard({
 										y="200"
 										alignmentBaseline="text-before-edge"
 										style={{
-											fontFamily: "Base Neue, Karasuma Gothic",
+											fontFamily: "Base Neue",
 											fontSize: "128px",
 											lineHeight: "128px",
 										}}
