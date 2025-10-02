@@ -25,13 +25,13 @@
 	font-family: "Base Neue";
 	src: url("/fonts/BaseNeue-Variable.ttf");
 }
-
+/* 
 @font-face {
 	font-family: "Karasuma Gothic";
 	font-weight: 900;
 	font-style: italic;
 	src: url("/fonts/KarasumaGothic-BlackItalic.otf");
-}
+} */
 
 @font-face {
 	font-family: "Karasuma Gothic";
