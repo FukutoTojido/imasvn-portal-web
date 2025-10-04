@@ -5,6 +5,7 @@ import {
 	type RefObject,
 	type SetStateAction,
 	useImperativeHandle,
+	useMemo,
 	useState,
 } from "react";
 import { useForm } from "react-hook-form";
@@ -131,6 +132,11 @@ export default function UpdateEpisode({
 		setSubmitting(false);
 	};
 
+	const previewVideo = useMemo(() => {
+		if (!video?.length) return undefined;
+		return URL.createObjectURL(new Blob([video[0]]));
+	}, [video]);
+
 	return (
 		<Dialog
 			open={open}
@@ -176,16 +182,12 @@ export default function UpdateEpisode({
 								className="dark:text-text dark:bg-mantle"
 							/>
 						</div>
-						{id !== null && (
+						{(id !== null || previewVideo) && (
 							<div className="col-span-full overflow-hidden rounded-md aspect-video bg-mantle">
 								<VideoPlayer
 									animeId={animeId}
-									episodeId={id}
-									src={
-										video?.length
-											? URL.createObjectURL(new Blob([video[0]]))
-											: undefined
-									}
+									episodeId={id ?? undefined}
+									src={previewVideo}
 								/>
 							</div>
 						)}

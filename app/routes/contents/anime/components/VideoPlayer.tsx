@@ -46,8 +46,8 @@ export default function VideoPlayer({
 	isStream = false,
 	src
 }: {
-	episodeId: number;
-	animeId: number;
+	episodeId?: number;
+	animeId?: number;
 	isStream?: boolean;
 	src?: string;
 }) {
