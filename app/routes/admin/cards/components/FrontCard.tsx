@@ -184,7 +184,7 @@ export default function FrontCard({
 						style={{
 							maskImage: "url(/Producer.svg)",
 							maskRepeat: "no-repeat",
-							maskPosition: "170px 78px",
+							maskPosition: "180px 61px",
 							backgroundImage:
 								"linear-gradient(to right, black, black), linear-gradient(to right, #FFEDD3, #FFC0E8)",
 							backgroundBlendMode: "overlay, normal",
@@ -215,12 +215,12 @@ export default function FrontCard({
 							>
 								<title>Troll Face 2</title>
 								<clipPath id="nameMask">
-									<text x="170" y="200" alignmentBaseline="text-before-edge">
+									<text x="180" y="180" alignmentBaseline="text-before-edge">
 										{nameArr.map(({ str, type }) => {
 											if (type === "JP") {
 												return (
 													<tspan
-														y="210"
+														y="190"
 														key={Math.random()}
 														alignmentBaseline="text-before-edge"
 														style={{
@@ -233,7 +233,7 @@ export default function FrontCard({
 											}
 											return (
 												<tspan
-													y="200"
+													y="180"
 													key={Math.random()}
 													alignmentBaseline="text-before-edge"
 													style={{
