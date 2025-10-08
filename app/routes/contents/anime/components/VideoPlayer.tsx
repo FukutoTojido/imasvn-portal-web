@@ -256,6 +256,8 @@ export default function VideoPlayer({
 			animationFrame.current = anim;
 		});
 
+		setIsPlaying(false);
+
 		// const options = {
 		// 	video: ref.current,
 		// 	subUrl: "/ML Ep 1.ass",
