@@ -79,7 +79,7 @@ export default function FrontCard({
 									"linear-gradient(to right, transparent 0%, white 42%, white 100%)",
 							}}
 						/>
-						<img src="/ML.svg" alt="" className="absolute h-full right-0" />
+						<img src="/AT.svg" alt="" className="absolute h-full right-0" />
 						<img
 							src={(image ?? url ?? null) as string | undefined}
 							alt=""
