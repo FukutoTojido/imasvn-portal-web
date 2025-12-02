@@ -102,7 +102,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 										src={
 											producerData?.events.find(
 												(event: EventData) => event.id === (card.event ?? 0),
-											).img
+											)?.img
 										}
 										alt=""
 										className="absolute w-[60%] aspect-square bottom-0 left-0 object-contain"
