@@ -259,7 +259,10 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 										<button
 											type="button"
 											className="p-5 border-2 border-[#57ff89] disabled:opacity-20"
-											onClick={() => table.previousPage()}
+											onClick={(e) => {
+												e.stopPropagation();
+												table.previousPage();
+											}}
 											disabled={!table.getCanPreviousPage()}
 										>
 											<ChevronLeft />
@@ -267,7 +270,10 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 										<button
 											type="button"
 											className="p-5 border-2 border-[#57ff89] disabled:opacity-20"
-											onClick={() => table.nextPage()}
+											onClick={(e) => {
+												e.stopPropagation();
+												table.nextPage();
+											}}
 											disabled={!table.getCanNextPage()}
 										>
 											<ChevronRight />
