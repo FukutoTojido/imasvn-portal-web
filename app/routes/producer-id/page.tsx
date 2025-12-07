@@ -168,21 +168,45 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 	const infoRef = useRef<HTMLDivElement>(null);
 	const contRef = useRef<HTMLDivElement>(null);
 
+	const buttonPrevRef = useRef<HTMLButtonElement>(null);
+	const buttonNextRef = useRef<HTMLButtonElement>(null);
+
 	useEffect(() => {
-		let ev: EventListenerOrEventListenerObject | undefined;
+		const ev = () => {
+			baseRef.current?.classList.toggle("opacity-0");
+			infoRef.current?.classList.toggle("opacity-0");
+			infoRef.current?.classList.toggle("pointer-events-none");
+		};
 
 		const timeout = setTimeout(() => {
-			ev = contRef.current?.addEventListener("click", () => {
-				baseRef.current?.classList.toggle("opacity-0");
-				infoRef.current?.classList.toggle("opacity-0");
-			}) as EventListenerOrEventListenerObject | undefined;
+			contRef.current?.addEventListener("click", ev);
 		}, 7000);
 
 		return () => {
 			clearTimeout(timeout);
-			if (ev) contRef.current?.removeEventListener("click", ev);
+			contRef.current?.removeEventListener("click", ev);
 		};
 	}, []);
+
+	useEffect(() => {
+		const evPrev = (e: PointerEvent) => {
+			e.stopPropagation();
+			table.previousPage();
+		};
+
+		const evNext = (e: PointerEvent) => {
+			e.stopPropagation();
+			table.nextPage();
+		};
+
+		buttonPrevRef.current?.addEventListener("click", evPrev);
+		buttonNextRef.current?.addEventListener("click", evNext);
+
+		return () => {
+			buttonPrevRef.current?.removeEventListener("click", evPrev);
+			buttonNextRef.current?.removeEventListener("click", evNext);
+		};
+	}, [table.nextPage, table.previousPage]);
 
 	if (!loaderData) return "";
 	return (
@@ -206,81 +230,13 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 					}}
 					ref={contRef}
 				>
-					<div className="absolute top-0 left-0 w-full h-full producer-id-inner pointer-events-none">
+					<div className="absolute top-0 left-0 w-full h-full producer-id-inner">
 						<div className="absolute top-0 left-0 w-full h-full card-front">
 							<img
 								src="/Base.svg"
 								alt=""
 								className="w-full h-full object-cover object-center block"
 							/>
-							<div
-								className="absolute top-[96px] left-[90px] w-[613px] h-[1078px] bg-black text-[#57ff89] text-4xl opacity-0 transition-opacity"
-								style={{
-									fontFamily: "Classic Console Neue",
-								}}
-								ref={infoRef}
-							>
-								<div
-									className="w-full h-full overflow-auto flex flex-col p-5 gap-5"
-									style={{
-										filter: "drop-shadow(0 0 10px #57ff89)",
-									}}
-								>
-									Producer Info
-									<ul>
-										<li className="text-3xl list-disc list-inside">
-											ID: {loaderData.userData.id}
-										</li>
-										<li className="text-3xl list-disc list-inside">
-											Name: {loaderData.userData.name}
-										</li>
-										<li className="text-3xl list-disc list-inside">
-											Event Participated: {loaderData.userData.events.length}
-										</li>
-									</ul>
-									<div className="flex flex-col gap-2.5">
-										{(table.getRowModel().rows ?? []).map((row) => (
-											<div
-												className="w-full flex items-center gap-5 text-2xl border-2 border-[#57ff89] p-5"
-												key={row.id}
-											>
-												{row.getVisibleCells().map((cell) => (
-													<Fragment key={cell.id}>
-														{flexRender(
-															cell.column.columnDef.cell,
-															cell.getContext(),
-														)}
-													</Fragment>
-												))}
-											</div>
-										))}
-									</div>
-									<div className="w-full flex items-center justify-end gap-2.5">
-										<button
-											type="button"
-											className="p-5 border-2 border-[#57ff89] disabled:opacity-20"
-											onClick={(e) => {
-												e.stopPropagation();
-												table.previousPage();
-											}}
-											disabled={!table.getCanPreviousPage()}
-										>
-											<ChevronLeft />
-										</button>
-										<button
-											type="button"
-											className="p-5 border-2 border-[#57ff89] disabled:opacity-20"
-											onClick={(e) => {
-												e.stopPropagation();
-												table.nextPage();
-											}}
-											disabled={!table.getCanNextPage()}
-										>
-											<ChevronRight />
-										</button>
-									</div>
-								</div>
-							</div>
 							<div
 								className="absolute top-0 left-0 w-full h-full ink transition-opacity"
 								ref={baseRef}
@@ -346,6 +302,68 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 									alt=""
 									className="absolute top-[1179.24px] left-[90px] w-[170px] h-[21.52px]"
 								/>
+							</div>
+							<div
+								className="absolute top-[96px] left-[90px] w-[613px] h-[1078px] bg-black text-[#57ff89] text-4xl opacity-0 pointer-events-none transition-opacity"
+								style={{
+									fontFamily: "Classic Console Neue",
+								}}
+								ref={infoRef}
+							>
+								<div
+									className="w-full h-full overflow-auto flex flex-col p-5 gap-5"
+									style={{
+										filter: "drop-shadow(0 0 10px #57ff89)",
+									}}
+								>
+									Producer Info
+									<ul>
+										<li className="text-3xl list-disc list-inside">
+											ID: {loaderData.userData.id}
+										</li>
+										<li className="text-3xl list-disc list-inside">
+											Name: {loaderData.userData.name}
+										</li>
+										<li className="text-3xl list-disc list-inside">
+											Event Participated: {loaderData.userData.events.length}
+										</li>
+									</ul>
+									<div className="w-full flex items-center justify-end gap-2.5">
+										<button
+											type="button"
+											className="p-5 border-2 border-[#57ff89] not-disabled:hover:bg-[#57ff89] not-disabled:hover:text-black transition disabled:opacity-20"
+											disabled={!table.getCanPreviousPage()}
+											ref={buttonPrevRef}
+										>
+											<ChevronLeft />
+										</button>
+										<button
+											type="button"
+											className="p-5 border-2 border-[#57ff89] not-disabled:hover:bg-[#57ff89] not-disabled:hover:text-black transition disabled:opacity-20"
+											disabled={!table.getCanNextPage()}
+											ref={buttonNextRef}
+										>
+											<ChevronRight />
+										</button>
+									</div>
+									<div className="flex flex-col gap-2.5">
+										{(table.getRowModel().rows ?? []).map((row) => (
+											<div
+												className="w-full flex items-center gap-5 text-2xl border-2 border-[#57ff89] p-5"
+												key={row.id}
+											>
+												{row.getVisibleCells().map((cell) => (
+													<Fragment key={cell.id}>
+														{flexRender(
+															cell.column.columnDef.cell,
+															cell.getContext(),
+														)}
+													</Fragment>
+												))}
+											</div>
+										))}
+									</div>
+								</div>
 							</div>
 							<div className="absolute w-full h-[20px] rounded-full blur bg-[#80ffaa] scanner"></div>
 						</div>

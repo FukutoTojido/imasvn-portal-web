@@ -149,13 +149,6 @@ export default function Page() {
 					/>
 					<AddProducer mutate={mutate} />
 				</div>
-				<TableComponent
-					table={table}
-					columns={columns}
-					onRowClick={(row) =>
-						navigate(`/admin/producers/${row.getValue("id")}`)
-					}
-				/>
 				<div className="w-full flex items-center justify-end gap-2.5">
 					<div className="flex-1 px-2.5 text-sm text-subtext-0">
 						Page {table.getState().pagination.pageIndex + 1} of{" "}
@@ -182,6 +175,13 @@ export default function Page() {
 						<ChevronRight />
 					</Button>
 				</div>
+				<TableComponent
+					table={table}
+					columns={columns}
+					onRowClick={(row) =>
+						navigate(`/admin/producers/${row.getValue("id")}`)
+					}
+				/>
 			</div>
 		</>
 	);
