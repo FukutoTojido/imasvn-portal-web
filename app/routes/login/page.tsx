@@ -17,7 +17,7 @@ export function meta({}: Route.MetaArgs) {
 			property: "og:image",
 			content: "https://cdn.tryz.id.vn/Portal%20Image.png",
 		},
-		{ property: "og:url", content: "https://live.tryz.id.vn" },
+		{ property: "og:url", content: "https://jibunrest.art" },
 		{ name: "twitter:card", content: "summary_large_image" },
 		{
 			name: "twitter:title",
@@ -31,8 +31,8 @@ export function meta({}: Route.MetaArgs) {
 			name: "twitter:image",
 			content: "https://cdn.tryz.id.vn/Portal%20Image.png",
 		},
-		{ property: "twitter:url", content: "https://live.tryz.id.vn" },
-		{ property: "twitter:domain", content: "live.tryz.id.vn" },
+		{ property: "twitter:url", content: "https://jibunrest.art" },
+		{ property: "twitter:domain", content: "jibunrest.art" },
 	];
 }
 

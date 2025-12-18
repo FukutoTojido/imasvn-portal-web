@@ -58,7 +58,7 @@ export const meta = ({
 			property: "og:image",
 			content: url,
 		},
-		{ property: "og:url", content: "https://live.tryz.id.vn" },
+		{ property: "og:url", content: "https://jibunrest.art" },
 		{ name: "twitter:card", content: "summary_large_image" },
 		{
 			name: "twitter:title",
@@ -72,8 +72,8 @@ export const meta = ({
 			name: "twitter:image",
 			content: url,
 		},
-		{ property: "twitter:url", content: "https://live.tryz.id.vn" },
-		{ property: "twitter:domain", content: "live.tryz.id.vn" },
+		{ property: "twitter:url", content: "https://jibunrest.art" },
+		{ property: "twitter:domain", content: "jibunrest.art" },
 	];
 };
 
