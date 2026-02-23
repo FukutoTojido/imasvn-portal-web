@@ -29,7 +29,7 @@ export async function loader() {
 
 export default function Page({ loaderData }: Route.ComponentProps) {
 	const [submitting, setSubmitting] = useState(false);
-	const { handleSubmit, register, watch } = useForm({
+	const { handleSubmit, register, watch, setValue } = useForm({
 		defaultValues: {
 			title: "",
 			thumbnail: "",
@@ -48,13 +48,22 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 			await axios.post(
 				`${import.meta.env.VITE_BACKEND_API}/live/preview`,
 				{
-					title: data.title,
-					url: data.thumbnail,
+					title: data.title || "Tsukimura Temari Radio 24/7",
+					url: data.thumbnail || "https://cdn.tryz.id.vn/Live%20Image.png",
 				},
 				{
 					withCredentials: true,
 				},
 			);
+
+			if (!data.title) {
+				setValue("title", "Tsukimura Temari Radio 24/7");
+			}
+
+			if (!data.thumbnail) {
+				setValue("thumbnail", "https://cdn.tryz.id.vn/Live%20Image.png");
+			}
+
 			toast("Livestage details saved!");
 		} catch (e) {
 			console.error(e);
