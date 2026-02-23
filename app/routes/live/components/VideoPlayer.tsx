@@ -62,6 +62,7 @@ export default function VideoPlayer({
 	const controlsRef = useRef<HTMLDivElement>(null);
 	const playerRef = useRef<HTMLDivElement>(null);
 	const currentTimeout = useRef<NodeJS.Timeout | null>(null);
+	const currentDebounce = useRef<NodeJS.Timeout | null>(null);
 
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [isMuted, setIsMuted] = useState(true);
@@ -170,7 +171,9 @@ export default function VideoPlayer({
 			hls.attachMedia(ref.current);
 
 			hls.on(Hls.Events.ERROR, () => {
-				setTimeout(() => {
+				clearTimeout(currentDebounce.current ?? undefined);
+
+				currentDebounce.current = setTimeout(() => {
 					hls.loadSource(url ?? "");
 				}, 2000);
 			});
