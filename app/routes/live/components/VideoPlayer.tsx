@@ -164,9 +164,14 @@ export default function VideoPlayer({
 			const hls = new Hls({
 				liveSyncDurationCount: 3,
 				liveMaxLatencyDurationCount: 5,
+				lowLatencyMode: true
 			});
 			hls.loadSource(url ?? "");
 			hls.attachMedia(ref.current);
+			hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+				hls.loadSource(url ?? "");
+			});
+
 			return () => {
 				hls.destroy();
 			};
