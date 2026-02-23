@@ -161,12 +161,15 @@ export default function VideoPlayer({
 		if (!ref.current || userData.authType !== UserType.OK) return;
 
 		if (isHls) {
-			console.log(isHls, url);
-			
-			const hls = new Hls();
+			const hls = new Hls({
+				liveSyncDurationCount: 3,
+				liveMaxLatencyDurationCount: 5,
+			});
 			hls.loadSource(url ?? "");
 			hls.attachMedia(ref.current);
-			return;
+			return () => {
+				hls.destroy();
+			};
 		}
 
 		const r = new MediaMTXWebRTCReader({
