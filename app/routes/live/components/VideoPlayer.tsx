@@ -162,13 +162,17 @@ export default function VideoPlayer({
 
 		if (isHls) {
 			const hls = new Hls({
-				liveSyncDurationCount: 3,
-				liveMaxLatencyDurationCount: 5,
-				lowLatencyMode: true
+				liveSyncDurationCount: 2,
+				liveMaxLatencyDurationCount: 4,
+				lowLatencyMode: true,
 			});
+			hls.loadSource(url ?? "");
 			hls.attachMedia(ref.current);
-			hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-				hls.loadSource(url ?? "");
+
+			hls.on(Hls.Events.ERROR, () => {
+				setTimeout(() => {
+					hls.loadSource(url ?? "");
+				}, 2000);
 			});
 
 			return () => {
