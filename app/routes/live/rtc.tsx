@@ -9,7 +9,7 @@ import VideoPlayer from "./components/VideoPlayer";
 import Viewers from "./components/Viewers";
 import type { Viewer } from "./types";
 
-async function loadPreview() {
+export async function loader() {
 	try {
 		const res = await axios.get(
 			`${import.meta.env.VITE_BACKEND_API}/live/preview`,
@@ -28,28 +28,7 @@ async function loadPreview() {
 	}
 }
 
-export async function clientLoader() {
-	const serverData = await loadPreview();
-
-	try {
-		const res = await axios.get(
-			`${import.meta.env.VITE_BACKEND_API}/hls/proxy`,
-			{ withCredentials: true },
-		);
-		return { ...serverData, m3u8: res.data };
-	} catch (e) {
-		console.error(e);
-		return {
-			...serverData,
-			m3u8: undefined,
-		};
-	}
-}
-
-export function meta({ data }: Route.MetaArgs) {
-	const title = data?.title;
-	const url = data?.url;
-	
+export function meta({ data: { title, url } }: Route.MetaArgs) {
 	return [
 		{ title },
 		{ name: "description", content: "Live | THE iDOLM@STER Vietnam Portal" },
@@ -105,8 +84,6 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 					hideChat={hideChat}
 					setHideChat={setHideChat}
 					viewers={viewers}
-					isHls
-					url={loaderData.m3u8}
 				/>
 				<div
 					className={`lg:w-[400px] md:w-[300px] w-full flex flex-col overflow-hidden md:flex-none flex-1 ${hideChat ? "hidden" : ""}`}

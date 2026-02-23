@@ -4,6 +4,7 @@ import {
 	ChevronUp,
 	Film,
 	IdCard,
+	Link2,
 	Sparkle,
 	User,
 	Video,
@@ -126,11 +127,24 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 									</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
+							<SidebarMenuItem>
+								<SidebarMenuButton
+									asChild
+									className="hover:bg-surface-1 hover:text-text"
+								>
+									<Link to="/admin/live/m3u8" prefetch="render">
+										<Link2 />
+										.m3u8
+									</Link>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>
 				<SidebarGroup>
-					<SidebarGroupLabel className="text-subtext-0">Contents</SidebarGroupLabel>
+					<SidebarGroupLabel className="text-subtext-0">
+						Contents
+					</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
 							<SidebarMenuItem>

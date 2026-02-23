@@ -1,3 +1,4 @@
+import Hls from "hls.js";
 import {
 	Maximize,
 	MessageSquare,
@@ -20,11 +21,11 @@ import {
 	useRef,
 	useState,
 } from "react";
+import { DialogTrigger } from "~/components/ui/dialog";
 import MediaMTXWebRTCReader from "~/lib/reader";
 import { type UserState, UserType } from "~/types";
 import type { Viewer } from "../types";
 import ErrorComponent from "./Error";
-import { DialogTrigger } from "~/components/ui/dialog";
 
 enum State {
 	HOVER = 0,
@@ -42,6 +43,8 @@ export default function VideoPlayer({
 	isFullscreen,
 	setIsFullscreen,
 	setHideChat,
+	isHls = false,
+	url,
 }: {
 	title: string;
 	userData: UserState;
@@ -51,6 +54,8 @@ export default function VideoPlayer({
 	isFullscreen: boolean;
 	setIsFullscreen: Dispatch<SetStateAction<boolean>>;
 	setHideChat: Dispatch<SetStateAction<boolean>>;
+	isHls?: boolean;
+	url?: string;
 }) {
 	const ref = useRef<HTMLVideoElement>(null);
 	const volumeRef = useRef<HTMLInputElement>(null);
@@ -150,11 +155,19 @@ export default function VideoPlayer({
 		(screen.orientation as any).lock("landscape");
 	};
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: Shhhhh
 	useEffect(() => {
 		const videoUrl = `${import.meta.env.VITE_BACKEND_API}/whep/`;
 
-		if (!ref.current) return;
+		if (!ref.current || userData.authType !== UserType.OK) return;
+
+		if (isHls) {
+			console.log(isHls, url);
+			
+			const hls = new Hls();
+			hls.loadSource(url ?? "");
+			hls.attachMedia(ref.current);
+			return;
+		}
 
 		const r = new MediaMTXWebRTCReader({
 			url: videoUrl,
@@ -170,7 +183,7 @@ export default function VideoPlayer({
 		return () => {
 			r?.close();
 		};
-	}, [userData?.authType]);
+	}, [userData?.authType, isHls, url]);
 
 	if (userData.authType === UserType.LOADING) {
 		return (
