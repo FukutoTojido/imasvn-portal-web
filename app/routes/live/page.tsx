@@ -17,8 +17,8 @@ export async function loader() {
 		const { title, url, m3u8 }: { title: string; url: string; m3u8?: string } =
 			res.data;
 		return {
-			title,
-			url,
+			title: title || "Tsukimura Temari Radio 24/7",
+			url: url || "https://cdn.tryz.id.vn/Live%20Image.png",
 			m3u8,
 		};
 	} catch (e) {
