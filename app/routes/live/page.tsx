@@ -9,15 +9,17 @@ import VideoPlayer from "./components/VideoPlayer";
 import Viewers from "./components/Viewers";
 import type { Viewer } from "./types";
 
-async function loadPreview() {
+export async function loader() {
 	try {
 		const res = await axios.get(
 			`${import.meta.env.VITE_BACKEND_API}/live/preview`,
 		);
-		const { title, url }: { title: string; url: string } = res.data;
+		const { title, url, m3u8 }: { title: string; url: string; m3u8?: string } =
+			res.data;
 		return {
 			title,
 			url,
+			m3u8,
 		};
 	} catch (e) {
 		console.error(e);
@@ -28,28 +30,7 @@ async function loadPreview() {
 	}
 }
 
-export async function clientLoader() {
-	const serverData = await loadPreview();
-
-	try {
-		const res = await axios.get(
-			`${import.meta.env.VITE_BACKEND_API}/hls/proxy`,
-			{ withCredentials: true },
-		);
-		return { ...serverData, m3u8: res.data };
-	} catch (e) {
-		console.error(e);
-		return {
-			...serverData,
-			m3u8: undefined,
-		};
-	}
-}
-
-export function meta({ data }: Route.MetaArgs) {
-	const title = data?.title;
-	const url = data?.url;
-	
+export function meta({ data: { title, url } }: Route.MetaArgs) {
 	return [
 		{ title },
 		{ name: "description", content: "Live | THE iDOLM@STER Vietnam Portal" },
