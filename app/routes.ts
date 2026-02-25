@@ -18,13 +18,14 @@ export default [
 			route("login", "routes/login/page.tsx"),
 		]),
 		layout("routes/live/layout.tsx", [
-			route("live", "routes/live/page.tsx"),
+			route("live/:id?", "routes/live/page.tsx"),
 			route("live/rtc", "routes/live/rtc.tsx"),
 		]),
 		layout("routes/live/chat/layout.tsx", [
 			route("live/chat", "routes/live/chat/page.tsx"),
 		]),
 		layout("routes/contents/layout.tsx", [
+			route("streams", "routes/live/streams.tsx"),
 			route("anime", "routes/contents/anime/page.tsx"),
 			route("anime/:id", "routes/contents/anime/[anime-id].tsx"),
 			route(

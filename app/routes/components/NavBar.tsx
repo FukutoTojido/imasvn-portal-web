@@ -23,8 +23,8 @@ export default function NavBar() {
 			icon: <Film size={16} />,
 		},
 		{
-			alias: ["/live"],
-			href: "/live",
+			alias: ["/live", "/streams"],
+			href: "/streams",
 			name: "Live",
 			icon: <Video size={16} />,
 		},

@@ -45,6 +45,7 @@ export default function VideoPlayer({
 	setHideChat,
 	isHls = false,
 	url,
+	id = "",
 }: {
 	title: string;
 	userData: UserState;
@@ -56,6 +57,7 @@ export default function VideoPlayer({
 	setHideChat: Dispatch<SetStateAction<boolean>>;
 	isHls?: boolean;
 	url?: string;
+	id?: string;
 }) {
 	const ref = useRef<HTMLVideoElement>(null);
 	const volumeRef = useRef<HTMLInputElement>(null);
@@ -247,6 +249,9 @@ export default function VideoPlayer({
 				ref={ref}
 				className="md:flex-1 md:rounded-xl bg-black h-full w-full"
 				onPlay={() => setIsPlaying(true)}
+				style={{
+					viewTransitionName: `live-${id}`
+				}}
 			/>
 			{/** biome-ignore lint/a11y/noStaticElementInteractions: Video Player duh */}
 			<div
@@ -267,29 +272,33 @@ export default function VideoPlayer({
 					<div className="flex-1 w-full p-5 flex items-start justify-between gap-5">
 						<div className="flex flex-col">
 							<div className="flex-1 line-clamp-1 font-bold">{title}</div>
-							<div className="flex items-center gap-5">
-								<DialogTrigger asChild>
-									<button
-										type="button"
-										className="w-full flex gap-2.5 items-center hover:underline underline-offset-2"
-									>
-										<Users className="pointer-events-none" size={14} />
-										<span className="pointer-events-none text-xs">
-											{viewers.length} viewer{viewers.length > 1 ? "s" : ""}{" "}
-											watching
-										</span>
-									</button>
-								</DialogTrigger>
-							</div>
+							{!id && (
+								<div className="flex items-center gap-5">
+									<DialogTrigger asChild>
+										<button
+											type="button"
+											className="w-full flex gap-2.5 items-center hover:underline underline-offset-2"
+										>
+											<Users className="pointer-events-none" size={14} />
+											<span className="pointer-events-none text-xs">
+												{viewers.length} viewer{viewers.length > 1 ? "s" : ""}{" "}
+												watching
+											</span>
+										</button>
+									</DialogTrigger>
+								</div>
+							)}
 						</div>
 
-						<button type="button" onClick={() => setHideChat(!hideChat)}>
-							{hideChat ? (
-								<MessageSquare size={20} className="pointer-events-none" />
-							) : (
-								<MessageSquareOff size={20} className="pointer-events-none" />
-							)}
-						</button>
+						{!id && (
+							<button type="button" onClick={() => setHideChat(!hideChat)}>
+								{hideChat ? (
+									<MessageSquare size={20} className="pointer-events-none" />
+								) : (
+									<MessageSquareOff size={20} className="pointer-events-none" />
+								)}
+							</button>
+						)}
 					</div>
 					<div
 						className={

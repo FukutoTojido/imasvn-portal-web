@@ -1,31 +1,30 @@
 import axios from "axios";
-import { type RefObject, useRef, useState } from "react";
+import { type RefObject, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Dialog } from "~/components/ui/dialog";
 import type store from "~/store";
+import type { ProxyData } from "../admin/live/components/UpdateProxy";
 import type { Route } from "./+types/page";
 import Chat from "./components/Chat";
 import VideoPlayer from "./components/VideoPlayer";
 import Viewers from "./components/Viewers";
 import type { Viewer } from "./types";
 
-export async function loader() {
+export async function loader({ params }: Route.LoaderArgs) {
 	try {
 		const res = await axios.get(
-			`${import.meta.env.VITE_BACKEND_API}/live/preview`,
+			`${import.meta.env.VITE_BACKEND_API}/hls/proxies/${params.id ?? "root"}/preview`,
 		);
-		const { title, url, m3u8 }: { title: string; url: string; m3u8?: string } =
-			res.data;
+		const { name, thumbnail }: Omit<ProxyData, "id" | "m3u8"> = res.data;
 		return {
-			title: title || "Tsukimura Temari Radio 24/7",
-			url: url || "https://cdn.tryz.id.vn/Live%20Image.png",
-			m3u8,
+			title: name || "<to be announced>",
+			url: thumbnail || "https://cdn.tryz.id.vn/Live%20Image.png",
 		};
 	} catch (e) {
 		console.error(e);
 		return {
-			title: "Tsukimura Temari Radio 24/7",
-			url: "https://cdn.tryz.id.vn/Live%20Image.png",
+			title: "Not found",
+			url: "",
 		};
 	}
 }
@@ -62,7 +61,7 @@ export function meta({ data: { title, url } }: Route.MetaArgs) {
 	];
 }
 
-export default function Page({ loaderData }: Route.ComponentProps) {
+export default function Page({ params, loaderData }: Route.ComponentProps) {
 	const userData = useSelector(
 		(state: ReturnType<typeof store.getState>) => state.auth.user,
 	);
@@ -70,6 +69,30 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 	const [viewers, setViewers] = useState<Viewer[]>([]);
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const [hideChat, setHideChat] = useState(false);
+
+	const [m3u8, setM3u8] = useState<string | undefined>(undefined);
+
+	useEffect(() => {
+		const controller = new AbortController();
+		try {
+			const getLink = async () => {
+				const { data } = await axios.get<ProxyData>(
+					`${import.meta.env.VITE_BACKEND_API}/hls/proxies/${params.id ?? "root"}`,
+					{ withCredentials: true, signal: controller.signal },
+				);
+
+				setM3u8(data.m3u8);
+			};
+
+			getLink();
+		} catch (e) {
+			console.error(e);
+		}
+
+		return () => {
+			controller.abort();
+		};
+	}, [params.id]);
 
 	return (
 		<div
@@ -87,14 +110,22 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 					setHideChat={setHideChat}
 					viewers={viewers}
 					isHls
-					url={loaderData.m3u8}
+					url={m3u8}
+					id={params.id === "root" ? "" : params.id}
 				/>
-				<div
-					className={`lg:w-[400px] md:w-[300px] w-full flex flex-col overflow-hidden md:flex-none flex-1 ${hideChat ? "hidden" : ""}`}
-				>
-					<Chat isFullscreen={isFullscreen} setViewers={setViewers} />
-				</div>
-				<Viewers viewers={viewers} container={pageRef.current as HTMLElement} />
+				{!params.id && (
+					<div
+						className={`lg:w-[400px] md:w-[300px] w-full flex flex-col overflow-hidden md:flex-none flex-1 ${hideChat ? "hidden" : ""}`}
+					>
+						<Chat isFullscreen={isFullscreen} setViewers={setViewers} />
+					</div>
+				)}
+				{!params.id && (
+					<Viewers
+						viewers={viewers}
+						container={pageRef.current as HTMLElement}
+					/>
+				)}
 			</Dialog>
 		</div>
 	);
