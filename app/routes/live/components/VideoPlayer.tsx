@@ -1,4 +1,4 @@
-import Hls from "hls.js";
+import Hls, { ErrorTypes } from "hls.js";
 import {
 	Maximize,
 	MessageSquare,
@@ -62,7 +62,9 @@ export default function VideoPlayer({
 	const controlsRef = useRef<HTMLDivElement>(null);
 	const playerRef = useRef<HTMLDivElement>(null);
 	const currentTimeout = useRef<NodeJS.Timeout | null>(null);
-	const currentDebounce = useRef<NodeJS.Timeout | null>(null);
+
+	const currentNetworkDebounce = useRef<NodeJS.Timeout | null>(null);
+	const currentMediaDebounce = useRef<NodeJS.Timeout | null>(null);
 
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [isMuted, setIsMuted] = useState(true);
@@ -170,16 +172,34 @@ export default function VideoPlayer({
 			hls.loadSource(url ?? "");
 			hls.attachMedia(ref.current);
 
-			hls.on(Hls.Events.ERROR, () => {
-				clearTimeout(currentDebounce.current ?? undefined);
+			hls.on(Hls.Events.ERROR, (_, data) => {
+				switch (data.type) {
+					case ErrorTypes.NETWORK_ERROR: {
+						clearTimeout(currentNetworkDebounce.current ?? undefined);
+						currentNetworkDebounce.current = setTimeout(() => {
+							hls.startLoad();
+						}, 2000);
+						break;
+					}
+					case ErrorTypes.MEDIA_ERROR: {
+						clearTimeout(currentMediaDebounce.current ?? undefined);
+						currentMediaDebounce.current = setTimeout(() => {
+							hls.recoverMediaError();
+						}, 2000);
+						break;
+					}
+				}
+			});
 
-				currentDebounce.current = setTimeout(() => {
-					hls.loadSource(url ?? "");
-				}, 2000);
+			hls.on(Hls.Events.MANIFEST_PARSED, () => {
+				console.log("Lived!");
 			});
 
 			return () => {
 				hls.destroy();
+
+				clearTimeout(currentNetworkDebounce.current ?? undefined);
+				clearTimeout(currentMediaDebounce.current ?? undefined);
 			};
 		}
 
