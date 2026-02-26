@@ -22,7 +22,7 @@ export default [
 			route("live/rtc", "routes/live/rtc.tsx"),
 		]),
 		layout("routes/live/chat/layout.tsx", [
-			route("live/chat", "routes/live/chat/page.tsx"),
+			route("live/chat/:id?", "routes/live/chat/page.tsx"),
 		]),
 		layout("routes/contents/layout.tsx", [
 			route("streams", "routes/live/streams.tsx"),

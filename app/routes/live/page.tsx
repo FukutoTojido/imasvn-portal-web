@@ -113,19 +113,13 @@ export default function Page({ params, loaderData }: Route.ComponentProps) {
 					url={m3u8}
 					id={params.id === "root" ? "" : params.id}
 				/>
-				{!params.id && (
-					<div
-						className={`lg:w-[400px] md:w-[300px] w-full flex flex-col overflow-hidden md:flex-none flex-1 ${hideChat ? "hidden" : ""}`}
-					>
-						<Chat isFullscreen={isFullscreen} setViewers={setViewers} />
-					</div>
-				)}
-				{!params.id && (
-					<Viewers
-						viewers={viewers}
-						container={pageRef.current as HTMLElement}
-					/>
-				)}
+
+				<div
+					className={`lg:w-[400px] md:w-[300px] w-full flex flex-col overflow-hidden md:flex-none flex-1 ${hideChat ? "hidden" : ""}`}
+				>
+					<Chat isFullscreen={isFullscreen} setViewers={setViewers} />
+				</div>
+				<Viewers viewers={viewers} container={pageRef.current as HTMLElement} />
 			</Dialog>
 		</div>
 	);

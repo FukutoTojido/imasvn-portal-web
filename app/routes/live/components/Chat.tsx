@@ -21,6 +21,7 @@ import {
 import "./Chat.css";
 import ChatContainer from "./ChatContainer";
 import Input from "./Input";
+import { useParams } from "react-router";
 
 function useEmotes() {
 	const [emotes, setEmotes] = useState<
@@ -70,9 +71,10 @@ export default function Chat({
 	const chatRef = useRef<HTMLSpanElement>(null);
 	const containerRef = useRef<HTMLDivElement>(null);
 	const emotes = useEmotes();
+	const params = useParams();
 
 	const { sendJsonMessage } = useWebSocket(
-		import.meta.env.VITE_WEBSOCKET_ENDPOINT,
+		`${import.meta.env.VITE_WEBSOCKET_ENDPOINT}/${params.id ?? "root"}`,
 		{
 			onOpen: () => {
 				console.log(`${new Date().toISOString()} - WebSocket connected!`);
