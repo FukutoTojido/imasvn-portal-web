@@ -1,4 +1,4 @@
-import Hls, { ErrorTypes } from "hls.js";
+import Hls, { ErrorTypes, FetchLoader } from "hls.js";
 import {
 	Maximize,
 	MessageSquare,
@@ -170,6 +170,20 @@ export default function VideoPlayer({
 				liveSyncDurationCount: 2,
 				liveMaxLatencyDurationCount: 4,
 				lowLatencyMode: true,
+				loader: FetchLoader,
+				fetchSetup: (context, initParams) => {
+					const urlObject = new URL(url ?? "");
+					const contextURL = new URL(context.url);
+
+					for (const [key, value] of urlObject.searchParams.entries()) {
+						contextURL.searchParams.set(key, value);
+					}
+
+					// console.log(contextURL);
+
+					return new Request(contextURL.toString(), initParams);
+					// return new Request("", initParams)
+				}
 			});
 			hls.loadSource(url ?? "");
 			hls.attachMedia(ref.current);
