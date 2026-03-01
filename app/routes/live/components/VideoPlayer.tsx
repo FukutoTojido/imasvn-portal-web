@@ -167,9 +167,6 @@ export default function VideoPlayer({
 
 		if (isHls) {
 			const hls = new Hls({
-				liveSyncDurationCount: 2,
-				liveMaxLatencyDurationCount: 4,
-				lowLatencyMode: true,
 				loader: FetchLoader,
 				fetchSetup: (context, initParams) => {
 					const urlObject = new URL(url ?? "");
