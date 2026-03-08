@@ -45,6 +45,8 @@ type FormType = {
 };
 import { toast } from "sonner";
 import { Slider } from "~/components/ui/slider";
+import { getCharacters } from "../idols/page";
+import { ComboBox } from "~/components/ui/combobox";
 
 export const loader = async ({ params: { id } }: Route.LoaderArgs) => {
 	try {
@@ -55,11 +57,13 @@ export const loader = async ({ params: { id } }: Route.LoaderArgs) => {
 			`${import.meta.env.VITE_BACKEND_API}/producer-id/${cardData.pid}`,
 		);
 		const events = await getEvents();
+		const characters = await getCharacters();
 
 		return {
 			cardData,
 			userData,
 			events,
+			characters,
 		};
 	} catch (e) {
 		console.error(e);
@@ -84,6 +88,11 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 	const backRef = useRef<HTMLDivElement>(null);
 	const ref = useRef<HTMLDivElement>(null);
 	const getImageRef = useRef<{ getImage: () => Promise<File | null> }>(null);
+	const [idolIndex, setIdolIndex] = useState<number | undefined>(
+		loaderData?.characters.findIndex(
+			(idol) => idol.name === loaderData?.cardData.idol,
+		),
+	);
 
 	const methods = useForm<FormType>({
 		defaultValues: {
@@ -266,18 +275,22 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 
 					<div className="flex flex-1 flex-col gap-2.5">
 						<Label>Idol Name</Label>
-						<Input
-							{...register("idol", { required: true })}
-							className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
-							autoComplete="off"
-						/>
-					</div>
-					<div className="flex flex-1 flex-col gap-2.5">
-						<Label>Idol Name (Japanese)</Label>
-						<Input
-							{...register("idolJapanese", { required: true })}
-							className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
-							autoComplete="off"
+						<ComboBox
+							placeholder="Idol"
+							defaultValue={`${idolIndex}`}
+							options={loaderData?.characters.map((idol, idx) => ({
+								value: `${idx}`,
+								label: idol.name,
+							}))}
+							onValueChange={(value) => {
+								const idol = loaderData?.characters[+value];
+								if (!idol) return;
+
+								setValue("idol", idol.name);
+								setValue("idolJapanese", idol.japaneseName ?? "");
+								setIdolIndex(+value);
+							}}
+							className="w-full"
 						/>
 					</div>
 					<div className="flex flex-col gap-2.5">
@@ -309,7 +322,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 							</SelectContent>
 						</Select>
 					</div>
-					<div className="flex flex-col gap-2.5">
+					<div className="flex flex-col gap-2.5 col-span-full">
 						<Label>Back Image</Label>
 						<Input
 							{...register("backImg")}
