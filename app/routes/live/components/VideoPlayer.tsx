@@ -356,7 +356,7 @@ export default function VideoPlayer({
 											className="w-[100px] volumeInput"
 											step={0.01}
 											min={0}
-											max={1}
+											max={2}
 											defaultValue={ref.current?.volume ?? 0}
 											onChange={(event: ChangeEvent<HTMLInputElement>) => {
 												if (!ref.current) return;
