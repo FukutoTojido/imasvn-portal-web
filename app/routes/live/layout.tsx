@@ -16,8 +16,9 @@ export default function Layout() {
 		<>
 			<NavBar />
 			<div className="bg-crust w-full flex flex-col flex-1 gap-5 md:p-2.5 overflow-hidden live">
+				<Outlet />
 				<AlertDialog defaultOpen>
-					<AlertDialogContent className="bg-base border-surface-1 text-text">
+					<AlertDialogContent className="bg-base border-surface-1 text-text z-999">
 						<AlertDialogHeader>
 							<AlertDialogTitle>Lưu ý!</AlertDialogTitle>
 							<AlertDialogDescription className="text-subtext-0">
@@ -33,7 +34,6 @@ export default function Layout() {
 						</AlertDialogFooter>
 					</AlertDialogContent>
 				</AlertDialog>
-				<Outlet />
 			</div>
 		</>
 	);

@@ -45,7 +45,7 @@ const columns: ColumnDef<ProxyData>[] = [
 					<AlertDialogTrigger asChild>
 						<Button
 							className="text-text bg-transparent hover:bg-text hover:text-base"
-							disabled={props.row.original.id === "root"}
+							disabled={props.row.original.id === "root" || props.row.original.id === "protected"}
 						>
 							<Trash />
 						</Button>

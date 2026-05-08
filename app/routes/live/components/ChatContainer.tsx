@@ -59,6 +59,8 @@ const ChatContainer = ({
 						</div>
 					);
 				}
+				
+				return "";
 			})}
 		</div>
 	);

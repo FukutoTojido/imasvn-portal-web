@@ -60,9 +60,11 @@ function useEmotes() {
 export default function Chat({
 	isFullscreen,
 	setViewers,
+	forceId
 }: {
 	isFullscreen: boolean;
 	setViewers: Dispatch<SetStateAction<Viewer[]>>;
+	forceId?: string;
 }) {
 	const userData = useSelector(
 		(state: ReturnType<typeof store.getState>) => state.auth.user,
@@ -74,7 +76,7 @@ export default function Chat({
 	const params = useParams();
 
 	const { sendJsonMessage } = useWebSocket(
-		`${import.meta.env.VITE_WEBSOCKET_ENDPOINT}/${params.id ?? "root"}`,
+		`${import.meta.env.VITE_WEBSOCKET_ENDPOINT}/${forceId ?? params.id ?? "root"}`,
 		{
 			onOpen: () => {
 				console.log(`${new Date().toISOString()} - WebSocket connected!`);
@@ -94,6 +96,8 @@ export default function Chat({
 					setViewers(payload);
 					return;
 				}
+				
+				containerRef.current?.scrollTo(0, containerRef.current.scrollHeight);
 			},
 			onClose: () => {
 				console.log(`${new Date().toISOString()} - WebSocket disconnected!`);
@@ -120,11 +124,6 @@ export default function Chat({
 			clearInterval(interval);
 		}
 	}, [sendJsonMessage, userData]);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: Only care about chat length
-	useEffect(() => {
-		containerRef.current?.scrollTo(0, containerRef.current.scrollHeight);
-	}, [messages.length]);
 
 	return (
 		<div

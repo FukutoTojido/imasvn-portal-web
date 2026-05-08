@@ -168,14 +168,16 @@ export default function UpdateProxy({
 								{...register("id", { required: true })}
 								className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
 								autoComplete="off"
-								disabled={id === "root"}
+								disabled={id === "root" || id === "protected"}
 							/>
-							<Label>URL</Label>
-							<Input
-								{...register("m3u8")}
-								className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
-								autoComplete="off"
-							/>
+							{id !== "protected" && <Label>URL</Label>}
+							{id !== "protected" && (
+								<Input
+									{...register("m3u8")}
+									className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
+									autoComplete="off"
+								/>
+							)}
 							<Label>Room Name</Label>
 							<Input
 								{...register("name")}

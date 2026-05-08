@@ -5,9 +5,9 @@ import {
 	Film,
 	IdCard,
 	Link2,
+	LockKeyhole,
 	Sparkle,
 	User,
-	Video,
 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router";
@@ -121,9 +121,9 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 									asChild
 									className="hover:bg-surface-1 hover:text-text"
 								>
-									<Link to="/admin/live/preview" prefetch="render">
-										<Video />
-										Preview
+									<Link to="/admin/live/haxx" prefetch="render">
+										<LockKeyhole />
+										Haxx
 									</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>

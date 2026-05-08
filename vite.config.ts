@@ -13,6 +13,7 @@ export default defineConfig({
 	],
 	ssr: {
 		noExternal: ["react-easy-crop", "tslib"],
+		external: ["dashjs"],
 	},
 	server: {
 		host: "0.0.0.0",
@@ -21,6 +22,6 @@ export default defineConfig({
 		rollupOptions: {
 			external: ["@takumi-rs/core"],
 		},
-		target: "esnext"
+		target: "esnext",
 	},
 });

@@ -20,6 +20,7 @@ export default [
 		layout("routes/live/layout.tsx", [
 			route("live/:id?", "routes/live/page.tsx"),
 			route("live/rtc", "routes/live/rtc.tsx"),
+			route("live/protected", "routes/live/protected.tsx"),
 		]),
 		layout("routes/live/chat/layout.tsx", [
 			route("live/chat/:id?", "routes/live/chat/page.tsx"),
@@ -42,7 +43,7 @@ export default [
 			route("admin/idols/:id", "routes/admin/idols/[id].tsx"),
 			route("admin/events", "routes/admin/events.tsx"),
 			route("admin/users", "routes/admin/users.tsx"),
-			route("admin/live/preview", "routes/admin/live/preview.tsx"),
+			route("admin/live/haxx", "routes/admin/live/haxx.tsx"),
 			route("admin/live/m3u8", "routes/admin/live/m3u8.tsx"),
 			route("admin/anime", "routes/admin/contents/anime/page.tsx"),
 			route("admin/anime/:id", "routes/admin/contents/anime/[anime-id].tsx"),
