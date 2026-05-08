@@ -70,7 +70,7 @@ const playMpd = async (
 
 	const protData: ProtectionDataSet = {
 		"com.widevine.alpha": {
-			serverURL: "http://localhost:3001/api/hls/drm",
+			serverURL: `${import.meta.env.VITE_BACKEND_API}/hls/drm`,
 			audioRobustness: "SW_SECURE_CRYPTO",
 			videoRobustness: "SW_SECURE_CRYPTO",
 			httpRequestHeaders: {
