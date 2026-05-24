@@ -81,6 +81,12 @@ const columns: ColumnDef<Card>[] = [
 								`${import.meta.env.VITE_BASE_URL}/producer-id/${props.row.original.id}`,
 								{
 									type: "svg",
+									color: {
+										light: "#ffffff00",
+										dark: "#ffffffff",
+									},
+									margin: 0,
+									width: 320,
 								},
 							),
 						);
