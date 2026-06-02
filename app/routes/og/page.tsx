@@ -2,7 +2,7 @@ import { ImageResponse } from "@vercel/og";
 import TakumiImageResponse from "@takumi-rs/image-response";
 import axios from "axios";
 import FrontCardTemplate from "../admin/cards/components/FrontCardTemplate";
-import { safeJSONParse } from "../admin/cards/page";
+import { safeJSONParse } from "../admin/cards/[id]";
 import type { Route } from "./+types/page";
 import FrontCardTemplate_ from "../admin/cards/components/FrontCardTemplate_";
 

@@ -2,6 +2,7 @@ import axios from "axios";
 import {
 	Calendar1,
 	ChevronUp,
+	CreditCard,
 	Film,
 	IdCard,
 	Link2,
@@ -64,6 +65,17 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 									<Link to="/admin/producers" prefetch="render">
 										<IdCard />
 										Producers
+									</Link>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
+							<SidebarMenuItem>
+								<SidebarMenuButton
+									asChild
+									className="hover:bg-surface-1 hover:text-text"
+								>
+									<Link to="/admin/cards" prefetch="render">
+										<CreditCard />
+										Cards
 									</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
