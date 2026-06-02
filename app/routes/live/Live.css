@@ -32,3 +32,7 @@ body:has(.live) {
 	height: 100svh;
 	max-height: 100svh;
 }
+
+.art-video-player {
+	font-family: inherit !important;
+}

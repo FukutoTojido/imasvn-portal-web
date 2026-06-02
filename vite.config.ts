@@ -13,7 +13,7 @@ export default defineConfig({
 	],
 	ssr: {
 		noExternal: ["react-easy-crop", "tslib"],
-		external: ["dashjs"],
+		// external: ["dashjs"],
 	},
 	server: {
 		host: "0.0.0.0",
