@@ -74,6 +74,10 @@ export default function Page() {
 				header: "Producer Name",
 			},
 			{
+				accessorKey: "idol",
+				header: "Idol"
+			},
+			{
 				accessorKey: "event",
 				header: "Event",
 				enableColumnFilter: true,
