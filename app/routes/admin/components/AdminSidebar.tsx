@@ -6,7 +6,6 @@ import {
 	Film,
 	IdCard,
 	Link2,
-	LockKeyhole,
 	Sparkle,
 	User,
 } from "lucide-react";
@@ -133,20 +132,9 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 									asChild
 									className="hover:bg-surface-1 hover:text-text"
 								>
-									<Link to="/admin/live/haxx" prefetch="render">
-										<LockKeyhole />
-										Haxx
-									</Link>
-								</SidebarMenuButton>
-							</SidebarMenuItem>
-							<SidebarMenuItem>
-								<SidebarMenuButton
-									asChild
-									className="hover:bg-surface-1 hover:text-text"
-								>
 									<Link to="/admin/live/m3u8" prefetch="render">
 										<Link2 />
-										.m3u8
+										Streams
 									</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>

@@ -1,13 +1,15 @@
 import axios from "axios";
-import { type RefObject, useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { Dialog } from "~/components/ui/dialog";
-import type store from "~/store";
+import { Users } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Dialog, DialogTrigger } from "~/components/ui/dialog";
+import { cn } from "~/lib/utils";
 import type { ProxyData } from "../admin/live/components/UpdateProxy";
 import type { Route } from "./+types/page";
 import Chat from "./components/Chat";
-import VideoPlayer from "./components/VideoPlayer";
 import Viewers from "./components/Viewers";
+import useArtPlayer from "./hooks/useArtPlayer";
+import useBearer from "./hooks/useBearer";
+import useURL from "./hooks/useURL";
 import type { Viewer } from "./types";
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -61,27 +63,31 @@ export function meta({ data: { title, url } }: Route.MetaArgs) {
 	];
 }
 
-export default function Page({ params, loaderData }: Route.ComponentProps) {
-	const userData = useSelector(
-		(state: ReturnType<typeof store.getState>) => state.auth.user,
-	);
+export default function Page({ loaderData, params }: Route.ComponentProps) {
 	const pageRef = useRef<HTMLDivElement>(null);
-	const [viewers, setViewers] = useState<Viewer[]>([]);
-	const [isFullscreen, setIsFullscreen] = useState(false);
-	const [hideChat, setHideChat] = useState(false);
+	const playerRef = useRef<HTMLDivElement>(null);
+	const [contentID, setContentID] = useState<string | null>(null);
+	const [type, setType] = useState<"hls" | "dash" | null>(null);
 
-	const [m3u8, setM3u8] = useState<string | undefined>(undefined);
+	const [viewers, setViewers] = useState<Viewer[]>([]);
 
 	useEffect(() => {
 		const controller = new AbortController();
 		try {
 			const getLink = async () => {
-				const { data } = await axios.get<ProxyData>(
+				const { data } = await axios.get<{
+					m3u8: string;
+					stream_type: "hls" | "dash";
+				}>(
 					`${import.meta.env.VITE_BACKEND_API}/hls/proxies/${params.id ?? "root"}`,
-					{ withCredentials: true, signal: controller.signal },
+					{
+						withCredentials: true,
+						signal: controller.signal,
+					},
 				);
 
-				setM3u8(data.m3u8);
+				setContentID(data.m3u8);
+				setType(data.stream_type);
 			};
 
 			getLink();
@@ -94,27 +100,52 @@ export default function Page({ params, loaderData }: Route.ComponentProps) {
 		};
 	}, [params.id]);
 
+	const bearer = useBearer();
+
+	// NOTE FOR ME IN THE FUTURE: I'M TOO LAZY TO CHANGE THE SCHEMA SO IN THIS CASE, THE URL IS THE CONTENT ID
+	const url = useURL(contentID, bearer);
+
+	const { isFullscreen, hideChat } = useArtPlayer({
+		id: params.id ?? "root",
+		player: playerRef.current,
+		page: pageRef.current,
+		url: type === "dash" ? url : contentID,
+		type,
+	});
+
 	return (
 		<div
-			className={`w-full h-full flex-1 flex md:gap-2.5 flex-col md:flex-row overflow-hidden ${isFullscreen ? "md:!gap-0" : ""}`}
+			className={`w-full h-full flex-1 flex md:gap-2.5 flex-col md:flex-row overflow-hidden${isFullscreen ? " md:!gap-0" : ""}`}
 			ref={pageRef}
 		>
 			<Dialog>
-				<VideoPlayer
-					title={loaderData.title}
-					userData={userData}
-					pageRef={pageRef as RefObject<HTMLDivElement>}
-					isFullscreen={isFullscreen}
-					setIsFullscreen={setIsFullscreen}
-					hideChat={hideChat}
-					setHideChat={setHideChat}
-					viewers={viewers}
-					isHls
-					url={m3u8}
-					id={params.id === "root" ? "" : params.id}
-				/>
-
+				<div className="w-full md:h-full flex flex-col">
+					<div
+						className="artplayer-app w-full flex-1 aspect-video md:aspect-auto md:rounded-xl overflow-hidden"
+						ref={playerRef}
+					></div>
+					<div className={cn("flex flex-col p-5", hideChat && "hidden")}>
+						<div className="flex-1 line-clamp-1 font-bold">
+							{loaderData.title}
+						</div>
+						<div className="flex items-center gap-5">
+							<DialogTrigger asChild>
+								<button
+									type="button"
+									className="w-full flex gap-2.5 items-center hover:underline underline-offset-2"
+								>
+									<Users className="pointer-events-none" size={14} />
+									<span className="pointer-events-none text-xs">
+										{viewers.length} viewer{viewers.length > 1 ? "s" : ""}{" "}
+										watching
+									</span>
+								</button>
+							</DialogTrigger>
+						</div>
+					</div>
+				</div>
 				<div
+					id="chatContainer"
 					className={`lg:w-[400px] md:w-[300px] w-full flex flex-col overflow-hidden md:flex-none flex-1 ${hideChat ? "hidden" : ""}`}
 				>
 					<Chat isFullscreen={isFullscreen} setViewers={setViewers} />

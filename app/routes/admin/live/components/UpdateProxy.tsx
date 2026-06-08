@@ -21,12 +21,24 @@ import {
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "~/components/ui/select";
+import { Textarea } from "~/components/ui/textarea";
 
 export type ProxyData = {
 	id?: string | null;
 	m3u8?: string;
 	name?: string;
 	thumbnail?: string;
+	stream_type: "hls" | "dash";
+	cookies?: string;
+	headers?: string;
 };
 
 const getProxy = async (id: string | null) => {
@@ -62,34 +74,46 @@ export default function UpdateProxy({
 		async () => await getProxy(id),
 	);
 
-	const methods = useForm({
+	const methods = useForm<Partial<ProxyData>>({
 		defaultValues: {
 			id,
 			m3u8: data?.m3u8,
 			name: undefined,
 			thumbnail: undefined,
+			stream_type: "hls",
+			cookies: undefined,
+			headers: undefined,
 		},
 		values: {
 			id,
 			m3u8: data?.m3u8,
 			name: data?.name,
 			thumbnail: data?.thumbnail,
+			stream_type: data?.stream_type,
+			cookies: data?.cookies,
+			headers: data?.headers,
 		},
 	});
 
 	const { handleSubmit, register, reset, watch } = methods;
 
-	const submit = async (data: ProxyData) => {
+	const submit = async (data: Partial<ProxyData>) => {
 		setSubmitting(true);
 		try {
+			const payload = {
+				url: data.m3u8,
+				name: data.name,
+				thumbnail: data.thumbnail,
+				stream_type: data.stream_type ?? "hls",
+				cookies: data.cookies,
+				headers: data.headers,
+			};
 			if (id === null) {
 				await axios.post(
 					`${import.meta.env.VITE_BACKEND_API}/hls/proxies`,
 					{
 						id: data.id,
-						url: data.m3u8,
-						name: data.name,
-						thumbnail: data.thumbnail,
+						...payload,
 					},
 					{
 						withCredentials: true,
@@ -100,7 +124,7 @@ export default function UpdateProxy({
 			if (id !== null) {
 				await axios.patch(
 					`${import.meta.env.VITE_BACKEND_API}/hls/proxies/${id}`,
-					{ url: data.m3u8, name: data.name, thumbnail: data.thumbnail },
+					payload,
 					{
 						withCredentials: true,
 					},
@@ -168,16 +192,14 @@ export default function UpdateProxy({
 								{...register("id", { required: true })}
 								className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
 								autoComplete="off"
-								disabled={id === "root" || id === "protected"}
+								disabled={id === "root"}
 							/>
-							{id !== "protected" && <Label>URL</Label>}
-							{id !== "protected" && (
-								<Input
-									{...register("m3u8")}
-									className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
-									autoComplete="off"
-								/>
-							)}
+							<Label>URL / Content ID</Label>
+							<Input
+								{...register("m3u8")}
+								className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
+								autoComplete="off"
+							/>
 							<Label>Room Name</Label>
 							<Input
 								{...register("name")}
@@ -194,6 +216,47 @@ export default function UpdateProxy({
 								src={(thumbnail ? thumbnail : null) as unknown as string}
 								alt=""
 								className="rounded-md border border-surface-1 "
+							/>
+							<Label>Stream Type</Label>
+							<Select
+								defaultValue={data?.stream_type}
+								onValueChange={(value) =>
+									methods.setValue("stream_type", value as "hls" | "dash")
+								}
+							>
+								<SelectTrigger className="w-full bg-mantle border-surface-1 focus-visible:ring-overlay-0">
+									<SelectValue placeholder="Stream Type..." />
+								</SelectTrigger>
+								<SelectContent className="bg-mantle border border-surface-1 text-text">
+									<SelectGroup>
+										<SelectItem
+											value="hls"
+											className="data-[highlighted]:bg-surface-0 data-[highlighted]:text-text text-wrap"
+										>
+											HLS
+										</SelectItem>
+										<SelectItem
+											value="dash"
+											className="data-[highlighted]:bg-surface-0 data-[highlighted]:text-text text-wrap"
+										>
+											DASH
+										</SelectItem>
+									</SelectGroup>
+								</SelectContent>
+							</Select>
+							<Label>Cookies</Label>
+							<Textarea
+								{...register("cookies")}
+								className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text font-mono resize-none"
+								rows={3}
+								autoComplete="off"
+							/>
+							<Label>Headers</Label>
+							<Textarea
+								{...register("headers")}
+								className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text font-mono resize-none"
+								rows={3}
+								autoComplete="off"
 							/>
 							<Button
 								type="submit"

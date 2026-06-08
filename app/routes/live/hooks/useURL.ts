@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 
-export default function useURL(contentID: string | null, bearer: string | null) {
+export default function useURL(
+	contentID: string | null,
+	bearer: string | null,
+) {
 	const [url, setURL] = useState<string | null>(null);
 
 	useEffect(() => {
@@ -9,6 +12,8 @@ export default function useURL(contentID: string | null, bearer: string | null) 
 		const controller = new AbortController();
 
 		const fetchBearer = async () => {
+			if (contentID.includes("https")) return;
+
 			const url = `${import.meta.env.VITE_SURVEY_URL}/${contentID}/get_by_cuid?t=${Date.now()}`;
 
 			try {
