@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export default function useURL(
 	contentID: string | null,
 	bearer: string | null,
-	type: "dash" | "hls" | null
+	type: "dash" | "hls" | "whep" | null
 ) {
 	const [url, setURL] = useState<string | null>(null);
 
@@ -13,7 +13,7 @@ export default function useURL(
 		const controller = new AbortController();
 
 		const fetchBearer = async () => {
-			if (contentID.includes("https")) return;
+			if (contentID.includes("http")) return;
 
 			const url = `${import.meta.env.VITE_SURVEY_URL}/${contentID}/get_by_cuid?t=${Date.now()}`;
 

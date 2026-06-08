@@ -19,7 +19,6 @@ export default [
 		]),
 		layout("routes/live/layout.tsx", [
 			route("live/:id?", "routes/live/page.tsx"),
-			route("live/rtc", "routes/live/rtc.tsx"),
 		]),
 		layout("routes/live/chat/layout.tsx", [
 			route("live/chat/:id?", "routes/live/chat/page.tsx"),

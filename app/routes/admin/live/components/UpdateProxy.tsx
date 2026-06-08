@@ -36,7 +36,7 @@ export type ProxyData = {
 	m3u8?: string;
 	name?: string;
 	thumbnail?: string;
-	stream_type: "hls" | "dash";
+	stream_type: "hls" | "dash" | "whep";
 	cookies?: string;
 	headers?: string;
 };
@@ -221,7 +221,7 @@ export default function UpdateProxy({
 							<Select
 								defaultValue={data?.stream_type}
 								onValueChange={(value) =>
-									methods.setValue("stream_type", value as "hls" | "dash")
+									methods.setValue("stream_type", value as "hls" | "dash" | "whep")
 								}
 							>
 								<SelectTrigger className="w-full bg-mantle border-surface-1 focus-visible:ring-overlay-0">
@@ -240,6 +240,12 @@ export default function UpdateProxy({
 											className="data-[highlighted]:bg-surface-0 data-[highlighted]:text-text text-wrap"
 										>
 											DASH
+										</SelectItem>
+										<SelectItem
+											value="whep"
+											className="data-[highlighted]:bg-surface-0 data-[highlighted]:text-text text-wrap"
+										>
+											WHEP
 										</SelectItem>
 									</SelectGroup>
 								</SelectContent>

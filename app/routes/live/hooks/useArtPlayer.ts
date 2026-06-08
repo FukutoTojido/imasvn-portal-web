@@ -1,12 +1,15 @@
 import Artplayer from "artplayer";
 import artplayerPluginDashControl from "artplayer-plugin-dash-control";
 import { useEffect, useRef, useState } from "react";
+import MediaMTXWebRTCReader from "~/lib/reader";
+import playWHEP from "./playWHEP";
 import useDASH from "./useDASH";
 import useHLS from "./useHLS";
 
 const typeMap = {
 	hls: "m3u8",
 	dash: "mpd",
+	whep: "whep",
 };
 
 export default function useArtPlayer({
@@ -21,12 +24,13 @@ export default function useArtPlayer({
 	page?: HTMLDivElement | null;
 	player?: HTMLDivElement | null;
 	url: string | null;
-	type: "hls" | "dash" | null;
+	type: "hls" | "dash" | "whep" | null;
 	isLive?: boolean;
 }) {
 	const artPlayer = useRef<Artplayer>(null);
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const [hideChat, setHideChat] = useState(false);
+	const rtc = useRef<MediaMTXWebRTCReader | null>(null);
 
 	const playMpd = useDASH(id);
 	const playM3U8 = useHLS(id);
@@ -48,6 +52,11 @@ export default function useArtPlayer({
 					url: string,
 					art: Artplayer,
 				) => unknown,
+				whep: (player, url) => {
+					const r = playWHEP(player, url) ?? null;
+					rtc.current?.close();
+					rtc.current = r;
+				},
 			},
 			theme: "#b4befe",
 			controls: [
@@ -89,16 +98,20 @@ export default function useArtPlayer({
 				},
 			],
 			plugins: [
-				artplayerPluginDashControl({
-					quality: {
-						control: true,
-						setting: true,
-						getName: (level) =>
-							`${(level as Record<string, string | number>).height}P`,
-						title: "Quality",
-						auto: "Auto",
-					},
-				}),
+				...(type === "dash"
+					? [
+							artplayerPluginDashControl({
+								quality: {
+									control: true,
+									setting: true,
+									getName: (level) =>
+										`${(level as Record<string, string | number>).height}P`,
+									title: "Quality",
+									auto: "Auto",
+								},
+							}),
+						]
+					: []),
 			],
 		});
 
@@ -106,6 +119,7 @@ export default function useArtPlayer({
 
 		return () => {
 			art.destroy();
+			rtc.current?.close();
 		};
 	}, [url, playMpd, playM3U8, player, page, type, isLive]);
 

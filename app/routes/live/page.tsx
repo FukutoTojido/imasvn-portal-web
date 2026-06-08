@@ -67,7 +67,7 @@ export default function Page({ loaderData, params }: Route.ComponentProps) {
 	const pageRef = useRef<HTMLDivElement>(null);
 	const playerRef = useRef<HTMLDivElement>(null);
 	const [contentID, setContentID] = useState<string | null>(null);
-	const [type, setType] = useState<"hls" | "dash" | null>(null);
+	const [type, setType] = useState<"hls" | "dash" | "whep" | null>(null);
 
 	const [viewers, setViewers] = useState<Viewer[]>([]);
 
@@ -77,7 +77,7 @@ export default function Page({ loaderData, params }: Route.ComponentProps) {
 			const getLink = async () => {
 				const { data } = await axios.get<{
 					m3u8: string;
-					stream_type: "hls" | "dash";
+					stream_type: "hls" | "dash" | "whep";
 				}>(
 					`${import.meta.env.VITE_BACKEND_API}/hls/proxies/${params.id ?? "root"}`,
 					{
@@ -109,7 +109,7 @@ export default function Page({ loaderData, params }: Route.ComponentProps) {
 		id: params.id ?? "root",
 		player: playerRef.current,
 		page: pageRef.current,
-		url: !contentID?.includes("https") ? url : contentID,
+		url: !contentID?.includes("http") ? url : contentID,
 		type,
 	});
 
