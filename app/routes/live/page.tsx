@@ -103,13 +103,13 @@ export default function Page({ loaderData, params }: Route.ComponentProps) {
 	const bearer = useBearer();
 
 	// NOTE FOR ME IN THE FUTURE: I'M TOO LAZY TO CHANGE THE SCHEMA SO IN THIS CASE, THE URL IS THE CONTENT ID
-	const url = useURL(contentID, bearer);
+	const url = useURL(contentID, bearer, type);
 
 	const { isFullscreen, hideChat } = useArtPlayer({
 		id: params.id ?? "root",
 		player: playerRef.current,
 		page: pageRef.current,
-		url: type === "dash" ? url : contentID,
+		url: !contentID?.includes("https") ? url : contentID,
 		type,
 	});
 
