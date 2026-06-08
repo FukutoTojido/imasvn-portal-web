@@ -1,5 +1,5 @@
 import Artplayer from "artplayer";
-import Hls from "hls.js";
+import Hls, { type HlsConfig } from "hls.js";
 import { useCallback } from "react";
 
 declare class ArtHlsPlayer extends Artplayer {
@@ -12,10 +12,15 @@ export default function useHLS(id?: string) {
 			if (Hls.isSupported()) {
 				if (art.hls) art.hls.destroy();
 
-				const config = {
-					emeEnabled: id ? true : undefined,
+				const config: Partial<HlsConfig> = {
+					emeEnabled: true,
 					widevineLicenseUrl:
 						id && `${import.meta.env.VITE_BACKEND_API}/hls/drm/${id}`,
+					drmSystems: {
+						"com.widevine.alpha": {
+							licenseUrl: `${import.meta.env.VITE_BACKEND_API}/hls/drm/${id}`,
+						},
+					},
 				};
 
 				const hls = new Hls(config);
