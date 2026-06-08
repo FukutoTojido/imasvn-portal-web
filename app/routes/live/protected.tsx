@@ -134,7 +134,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 			url: mpd,
 			type: "mpd",
 			pip: true,
-			isLive: true,
+			// isLive: true,
 			useSSR: false,
 			customType: {
 				mpd: playMpd,
