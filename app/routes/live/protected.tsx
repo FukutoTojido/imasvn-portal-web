@@ -8,9 +8,9 @@ import { Dialog, DialogTrigger } from "~/components/ui/dialog";
 import type { Route } from "./+types/page";
 import Chat from "./components/Chat";
 import Viewers from "./components/Viewers";
-import type { Viewer } from "./types";
 import useBearer from "./hooks/useBearer";
 import useURL from "./hooks/useURL";
+import type { Viewer } from "./types";
 
 export async function loader() {
 	try {
@@ -100,7 +100,6 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 	const pageRef = useRef<HTMLDivElement>(null);
 	const playerRef = useRef<HTMLDivElement>(null);
 	const [contentID, setContentID] = useState<string | null>(null);
-	const titleRef = useRef<HTMLDivElement>(null);
 
 	const artPlayer = useRef<Artplayer>(null);
 	const [isFullscreen, setIsFullscreen] = useState(false);
@@ -241,29 +240,28 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 			ref={pageRef}
 		>
 			<Dialog>
-				{/*<div className="flex flex-col p-5" ref={titleRef}>
-					<div className="flex-1 line-clamp-1 font-bold">
-						{loaderData.title}
+				<div className="w-full md:h-full flex flex-col">
+					<div className="artplayer-app w-full flex-1 aspect-video md:aspect-auto md:rounded-xl overflow-hidden" ref={playerRef}></div>
+					<div className="flex flex-col p-5">
+						<div className="flex-1 line-clamp-1 font-bold">
+							{loaderData.title}
+						</div>
+						<div className="flex items-center gap-5">
+							<DialogTrigger asChild>
+								<button
+									type="button"
+									className="w-full flex gap-2.5 items-center hover:underline underline-offset-2"
+								>
+									<Users className="pointer-events-none" size={14} />
+									<span className="pointer-events-none text-xs">
+										{viewers.length} viewer{viewers.length > 1 ? "s" : ""}{" "}
+										watching
+									</span>
+								</button>
+							</DialogTrigger>
+						</div>
 					</div>
-					<div className="flex items-center gap-5">
-						<DialogTrigger asChild>
-							<button
-								type="button"
-								className="w-full flex gap-2.5 items-center hover:underline underline-offset-2"
-							>
-								<Users className="pointer-events-none" size={14} />
-								<span className="pointer-events-none text-xs">
-									{viewers.length} viewer{viewers.length > 1 ? "s" : ""}{" "}
-									watching
-								</span>
-							</button>
-						</DialogTrigger>
-					</div>
-				</div>*/}
-				<div
-					className="artplayer-app w-full md:h-full aspect-video md:aspect-auto md:rounded-xl overflow-hidden"
-					ref={playerRef}
-				></div>
+				</div>
 				<div
 					id="chatContainer"
 					className={`lg:w-[400px] md:w-[300px] w-full flex flex-col overflow-hidden md:flex-none flex-1 ${hideChat ? "hidden" : ""}`}
