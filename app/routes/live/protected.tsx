@@ -9,6 +9,8 @@ import type { Route } from "./+types/page";
 import Chat from "./components/Chat";
 import Viewers from "./components/Viewers";
 import type { Viewer } from "./types";
+import useBearer from "./hooks/useBearer";
+import useURL from "./hooks/useURL";
 
 export async function loader() {
 	try {
@@ -98,40 +100,23 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 	const pageRef = useRef<HTMLDivElement>(null);
 	const playerRef = useRef<HTMLDivElement>(null);
 	const titleRef = useRef<HTMLDivElement>(null);
-	const [mpd, setMpd] = useState("");
+
 	const artPlayer = useRef<Artplayer>(null);
 	const [isFullscreen, setIsFullscreen] = useState(false);
 	const [hideChat, setHideChat] = useState(false);
 	const [viewers, setViewers] = useState<Viewer[]>([]);
 
-	useEffect(() => {
-		const controller = new AbortController();
-		try {
-			const getLink = async () => {
-				const { data } = await axios.get<{ mpd: string }>(
-					`${import.meta.env.VITE_BACKEND_API}/hls/mpd`,
-					{ withCredentials: true, signal: controller.signal },
-				);
+	const bearer = useBearer();
 
-				setMpd(data.mpd);
-			};
-
-			getLink();
-		} catch (e) {
-			console.error(e);
-		}
-
-		return () => {
-			controller.abort();
-		};
-	}, []);
+	// NOTE FOR ME IN THE FUTURE: I'M TOO LAZY TO CHANGE THE SCHEMA SO IN THIS CASE, THE URL IS THE CONTENT ID
+	const url = useURL(loaderData.url, bearer);
 
 	useEffect(() => {
-		if (!playerRef.current || !mpd) return;
+		if (!playerRef.current || !url) return;
 
 		const art = new Artplayer({
 			container: playerRef.current,
-			url: mpd,
+			url: url,
 			type: "mpd",
 			pip: true,
 			// isLive: true,
@@ -203,7 +188,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 		return () => {
 			art.destroy();
 		};
-	}, [mpd]);
+	}, [url]);
 
 	useEffect(() => {
 		if (!artPlayer.current) return;
