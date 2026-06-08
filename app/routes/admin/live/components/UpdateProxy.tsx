@@ -105,8 +105,8 @@ export default function UpdateProxy({
 				name: data.name,
 				thumbnail: data.thumbnail,
 				stream_type: data.stream_type ?? "hls",
-				cookies: data.cookies,
-				headers: data.headers,
+				cookies: data.cookies ?? undefined,
+				headers: data.headers ?? undefined,
 			};
 			if (id === null) {
 				await axios.post(
