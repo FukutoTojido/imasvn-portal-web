@@ -99,6 +99,7 @@ const playMpd = async (
 export default function Page({ loaderData }: Route.ComponentProps) {
 	const pageRef = useRef<HTMLDivElement>(null);
 	const playerRef = useRef<HTMLDivElement>(null);
+	const [contentID, setContentID] = useState<string | null>(null);
 	const titleRef = useRef<HTMLDivElement>(null);
 
 	const artPlayer = useRef<Artplayer>(null);
@@ -106,10 +107,32 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 	const [hideChat, setHideChat] = useState(false);
 	const [viewers, setViewers] = useState<Viewer[]>([]);
 
+	useEffect(() => {
+		const controller = new AbortController();
+		try {
+			const getLink = async () => {
+				const { data } = await axios.get<{ mpd: string }>(
+					`${import.meta.env.VITE_BACKEND_API}/hls/mpd`,
+					{ withCredentials: true, signal: controller.signal },
+				);
+
+				setContentID(data.mpd);
+			};
+
+			getLink();
+		} catch (e) {
+			console.error(e);
+		}
+
+		return () => {
+			controller.abort();
+		};
+	}, []);
+
 	const bearer = useBearer();
 
 	// NOTE FOR ME IN THE FUTURE: I'M TOO LAZY TO CHANGE THE SCHEMA SO IN THIS CASE, THE URL IS THE CONTENT ID
-	const url = useURL(loaderData.url, bearer);
+	const url = useURL(contentID, bearer);
 
 	useEffect(() => {
 		if (!playerRef.current || !url) return;

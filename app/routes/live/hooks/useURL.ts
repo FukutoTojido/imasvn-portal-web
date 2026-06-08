@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export default function useURL(contentID: string, bearer: string | null) {
+export default function useURL(contentID: string | null, bearer: string | null) {
 	const [url, setURL] = useState<string | null>(null);
 
 	useEffect(() => {

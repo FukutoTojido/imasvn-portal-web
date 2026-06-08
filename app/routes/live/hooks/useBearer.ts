@@ -12,6 +12,7 @@ export default function useBearer() {
 			try {
 				const res = await fetch(url, {
 					signal: controller.signal,
+					credentials: "include",
 				});
 
 				if (!res.ok) {
