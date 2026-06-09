@@ -1,7 +1,7 @@
 import Artplayer from "artplayer";
 import artplayerPluginDashControl from "artplayer-plugin-dash-control";
 import { useEffect, useRef, useState } from "react";
-import MediaMTXWebRTCReader from "~/lib/reader";
+import type MediaMTXWebRTCReader from "~/lib/reader";
 import playWHEP from "./playWHEP";
 import useDASH from "./useDASH";
 import useHLS from "./useHLS";
