@@ -13,9 +13,11 @@ export default function useHLS(id?: string) {
 				if (art.hls) art.hls.destroy();
 
 				const config: Partial<HlsConfig> = {
+					debug: true,
+					enableWorker: true,
+					requireKeySystemAccessOnStart: true,
 					emeEnabled: true,
-					widevineLicenseUrl:
-						id && `${import.meta.env.VITE_BACKEND_API}/hls/drm/${id}`,
+					widevineLicenseUrl: `${import.meta.env.VITE_BACKEND_API}/hls/drm/${id}`,
 					drmSystems: {
 						"com.widevine.alpha": {
 							licenseUrl: `${import.meta.env.VITE_BACKEND_API}/hls/drm/${id}`,
