@@ -1,0 +1,9 @@
+.filters {
+	container-type: scroll-state;
+	& > div {
+		@container scroll-state(stuck: top) {
+			background: var(--color-mantle);
+			box-shadow: 0 -20px 0 var(--color-mantle), 0 10px 20px 10px var(--color-mantle);
+		}
+	}
+}

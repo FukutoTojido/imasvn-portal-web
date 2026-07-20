@@ -132,12 +132,12 @@ export default function Page() {
 		onGlobalFilterChange: setGlobalFilter,
 		state: {
 			globalFilter,
-		},
-		initialState: {
 			pagination: {
 				pageIndex: page,
 				pageSize: 5
 			},
+		},
+		initialState: {
 			columnVisibility: {
 				id: false,
 			},
@@ -157,7 +157,7 @@ export default function Page() {
 				<div className="flex items-center justify-end space-x-2">
 					<Input
 						className="flex-1 bg-mantle border border-overlay-0 text-text h-full"
-						placeholder="Search producer..."
+						placeholder="Search live..."
 						value={search ?? ""}
 						onChange={(event) => {
 							table.setGlobalFilter(String(event.target.value));

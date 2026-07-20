@@ -34,6 +34,30 @@ import {
 import { Switch } from "~/components/ui/switch";
 import { Textarea } from "~/components/ui/textarea";
 
+export enum BranchType {
+	OTHERS = 0,
+	ALLSTARS = 1,
+	CINDERELLA_GIRLS = 2,
+	MILLION_LIVE = 3,
+	SHINY_COLORS = 4,
+	SIDE_M = 5,
+	GAKUEN = 6,
+	DEARLY_STARS = 7,
+	IMAS = 8
+}
+
+export const BRANCH_TYPES = {
+	[BranchType.ALLSTARS]: "All Stars",
+	[BranchType.CINDERELLA_GIRLS]: "Cinderella Girls",
+	[BranchType.MILLION_LIVE]: "MILLION LIVE!",
+	[BranchType.SHINY_COLORS]: "Shiny Colors",
+	[BranchType.SIDE_M]: "SideM",
+	[BranchType.GAKUEN]: "Gakuen",
+	[BranchType.DEARLY_STARS]: "Dearly Stars",
+	[BranchType.IMAS]: "THE iDOLM@STER",
+	[BranchType.OTHERS]: "Others",
+};
+
 export type ProxyDataDto = {
 	id?: string | null;
 	m3u8?: string;
@@ -45,6 +69,7 @@ export type ProxyDataDto = {
 	date?: string;
 	archive?: boolean;
 	forward_url?: string;
+	branch?: BranchType;
 };
 
 export type ProxyData = Omit<ProxyDataDto, "date"> & {
@@ -96,6 +121,7 @@ export default function UpdateProxy({
 			date: undefined,
 			archive: false,
 			forward_url: undefined,
+			branch: 0,
 		},
 		values: {
 			id,
@@ -108,6 +134,7 @@ export default function UpdateProxy({
 			date: data?.date,
 			archive: Boolean(data?.archive),
 			forward_url: data?.forward_url,
+			branch: data?.branch,
 		},
 	});
 
@@ -126,6 +153,7 @@ export default function UpdateProxy({
 				archive: data.archive ?? false,
 				forward_url: data.forward_url ?? undefined,
 				date: data.date,
+				branch: data.branch ?? 0,
 			};
 			if (id === null) {
 				await axios.post(
@@ -206,6 +234,32 @@ export default function UpdateProxy({
 							onSubmit={handleSubmit(submit)}
 							className="grid grid-cols-2 gap-5"
 						>
+							<div className="flex flex-col gap-2 col-span-full">
+								<Label>Stream Type</Label>
+								<Select
+									defaultValue={data?.branch?.toString() ?? "0"}
+									onValueChange={(value) =>
+										methods.setValue("branch", +value as BranchType)
+									}
+								>
+									<SelectTrigger className="w-full bg-mantle border-surface-1 focus-visible:ring-overlay-0">
+										<SelectValue placeholder="Branch..." />
+									</SelectTrigger>
+									<SelectContent className="bg-mantle border border-surface-1 text-text">
+										<SelectGroup>
+											{Object.entries(BRANCH_TYPES).map(([id, value]) => (
+												<SelectItem
+													key={id}
+													value={id}
+													className="data-[highlighted]:bg-surface-0 data-[highlighted]:text-text text-wrap"
+												>
+													{value}
+												</SelectItem>
+											))}
+										</SelectGroup>
+									</SelectContent>
+								</Select>
+							</div>
 							<div className="flex gap-2 flex-col flex-1">
 								<Label>Room ID</Label>
 								<Input
@@ -282,7 +336,11 @@ export default function UpdateProxy({
 								<Controller
 									name="date"
 									render={({ field: { value, onChange } }) => (
-										<DatePicker date={value} setDate={onChange} className="w-full" />
+										<DatePicker
+											date={value}
+											setDate={onChange}
+											className="w-full"
+										/>
 									)}
 								/>
 							</div>
