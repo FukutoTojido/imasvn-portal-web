@@ -165,7 +165,7 @@ export default function Page({ loaderData, params }: Route.ComponentProps) {
 						/>
 					</div>
 				)}
-				<Viewers viewers={viewers} container={pageRef.current as HTMLElement} />
+				{isLive && <Viewers viewers={viewers} container={pageRef.current as HTMLElement} />}
 			</Dialog>
 		</div>
 	);
