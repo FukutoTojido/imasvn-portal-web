@@ -96,8 +96,6 @@ export default function Chat({
 					setViewers(payload);
 					return;
 				}
-				
-				containerRef.current?.scrollTo(0, containerRef.current.scrollHeight);
 			},
 			onClose: () => {
 				console.log(`${new Date().toISOString()} - WebSocket disconnected!`);
@@ -124,6 +122,10 @@ export default function Chat({
 			clearInterval(interval);
 		}
 	}, [sendJsonMessage, userData]);
+
+	useEffect(() => {
+		containerRef.current?.scrollTo(0, containerRef.current.scrollHeight);
+	}, [messages.length])
 
 	return (
 		<div
