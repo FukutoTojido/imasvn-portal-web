@@ -33,6 +33,7 @@
         "@vercel/og": "^0.8.5",
         "artplayer": "^5.4.0",
         "artplayer-plugin-dash-control": "^1.1.0",
+        "artplayer-plugin-hls-control": "^1.1.0",
         "axios": "^1.7.9",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
@@ -550,6 +551,8 @@
     "artplayer": ["artplayer@5.4.0", "", { "dependencies": { "option-validator": "^2.0.6" } }, "sha512-2B+plbx8N2yNsjK4nJU3+EOG8TULm1LRZk/QPkWRAMEX2Ee/MSnZG/WJYz8kcoZxZuLKcQ3uXifqLuPxZOH29A=="],
 
     "artplayer-plugin-dash-control": ["artplayer-plugin-dash-control@1.1.0", "", {}, "sha512-EssRkzYXWcln3a6nAzi4ESacBhzMih8s0bzdjXuvBBCh2UFmvK99ITD5E+0cuU8i5ZzIQGQSdce1/gANTrX0BQ=="],
+
+    "artplayer-plugin-hls-control": ["artplayer-plugin-hls-control@1.1.0", "", {}, "sha512-lWN5oUOWDorWFHdzKcmy9Z8eHcf5f5EcUGDrxBsZBX7aEL5dGRlHPQ5+wqQEizr38D9PYPfTI/nCyun2yFopEw=="],
 
     "asynckit": ["asynckit@0.4.0", "", {}, "sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q=="],
 

@@ -37,6 +37,7 @@
     "@vercel/og": "^0.8.5",
     "artplayer": "^5.4.0",
     "artplayer-plugin-dash-control": "^1.1.0",
+    "artplayer-plugin-hls-control": "^1.1.0",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

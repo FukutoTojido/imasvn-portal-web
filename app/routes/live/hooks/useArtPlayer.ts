@@ -1,5 +1,6 @@
 import Artplayer from "artplayer";
 import artplayerPluginDashControl from "artplayer-plugin-dash-control";
+import artplayerPluginHlsControl from "artplayer-plugin-hls-control";
 import { useEffect, useRef, useState } from "react";
 import type MediaMTXWebRTCReader from "~/lib/reader";
 import playWHEP from "./playWHEP";
@@ -101,6 +102,20 @@ export default function useArtPlayer({
 				...(type === "dash"
 					? [
 							artplayerPluginDashControl({
+								quality: {
+									control: true,
+									setting: true,
+									getName: (level) =>
+										`${(level as Record<string, string | number>).height}P`,
+									title: "Quality",
+									auto: "Auto",
+								},
+							}),
+						]
+					: []),
+				...(type === "hls"
+					? [
+							artplayerPluginHlsControl({
 								quality: {
 									control: true,
 									setting: true,
