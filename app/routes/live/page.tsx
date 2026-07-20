@@ -137,7 +137,7 @@ export default function Page({ loaderData, params }: Route.ComponentProps) {
 						<div className="flex-1 line-clamp-1 font-bold">
 							{loaderData.title}
 						</div>
-						<div className="flex items-center gap-5">
+						{isLive && <div className="flex items-center gap-5">
 							<DialogTrigger asChild>
 								<button
 									type="button"
@@ -150,7 +150,7 @@ export default function Page({ loaderData, params }: Route.ComponentProps) {
 									</span>
 								</button>
 							</DialogTrigger>
-						</div>
+						</div>}
 					</div>
 				</div>
 				{isLive && (
