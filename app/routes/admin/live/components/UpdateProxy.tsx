@@ -111,7 +111,7 @@ export default function UpdateProxy({
 		},
 	});
 
-	const { handleSubmit, register, reset, watch, control, setValue } = methods;
+	const { handleSubmit, register, reset, watch } = methods;
 
 	const submit = async (data: Partial<ProxyData>) => {
 		setSubmitting(true);
@@ -270,9 +270,9 @@ export default function UpdateProxy({
 								</Select>
 							</div>
 							<div className="flex flex-col gap-2">
-								<Label>Thumbnail</Label>
+								<Label>Forward URL</Label>
 								<Input
-									{...register("thumbnail")}
+									{...register("forward_url")}
 									className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
 									autoComplete="off"
 								/>
@@ -284,6 +284,14 @@ export default function UpdateProxy({
 									render={({ field: { value, onChange } }) => (
 										<DatePicker date={value} setDate={onChange} className="w-full" />
 									)}
+								/>
+							</div>
+							<div className="flex flex-col gap-2 col-span-full">
+								<Label>Thumbnail</Label>
+								<Input
+									{...register("thumbnail")}
+									className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
+									autoComplete="off"
 								/>
 							</div>
 							<img
