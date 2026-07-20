@@ -232,6 +232,7 @@ export default function UpdateEvent({
 									<Label>Event Period</Label>
 									<Calendar
 										selected={date}
+										month={date?.from}
 										required={true}
 										onSelect={(selected) => setValue("dateRange", selected)}
 										mode="range"
