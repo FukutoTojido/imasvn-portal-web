@@ -1,11 +1,11 @@
 import {
 	type Dispatch,
-	type SetStateAction,
 	type RefObject,
+	type SetStateAction,
 	useRef,
 } from "react";
 import { flushSync } from "react-dom";
-
+import { cn } from "~/lib/utils";
 import type { CharacterData, RefList } from "../types";
 
 export default function Idol({
@@ -14,15 +14,17 @@ export default function Idol({
 	cardRefList,
 	setShowPopup,
 	setIdolInfo,
+	className,
 }: {
 	charInfo?: CharacterData;
 	popupRefList?: RefObject<RefList>;
 	cardRefList?: RefObject<RefList>;
 	setShowPopup?: Dispatch<SetStateAction<boolean>>;
 	setIdolInfo?: Dispatch<SetStateAction<CharacterData | undefined>>;
+	className?: string;
 }) {
 	const ref = useRef<HTMLButtonElement>(null);
-	const avaRef = useRef<HTMLImageElement>(null);
+	const avaRef = useRef<HTMLDivElement>(null);
 	const characterRef = useRef<HTMLDivElement>(null);
 	const nameRef = useRef<HTMLDivElement>(null);
 	const descriptionRef = useRef<HTMLDivElement>(null);
@@ -96,34 +98,34 @@ export default function Idol({
 				});
 			}}
 			type="button"
-			className="rounded-md flex items-center text-text transition-all select-none cursor-pointer hover:bg-surface-0 bg-base border border-surface-1 overflow-hidden"
+			className={cn(
+				"h-30 relative rounded-md flex items-center text-white transition-all select-none cursor-pointer hover:bg-surface-0 bg-base border border-surface-1 overflow-hidden",
+				className,
+			)}
+			style={{
+				backgroundImage: `linear-gradient(to right, ${charInfo.imageColor ?? "transparent"} 10%, color-mix(in srgb, ${charInfo.imageColor ?? "transparent"}, transparent 80%) 100%`,
+			}}
 		>
-			<img
+			<div
 				ref={avaRef}
-				src={charInfo.icon}
-				alt=""
-				className="h-[100px] aspect-square rounded-md object-cover object-top shrink-0 avatar scale-125"
+				className="h-full aspect-video bg-cover avatar blur-[0.5px]"
 				style={{
-					maskImage: "linear-gradient(to right, white 60%, transparent 90%)"
+					maskImage: "linear-gradient(to right, white 70%, transparent 100%)",
+					backgroundImage: `url("${charInfo.icon}")`,
 				}}
-			/>
-			<div className="flex-1 flex flex-col text-left p-5">
-				<div className="text-lg font-medium character" ref={characterRef}>
+			></div>
+			<div className="relative flex-1 flex flex-col text-left p-5" style={{
+				filter: `drop-shadow(0 1px 5px color-mix(in srgb, ${charInfo.imageColor ?? "transparent"}, black 80%))`
+			}}>
+				<div
+					className="text-lg font-medium character"
+					ref={characterRef}
+				>
 					{charInfo.name}
 				</div>
-				<div className="text-sm line-clamp-1 name" ref={nameRef}>
+				<span className="text-sm line-clamp-1 name" ref={nameRef}>
 					{charInfo.japaneseName}
-				</div>
-				{charInfo.imageColor ? (
-					<div
-						className="w-8 h-2 rounded-full mt-2"
-						style={{
-							backgroundColor: charInfo.imageColor ?? "",
-						}}
-					/>
-				) : (
-					""
-				)}
+				</span>
 
 				<div className="w-full" ref={descriptionRef} />
 			</div>

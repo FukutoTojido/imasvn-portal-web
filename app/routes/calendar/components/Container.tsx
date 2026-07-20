@@ -55,6 +55,7 @@ export default function Container({
 								setShowPopup={setShowPopup}
 								cardRefList={cardRefList}
 								popupRefList={popupRefList}
+								className="h-20"
 							/>
 						);
 					})

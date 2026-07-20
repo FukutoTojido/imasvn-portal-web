@@ -13,9 +13,9 @@ export default function useHLS(id?: string) {
 				if (art.hls) art.hls.destroy();
 
 				const config: Partial<HlsConfig> = {
-					debug: true,
+					// debug: true,
 					enableWorker: true,
-					requireKeySystemAccessOnStart: true,
+					// requireKeySystemAccessOnStart: true,
 					emeEnabled: true,
 					widevineLicenseUrl: `${import.meta.env.VITE_BACKEND_API}/hls/drm/${id}`,
 					drmSystems: {

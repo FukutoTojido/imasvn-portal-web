@@ -32,7 +32,9 @@ export default function TableComponent<T>({
 					>
 						{headerGroup.headers.map((header) => {
 							return (
-								<TableHead key={header.id} className="text-text">
+								<TableHead key={header.id} className="text-text shrink-0" style={{
+									width: header.getSize()
+								}}>
 									{header.isPlaceholder
 										? null
 										: flexRender(

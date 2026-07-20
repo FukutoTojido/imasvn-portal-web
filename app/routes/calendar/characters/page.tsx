@@ -86,7 +86,7 @@ export default function Page() {
 	}, [fuse, query]);
 
 	return (
-		<div className="max-w-[1024px] w-full h-full flex flex-col p-5 gap-5 mx-auto overflow-auto">
+		<div className="max-w-500 w-full h-full flex flex-col p-5 gap-5 mx-auto overflow-auto">
 			<div className="font-bold text-xl text-primary-6">
 				THE iDOLM@STER Characters List
 			</div>
@@ -102,7 +102,7 @@ export default function Page() {
 					/>
 				</div>
 			</div>
-			<div className="w-full grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-2.5">
+			<div className="w-full grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-2.5">
 				{result?.map((characterData) => (
 					<Idol
 						charInfo={characterData}
