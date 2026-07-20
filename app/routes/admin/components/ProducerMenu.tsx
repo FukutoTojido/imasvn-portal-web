@@ -103,7 +103,7 @@ export default function ProducerMenu({
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button className="bg-mantle border border-overlay-0 hover:bg-surface-0 text-text text-left line-clamp-1 text-ellipsis">
+				<Button className="bg-mantle border border-overlay-0 hover:bg-surface-0 text-text text-left overflow-hidden text-ellipsis whitespace-nowrap block">
 					{table
 						.getSelectedRowModel()
 						.rows.map((row) => row.original.name)
