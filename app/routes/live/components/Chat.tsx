@@ -19,9 +19,9 @@ import {
 } from "../types";
 
 import "./Chat.css";
+import { useParams } from "react-router";
 import ChatContainer from "./ChatContainer";
 import Input from "./Input";
-import { useParams } from "react-router";
 
 function useEmotes() {
 	const [emotes, setEmotes] = useState<
@@ -60,11 +60,13 @@ function useEmotes() {
 export default function Chat({
 	isFullscreen,
 	setViewers,
-	forceId
+	forceId,
+	isLive,
 }: {
 	isFullscreen: boolean;
 	setViewers: Dispatch<SetStateAction<Viewer[]>>;
 	forceId?: string;
+	isLive?: boolean;
 }) {
 	const userData = useSelector(
 		(state: ReturnType<typeof store.getState>) => state.auth.user,
@@ -76,7 +78,9 @@ export default function Chat({
 	const params = useParams();
 
 	const { sendJsonMessage } = useWebSocket(
-		`${import.meta.env.VITE_WEBSOCKET_ENDPOINT}/${forceId ?? params.id ?? "root"}`,
+		isLive
+			? `${import.meta.env.VITE_WEBSOCKET_ENDPOINT}/${forceId ?? params.id ?? "root"}`
+			: null,
 		{
 			onOpen: () => {
 				console.log(`${new Date().toISOString()} - WebSocket connected!`);
@@ -101,7 +105,7 @@ export default function Chat({
 				console.log(`${new Date().toISOString()} - WebSocket disconnected!`);
 			},
 			reconnectInterval: 5000,
-			shouldReconnect: () => true
+			shouldReconnect: () => true,
 		},
 	);
 
@@ -120,12 +124,13 @@ export default function Chat({
 
 		return () => {
 			clearInterval(interval);
-		}
+		};
 	}, [sendJsonMessage, userData]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: gg
 	useEffect(() => {
 		containerRef.current?.scrollTo(0, containerRef.current.scrollHeight);
-	}, [messages.length])
+	}, [messages.length]);
 
 	return (
 		<div

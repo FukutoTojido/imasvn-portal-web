@@ -61,22 +61,28 @@ export default function useArtPlayer({
 			},
 			theme: "#b4befe",
 			controls: [
-				{
-					name: "chat",
-					tooltip: "Show/Hide Chat and Title",
-					html: '<i class="ri-chat-off-line text-2xl"></i>',
-					style: {
-						cursor: "pointer",
-					},
-					position: "right",
-					click: () => {
-						const chatContainer =
-							document.querySelector<HTMLDivElement>("#chatContainer");
-						if (!chatContainer) return;
+				...(isLive
+					? [
+							{
+								name: "chat",
+								tooltip: "Show/Hide Chat and Title",
+								html: '<i class="ri-chat-off-line text-2xl"></i>',
+								style: {
+									cursor: "pointer",
+								},
+								position: "right",
+								click: () => {
+									const chatContainer =
+										document.querySelector<HTMLDivElement>("#chatContainer");
+									if (!chatContainer) return;
 
-						setHideChat(() => !chatContainer.classList.contains("hidden"));
-					},
-				},
+									setHideChat(
+										() => !chatContainer.classList.contains("hidden"),
+									);
+								},
+							},
+						]
+					: []),
 				{
 					name: "fullscreen",
 					index: 99,

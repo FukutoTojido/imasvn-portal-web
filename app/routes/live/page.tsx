@@ -114,7 +114,7 @@ export default function Page({ loaderData, params }: Route.ComponentProps) {
 		page: pageRef.current,
 		url: !contentID?.includes("http") ? url : contentID,
 		type,
-		isLive
+		isLive,
 	});
 
 	return (
@@ -123,7 +123,12 @@ export default function Page({ loaderData, params }: Route.ComponentProps) {
 			ref={pageRef}
 		>
 			<Dialog>
-				<div className="w-full md:h-full flex flex-col">
+				<div
+					className="w-full md:h-full flex flex-col"
+					style={{
+						viewTransitionName: `live-${params.id}`,
+					}}
+				>
 					<div
 						className="artplayer-app w-full flex-1 aspect-video md:aspect-auto md:rounded-xl overflow-hidden"
 						ref={playerRef}
@@ -148,12 +153,18 @@ export default function Page({ loaderData, params }: Route.ComponentProps) {
 						</div>
 					</div>
 				</div>
-				<div
-					id="chatContainer"
-					className={`lg:w-[400px] md:w-[300px] w-full flex flex-col overflow-hidden md:flex-none flex-1 ${hideChat ? "hidden" : ""}`}
-				>
-					<Chat isFullscreen={isFullscreen} setViewers={setViewers} />
-				</div>
+				{isLive && (
+					<div
+						id="chatContainer"
+						className={`lg:w-[400px] md:w-[300px] w-full flex flex-col overflow-hidden md:flex-none flex-1 ${hideChat ? "hidden" : ""}`}
+					>
+						<Chat
+							isFullscreen={isFullscreen}
+							setViewers={setViewers}
+							isLive={isLive}
+						/>
+					</div>
+				)}
 				<Viewers viewers={viewers} container={pageRef.current as HTMLElement} />
 			</Dialog>
 		</div>
