@@ -292,9 +292,11 @@ body {
 	width: 100vw;
 	min-height: 100vh;
 
-	overflow: overlay;
-	overflow-x: hidden;
+	overflow: auto;
+	overflow-x: clip;
 
+	/*scrollbar-gutter: stable both-edges;*/
+	scrollbar-width: thin;
 	font-family: "Inter", sans-serif;
 }
 
@@ -543,29 +545,6 @@ label {
 
 .file-input:hover {
 	background-color: #363753;
-}
-
-/*Scrollbar*/
-
-::-webkit-scrollbar {
-	width: 8px;
-	background-color: var(--color-base);
-	/* display: none; */
-}
-
-/* Track */
-
-::-webkit-scrollbar-track {
-	/* margin-top: 25px;
-	margin-bottom: 25px; */
-	visibility: 0;
-}
-
-/* Handle */
-
-::-webkit-scrollbar-thumb {
-	background: #56587d;
-	border-radius: 10px;
 }
 
 @keyframes osuSpinnerKurwa {
