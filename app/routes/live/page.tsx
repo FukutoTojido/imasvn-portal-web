@@ -11,6 +11,7 @@ import useArtPlayer from "./hooks/useArtPlayer";
 import useBearer from "./hooks/useBearer";
 import useURL from "./hooks/useURL";
 import type { Viewer } from "./types";
+import { useViewTransitionState } from "react-router";
 
 export async function loader({ params }: Route.LoaderArgs) {
 	try {
@@ -69,6 +70,9 @@ export default function Page({ loaderData, params }: Route.ComponentProps) {
 	const [contentID, setContentID] = useState<string | null>(null);
 	const [type, setType] = useState<"hls" | "dash" | "whep" | null>(null);
 	const [isLive, setIsLive] = useState(false);
+	
+	const _url = `/live/${params.id}`;
+	const vt = useViewTransitionState(_url);
 
 	const [viewers, setViewers] = useState<Viewer[]>([]);
 
@@ -126,14 +130,14 @@ export default function Page({ loaderData, params }: Route.ComponentProps) {
 				<div
 					className="w-full md:h-full flex flex-col"
 					style={{
-						viewTransitionName: `live-${params.id}`,
+						viewTransitionName: vt ? `live-${params.id}` : undefined,
 					}}
 				>
 					<div
 						className="artplayer-app w-full flex-1 aspect-video md:aspect-auto md:rounded-xl overflow-hidden"
 						ref={playerRef}
 					></div>
-					<div className={cn("flex flex-col p-5", hideChat && "hidden")}>
+					<div className={cn("flex flex-col p-5", (hideChat || (!isLive && isFullscreen)) && "hidden")}>
 						<div className="flex-1 line-clamp-1 font-bold">
 							{loaderData.title}
 						</div>

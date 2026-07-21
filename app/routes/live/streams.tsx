@@ -42,12 +42,13 @@ const RoomCard = ({ id, name, thumbnail, date, branch }: ProxyDataDto) => {
 
 	return (
 		<Link
-			className="relative w-full h-[300px] flex flex-col text-white group bg-base border border-surface-1 rounded-3xl overflow-hidden hover:bg-surface-0 hover:rounded-md transition-all justify-end"
+			className="relative w-full h-[300px] flex flex-col text-white group bg-base border border-surface-1 rounded-3xl overflow-hidden hover:bg-surface-0 hover:rounded-md transition-all justify-end touch-manipulation"
 			to={`/live/${id === "root" ? "" : id}`}
 			viewTransition
 			style={{
 				viewTransitionName: vt ? `live-${id === "root" ? "" : id}` : undefined,
 			}}
+			prefetch="intent"
 		>
 			<img
 				src={thumbnail}

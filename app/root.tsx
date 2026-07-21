@@ -10,7 +10,8 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
-import 'remixicon/fonts/remixicon.css'
+import "remixicon/fonts/remixicon.css";
+import Loader from "./routes/components/Loader";
 
 export const links: Route.LinksFunction = () => [
 	{ rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -36,6 +37,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Links />
 			</head>
 			<body className="dark">
+				<Loader />
 				{children}
 				<ScrollRestoration />
 				<Scripts />
