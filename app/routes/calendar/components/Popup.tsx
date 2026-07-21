@@ -36,9 +36,7 @@ export default function Popup({
 				ref={avaRef}
 				src={idolInfo?.icon ?? "/fuyuping.png"}
 				alt=""
-				width={240}
-				height={240}
-				className="w-[240px] h-[240px] rounded-xl sm:bg-surface-0 object-cover object-top border border-surface-1"
+				className="h-60 aspect-video rounded-xl sm:bg-surface-0 object-cover object-top border border-surface-1 shrink-0"
 			/>
 			<div className="sm:h-full h-auto flex-1 flex-col flex gap-5 w-full">
 				<div className="w-full sm:w-auto flex flex-col text-center sm:text-left">

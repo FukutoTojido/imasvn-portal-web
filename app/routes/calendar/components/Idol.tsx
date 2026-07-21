@@ -107,18 +107,28 @@ export default function Idol({
 			}}
 		>
 			<div
-				ref={avaRef}
-				className="h-full aspect-video bg-cover avatar blur-[0.5px]"
+				className="absolute w-full h-full bg-cover avatar blur-[5px] opacity-40 top-0 left-0"
 				style={{
 					maskImage: "linear-gradient(to right, white 70%, transparent 100%)",
 					backgroundImage: `url("${charInfo.icon}")`,
 				}}
 			></div>
-			<div className="relative flex-1 flex flex-col text-left p-5" style={{
-				filter: `drop-shadow(0 1px 5px color-mix(in srgb, ${charInfo.imageColor ?? "transparent"}, black 80%))`
-			}}>
+			<div
+				ref={avaRef}
+				className="relative h-full aspect-video bg-cover avatar blur-[0.5px]"
+				style={{
+					maskImage: "linear-gradient(to right, white 70%, transparent 100%)",
+					backgroundImage: `url("${charInfo.icon}")`,
+				}}
+			></div>
+			<div
+				className="relative flex-1 flex flex-col text-left p-5"
+				style={{
+					filter: `drop-shadow(0 1px 5px color-mix(in srgb, ${charInfo.imageColor ?? "transparent"}, black 80%))`,
+				}}
+			>
 				<div
-					className="text-lg font-medium character"
+					className="text-lg leading-[1.2em] font-medium line-clamp-1 character"
 					ref={characterRef}
 				>
 					{charInfo.name}
