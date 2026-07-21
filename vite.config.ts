@@ -13,14 +13,14 @@ export default defineConfig({
 	],
 	ssr: {
 		noExternal: ["react-easy-crop", "tslib"],
-		// external: ["dashjs"],
+		external: ["sharp", "svgo"],
 	},
 	server: {
 		host: "0.0.0.0",
 	},
 	build: {
 		rollupOptions: {
-			external: ["@takumi-rs/core"],
+			external: ["@takumi-rs/core", "sharp", "svgo"],
 		},
 		target: "esnext",
 	},

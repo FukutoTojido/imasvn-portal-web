@@ -62,51 +62,48 @@ export default function PreviewImage({
 	useImperativeHandle(ref, () => ({ getImage: cropImage }), [cropImage]);
 
 	return (
-		<>
-			<div
-				className={cn(
-					"relative col-span-full bg-mantle rounded-md border-dashed border-overlay-0 bg-center bg-cover overflow-hidden p-5",
-					url || objectUrl ? "" : "border-1",
-					cropper ? "aspect-square" : "",
-					className,
+		<div
+			className={cn(
+				"relative col-span-full bg-secondary rounded-2xl border-dashed bg-center bg-cover overflow-hidden p-5",
+				url || objectUrl ? "" : "border-1",
+				cropper ? "aspect-square" : "",
+				className,
+			)}
+		>
+			<div className="relative w-full h-full rounded-xl overflow-hidden">
+				{(!cropper && (url || objectUrl)) || (cropper && url && !objectUrl) ? (
+					<img
+						src={url ?? objectUrl ?? undefined}
+						alt=""
+						className={cn(
+							"w-full h-full object-contain object-center rounded-xl",
+							imgClassName,
+						)}
+					/>
+				) : (
+					""
 				)}
-			>
-				<div className="relative w-full h-full rounded-xl overflow-hidden">
-					{(!cropper && (url || objectUrl)) ||
-					(cropper && url && !objectUrl) ? (
-						<img
-							src={url ?? objectUrl ?? undefined}
-							alt=""
-							className={cn(
-								"w-full h-full object-contain object-center rounded-xl",
-								imgClassName,
-							)}
-						/>
-					) : (
-						""
-					)}
-					{objectUrl && cropper ? (
-						<Cropper
-							image={objectUrl}
-							aspect={1}
-							crop={crop}
-							zoom={zoom}
-							onCropChange={setCrop}
-							onZoomChange={setZoom}
-							zoomSpeed={0.3}
-							classes={{
-								containerClassName: "w-full h-full",
-								cropAreaClassName: "rounded-xl",
-								mediaClassName: "object-cover max-w-[initial]",
-							}}
-							objectFit="cover"
-							onCropComplete={onCropComplete}
-						/>
-					) : (
-						""
-					)}
-				</div>
+				{objectUrl && cropper ? (
+					<Cropper
+						image={objectUrl}
+						aspect={1}
+						crop={crop}
+						zoom={zoom}
+						onCropChange={setCrop}
+						onZoomChange={setZoom}
+						zoomSpeed={0.3}
+						classes={{
+							containerClassName: "w-full h-full",
+							cropAreaClassName: "rounded-xl",
+							mediaClassName: "object-cover max-w-[initial]",
+						}}
+						objectFit="cover"
+						onCropComplete={onCropComplete}
+					/>
+				) : (
+					""
+				)}
 			</div>
-		</>
+		</div>
 	);
 }

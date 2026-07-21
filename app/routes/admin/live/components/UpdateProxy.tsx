@@ -8,7 +8,7 @@ import {
 	useImperativeHandle,
 	useState,
 } from "react";
-import { Controller, FormProvider, useForm, useWatch } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import useSWR, { mutate } from "swr";
 import { Button } from "~/components/ui/button";
@@ -43,7 +43,7 @@ export enum BranchType {
 	SIDE_M = 5,
 	GAKUEN = 6,
 	DEARLY_STARS = 7,
-	IMAS = 8
+	IMAS = 8,
 }
 
 export const BRANCH_TYPES = {
@@ -213,19 +213,15 @@ export default function UpdateProxy({
 				}}
 			>
 				<DialogTrigger className="w-max" asChild>
-					<Button className="bg-text text-crust hover:bg-base hover:text-text self-end font-normal">
-						Add Event
-					</Button>
+					<Button>Add Event</Button>
 				</DialogTrigger>
 				<DialogContent
 					onOpenAutoFocus={(e) => e.preventDefault()}
-					className="bg-base border-surface-1 text-text sm:max-w-full w-150 max-h-[calc(100%-2rem)] overflow-auto"
+					className="sm:max-w-full w-150 max-h-[calc(100%-2rem)] overflow-auto"
 				>
 					<DialogHeader>
 						<DialogTitle>Event</DialogTitle>
-						<DialogDescription className="text-subtext-0">
-							Add or update a new event
-						</DialogDescription>
+						<DialogDescription>Add or update a new event</DialogDescription>
 					</DialogHeader>
 					{isLoading ? (
 						<Loader2 className="animate-spin" />
@@ -242,17 +238,13 @@ export default function UpdateProxy({
 										methods.setValue("branch", +value as BranchType)
 									}
 								>
-									<SelectTrigger className="w-full bg-mantle border-surface-1 focus-visible:ring-overlay-0">
+									<SelectTrigger className="w-full">
 										<SelectValue placeholder="Branch..." />
 									</SelectTrigger>
-									<SelectContent className="bg-mantle border border-surface-1 text-text">
+									<SelectContent position="popper">
 										<SelectGroup>
 											{Object.entries(BRANCH_TYPES).map(([id, value]) => (
-												<SelectItem
-													key={id}
-													value={id}
-													className="data-[highlighted]:bg-surface-0 data-[highlighted]:text-text text-wrap"
-												>
+												<SelectItem key={id} value={id} className="text-wrap">
 													{value}
 												</SelectItem>
 											))}
@@ -264,26 +256,17 @@ export default function UpdateProxy({
 								<Label>Room ID</Label>
 								<Input
 									{...register("id", { required: true })}
-									className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
 									autoComplete="off"
 									disabled={id === "root"}
 								/>
 							</div>
 							<div className="flex gap-2 flex-col flex-1">
 								<Label>URL / Content ID</Label>
-								<Input
-									{...register("m3u8")}
-									className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
-									autoComplete="off"
-								/>
+								<Input {...register("m3u8")} autoComplete="off" />
 							</div>
 							<div className="flex flex-col gap-2">
 								<Label>Room Name</Label>
-								<Input
-									{...register("name")}
-									className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
-									autoComplete="off"
-								/>
+								<Input {...register("name")} autoComplete="off" />
 							</div>
 							<div className="flex flex-col gap-2">
 								<Label>Stream Type</Label>
@@ -296,40 +279,21 @@ export default function UpdateProxy({
 										)
 									}
 								>
-									<SelectTrigger className="w-full bg-mantle border-surface-1 focus-visible:ring-overlay-0">
+									<SelectTrigger className="w-full">
 										<SelectValue placeholder="Stream Type..." />
 									</SelectTrigger>
-									<SelectContent className="bg-mantle border border-surface-1 text-text">
+									<SelectContent position="popper">
 										<SelectGroup>
-											<SelectItem
-												value="hls"
-												className="data-[highlighted]:bg-surface-0 data-[highlighted]:text-text text-wrap"
-											>
-												HLS
-											</SelectItem>
-											<SelectItem
-												value="dash"
-												className="data-[highlighted]:bg-surface-0 data-[highlighted]:text-text text-wrap"
-											>
-												DASH
-											</SelectItem>
-											<SelectItem
-												value="whep"
-												className="data-[highlighted]:bg-surface-0 data-[highlighted]:text-text text-wrap"
-											>
-												WHEP
-											</SelectItem>
+											<SelectItem value="hls">HLS</SelectItem>
+											<SelectItem value="dash">DASH</SelectItem>
+											<SelectItem value="whep">WHEP</SelectItem>
 										</SelectGroup>
 									</SelectContent>
 								</Select>
 							</div>
 							<div className="flex flex-col gap-2">
 								<Label>Forward URL</Label>
-								<Input
-									{...register("forward_url")}
-									className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
-									autoComplete="off"
-								/>
+								<Input {...register("forward_url")} autoComplete="off" />
 							</div>
 							<div className="flex flex-col gap-2">
 								<Label>Date</Label>
@@ -346,11 +310,7 @@ export default function UpdateProxy({
 							</div>
 							<div className="flex flex-col gap-2 col-span-full">
 								<Label>Thumbnail</Label>
-								<Input
-									{...register("thumbnail")}
-									className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
-									autoComplete="off"
-								/>
+								<Input {...register("thumbnail")} autoComplete="off" />
 							</div>
 							<img
 								src={(thumbnail ? thumbnail : null) as unknown as string}
@@ -361,7 +321,7 @@ export default function UpdateProxy({
 								<Label>Cookies</Label>
 								<Textarea
 									{...register("cookies")}
-									className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text font-mono resize-none"
+									className="font-mono resize-none field-sizing-fixed"
 									rows={3}
 									autoComplete="off"
 								/>
@@ -370,7 +330,7 @@ export default function UpdateProxy({
 								<Label>Headers</Label>
 								<Textarea
 									{...register("headers")}
-									className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text font-mono resize-none"
+									className="font-mono resize-none field-sizing-fixed"
 									rows={3}
 									autoComplete="off"
 								/>
@@ -386,8 +346,8 @@ export default function UpdateProxy({
 							</div>
 							<Button
 								type="submit"
-								className="w-max bg-text text-crust hover:bg-crust hover:text-text ml-auto col-span-full"
 								disabled={submitting}
+								className="col-span-full"
 							>
 								{submitting ? <Loader2 className="animate-spin" /> : ""}
 								Save

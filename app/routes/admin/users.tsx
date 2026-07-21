@@ -1,4 +1,3 @@
-import { AvatarFallback } from "@radix-ui/react-avatar";
 import {
 	type ColumnDef,
 	type ColumnFiltersState,
@@ -12,8 +11,17 @@ import { ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useMemo, useState } from "react";
 import useSWR from "swr";
-import { Avatar, AvatarImage } from "~/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+	Combobox,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxList,
+} from "~/components/ui/combobox";
 import { Input } from "~/components/ui/input";
 import {
 	Select,
@@ -24,9 +32,8 @@ import {
 	SelectValue,
 } from "~/components/ui/select";
 import { ROLE, type UserDto } from "~/types";
-import TableComponent from "./components/Table";
-import { ComboBox } from "~/components/ui/combobox";
 import { getProducers } from "./components/ProducerMenu";
+import TableComponent from "./components/Table";
 
 const getUsers = async () => {
 	try {
@@ -61,7 +68,7 @@ export default function Page() {
 				header: "Avatar",
 				cell: (props) => (
 					<Avatar className="w-10 h-10">
-						<AvatarFallback className="w-full h-full rounded-full bg-crust text-subtext-0 flex items-center justify-center">
+						<AvatarFallback className="w-full h-full rounded-full flex items-center justify-center">
 							<ImageOff size={16} />
 						</AvatarFallback>
 						<AvatarImage src={props.cell.getValue() as string} />
@@ -78,9 +85,7 @@ export default function Page() {
 				cell: (props) => (
 					<div className="flex flex-col">
 						<span>{props.getValue() as string}</span>
-						<span className="text-subtext-0 text-xs">
-							@{props.row.original.tag}
-						</span>
+						<span className="text-xs">@{props.row.original.tag}</span>
 					</div>
 				),
 			},
@@ -106,24 +111,13 @@ export default function Page() {
 							mutate("users");
 						}}
 					>
-						<SelectTrigger className="bg-mantle border-surface-1 w-[200px] focus-visible:ring-overlay-0 ">
-							<SelectValue
-								placeholder="Role..."
-								className="placeholder:text-subtext-0"
-							/>
+						<SelectTrigger className="w-full">
+							<SelectValue placeholder="Role..." />
 						</SelectTrigger>
-						<SelectContent className="bg-mantle border border-surface-1 text-text">
+						<SelectContent position="popper">
 							<SelectGroup>
-								<SelectItem
-									value={ROLE.NORMAL.toString()}
-									className="data-[highlighted]:bg-surface-0 data-[highlighted]:text-text"
-								>
-									Normal
-								</SelectItem>
-								<SelectItem
-									value={ROLE.ADMIN.toString()}
-									className="data-[highlighted]:bg-surface-0 data-[highlighted]:text-text"
-								>
+								<SelectItem value={ROLE.NORMAL.toString()}>Normal</SelectItem>
+								<SelectItem value={ROLE.ADMIN.toString()}>
 									Administrator
 								</SelectItem>
 							</SelectGroup>
@@ -135,15 +129,22 @@ export default function Page() {
 				accessorKey: "pid",
 				header: "Linked Producer ID",
 				cell: (props) => (
-					<ComboBox
-						defaultValue={props.getValue() as string}
-						placeholder="Link Producer"
-						options={producersList}
+					<Combobox
+						defaultValue={producersList?.find(
+							(p) => p.value === props.getValue(),
+						)}
+						items={producersList}
 						onValueChange={async (value) => {
+							if (value === null) return;
 							try {
 								await axios.patch(
 									`${import.meta.env.VITE_BACKEND_API}/users/${props.row.original.id}/pid`,
-									{ pid: value === props.row.original.pid ? null : value },
+									{
+										pid:
+											value.value === props.row.original.pid
+												? null
+												: value.value,
+									},
 									{ withCredentials: true },
 								);
 								mutate();
@@ -151,7 +152,19 @@ export default function Page() {
 								console.error(e);
 							}
 						}}
-					></ComboBox>
+					>
+						<ComboboxInput placeholder="Link Producer" />
+						<ComboboxContent>
+							<ComboboxEmpty>No producer ID found.</ComboboxEmpty>
+							<ComboboxList>
+								{(item) => (
+									<ComboboxItem key={item.value} value={item}>
+										{item.label}
+									</ComboboxItem>
+								)}
+							</ComboboxList>
+						</ComboboxContent>
+					</Combobox>
 				),
 			},
 		],
@@ -180,56 +193,56 @@ export default function Page() {
 			columnFilters,
 			pagination: {
 				pageIndex: page,
-                pageSize: 10
+				pageSize: 10,
 			},
 		},
 	});
 
 	return (
 		<>
-			<div className="text-5xl font-medium text-text">Portal Users Manager</div>
-			<div className="w-full p-2.5 border border-surface-1 rounded-xl bg-base flex flex-col gap-2.5">
-				<div className="flex items-center justify-end space-x-2">
-					<Input
-						className="flex-1 bg-mantle border border-overlay-0 text-text h-[40px]"
-						placeholder="Search producer..."
-						value={
-							(table.getColumn("username")?.getFilterValue() as string) ?? ""
-						}
-						onChange={(event) => {
-							table.getColumn("username")?.setFilterValue(event.target.value);
-							setFilter(event.target.value ? event.target.value : null);
-						}}
-					/>
-				</div>
-				<TableComponent table={table} columns={columns} />
-				<div className="w-full flex items-center justify-end gap-2.5">
-					<div className="flex-1 px-2.5 text-sm text-subtext-0">
-						Page {table.getState().pagination.pageIndex + 1} of{" "}
-						{table.getPageCount()}
+			<div className="text-5xl font-bold">Portal Users Manager</div>
+			<Card className="w-full">
+				<CardContent className="space-y-2">
+					<div className="flex items-center justify-end space-x-2">
+						<Input
+							className="flex-1 h-[40px]"
+							placeholder="Search producer..."
+							value={
+								(table.getColumn("username")?.getFilterValue() as string) ?? ""
+							}
+							onChange={(event) => {
+								table.getColumn("username")?.setFilterValue(event.target.value);
+								setFilter(event.target.value ? event.target.value : null);
+							}}
+						/>
 					</div>
-					<Button
-						className="bg-text text-mantle hover:bg-subtext-0 disabled:bg-crust disabled:text-text"
-						onClick={() => {
-							table.previousPage();
-							setPage(table.getState().pagination.pageIndex - 1);
-						}}
-						disabled={!table.getCanPreviousPage()}
-					>
-						<ChevronLeft />
-					</Button>
-					<Button
-						className="bg-text text-mantle hover:bg-subtext-0 disabled:bg-crust disabled:text-text"
-						onClick={() => {
-							table.nextPage();
-							setPage(table.getState().pagination.pageIndex + 1);
-						}}
-						disabled={!table.getCanNextPage()}
-					>
-						<ChevronRight />
-					</Button>
-				</div>
-			</div>
+					<TableComponent table={table} columns={columns} />
+					<div className="w-full flex items-center justify-end gap-2.5">
+						<div className="flex-1 px-2.5 text-sm">
+							Page {table.getState().pagination.pageIndex + 1} of{" "}
+							{table.getPageCount()}
+						</div>
+						<Button
+							onClick={() => {
+								table.previousPage();
+								setPage(table.getState().pagination.pageIndex - 1);
+							}}
+							disabled={!table.getCanPreviousPage()}
+						>
+							<ChevronLeft />
+						</Button>
+						<Button
+							onClick={() => {
+								table.nextPage();
+								setPage(table.getState().pagination.pageIndex + 1);
+							}}
+							disabled={!table.getCanNextPage()}
+						>
+							<ChevronRight />
+						</Button>
+					</div>
+				</CardContent>
+			</Card>
 		</>
 	);
 }

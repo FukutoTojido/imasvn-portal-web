@@ -12,7 +12,14 @@ import {
 	CardHeader,
 	CardTitle,
 } from "~/components/ui/card";
-import { ComboBox } from "~/components/ui/combobox";
+import {
+	Combobox,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxList,
+} from "~/components/ui/combobox";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import type { CharacterData } from "~/routes/calendar/types";
@@ -78,40 +85,44 @@ export default function Page({
 	return (
 		<FormProvider {...methods}>
 			<form onSubmit={handleSubmit(update)} className="self-center max-w-full">
-				<Card className="w-[700px] max-w-full bg-base border-surface-1 text-text">
+				<Card className="w-[700px] max-w-full">
 					<CardHeader>
 						<CardTitle>{characterData.name}</CardTitle>
-						<CardDescription className="text-subtext-0">
+						<CardDescription>
 							Edit information of {characterData.name}
 						</CardDescription>
 					</CardHeader>
 					<CardContent className="grid grid-cols-2 gap-5">
-						<div className="col-span-full aspect-square">
-							<PreviewImage url={watch("icon")} cropper={false} className="w-full aspect-square" />
+						<div className="col-span-full aspect-video">
+							<PreviewImage
+								url={watch("icon")}
+								cropper={false}
+								className="w-full aspect-video"
+							/>
 						</div>
 						<div className="flex flex-col gap-2.5">
 							<Label>Name</Label>
-							<Input {...register("name")} className="text-text" />
+							<Input {...register("name")} />
 						</div>
 						<div className="flex flex-col gap-2.5">
 							<Label>Japanese Name</Label>
-							<Input {...register("japaneseName")} className="text-text" />
+							<Input {...register("japaneseName")} />
 						</div>
 						<div className="flex flex-col gap-2.5">
 							<Label>VA</Label>
-							<Input {...register("VA")} className="text-text" />
+							<Input {...register("VA")} />
 						</div>
 						<div className="flex flex-col gap-2.5">
 							<Label>VA Japanese</Label>
-							<Input {...register("japaneseVA")} className="text-text" />
+							<Input {...register("japaneseVA")} />
 						</div>
 						<div className="flex flex-col gap-2.5">
 							<Label>Age</Label>
-							<Input {...register("age")} type="tel" className="text-text" />
+							<Input {...register("age")} type="tel" />
 						</div>
 						<div className="flex flex-col gap-2.5">
 							<Label>Icon</Label>
-							<Input {...register("icon")} className="text-text" />
+							<Input {...register("icon")} />
 						</div>
 						<div className="flex flex-col gap-2.5">
 							<Label>Image Color</Label>
@@ -122,46 +133,75 @@ export default function Page({
 										background: watch("imageColor"),
 									}}
 								></div>
-								<Input
-									{...register("imageColor")}
-									className="text-text flex-1"
-								/>
+								<Input {...register("imageColor")} />
 							</div>
 						</div>
 						<div className="flex flex-col gap-2.5">
 							<Label>Birthday</Label>
 							<div className="grid grid-cols-2 gap-2.5">
-								<ComboBox
-									{...register("birthdate")}
-									className="w-full"
-									defaultValue={getValues("birthdate")?.toString() ?? "1"}
-									options={dateList.map((val) => ({
+								<Combobox
+									defaultValue={{
+										value: getValues("birthdate")?.toString() ?? "1",
+										label: getValues("birthdate")?.toString() ?? "1",
+									}}
+									items={dateList.map((val) => ({
 										value: val.toString(),
 										label: val.toString(),
 									}))}
-									onValueChange={(value) => setValue("birthdate", +value)}
-								/>
-								<ComboBox
-									{...register("birthmonth")}
-									defaultValue={getValues("birthmonth")?.toString() ?? "1"}
-									className="w-full"
-									options={[...Array(12)].map((_, idx) => ({
+									onValueChange={(value) => {
+										if (value === null) return;
+										setValue("birthdate", +value.value);
+									}}
+								>
+									<ComboboxInput placeholder="Birth Date" />
+									<ComboboxContent>
+										<ComboboxEmpty>No idol found.</ComboboxEmpty>
+										<ComboboxList>
+											{(item) => (
+												<ComboboxItem key={item.value} value={item}>
+													{item.label}
+												</ComboboxItem>
+											)}
+										</ComboboxList>
+									</ComboboxContent>
+								</Combobox>
+								<Combobox
+									defaultValue={{
+										value: getValues("birthmonth")?.toString() ?? "1",
+										label: DateTime.fromFormat(
+											getValues("birthmonth")?.toString() ?? "1",
+											"M",
+										).toFormat("LLLL"),
+									}}
+									items={[...Array(12)].map((_, idx) => ({
 										value: (idx + 1).toString(),
 										label: DateTime.fromFormat(
 											(idx + 1).toString(),
 											"M",
 										).toFormat("LLLL"),
 									}))}
-									onValueChange={(value) => setValue("birthmonth", +value)}
-								/>
+									onValueChange={(value) => {
+										if (value === null) return;
+										setValue("birthmonth", +value.value);
+									}}
+								>
+									<ComboboxInput placeholder="Birth Date" />
+									<ComboboxContent>
+										<ComboboxEmpty>No idol found.</ComboboxEmpty>
+										<ComboboxList>
+											{(item) => (
+												<ComboboxItem key={item.value} value={item}>
+													{item.label}
+												</ComboboxItem>
+											)}
+										</ComboboxList>
+									</ComboboxContent>
+								</Combobox>
 							</div>
 						</div>
 					</CardContent>
 					<CardFooter>
-						<Button
-							type="submit"
-							className="ml-auto bg-text text-mantle hover:bg-subtext-0"
-						>
+						<Button type="submit" className="ml-auto ">
 							Save
 						</Button>
 					</CardFooter>

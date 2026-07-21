@@ -29,7 +29,7 @@ export default function Popup({
 	return (
 		<div
 			ref={ref}
-			className="max-w-full max-h-full overflow-auto w-[800px] p-5 bg-base border border-surface-1 rounded-xl flex gap-5 text-text flex-col sm:flex-row items-center sm:items-start"
+			className="max-w-full max-h-full overflow-auto w-[800px] p-5 bg-cat-base border border-surface-1 rounded-xl flex gap-5 text-text flex-col sm:flex-row items-center sm:items-start"
 			{...{ ...props }}
 		>
 			<img

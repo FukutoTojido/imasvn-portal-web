@@ -3,6 +3,7 @@ import { LogOut, ShieldUser, User2 } from "lucide-react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
+import { buttonVariants } from "~/components/ui/button";
 import {
 	Popover,
 	PopoverContent,
@@ -58,7 +59,7 @@ export default function UserBadge() {
 		<Popover open={popOpen} onOpenChange={setPopOpen}>
 			<PopoverTrigger asChild>
 				<div className=" p-2.5 px-4 flex gap-4 hover:bg-surface-0 transition-all rounded-lg items-center cursor-pointer">
-					<div className="aspect-square h-[30px] rounded-full overflow-hidden relative ring-2 ring-offset-2 ring-text ring-offset-base">
+					<div className="aspect-square h-[30px] rounded-full overflow-hidden relative ring-2 ring-offset-2 ring-text ring-offset-cat-base">
 						<img
 							src={userData.avatar}
 							alt=""
@@ -77,11 +78,15 @@ export default function UserBadge() {
 			<PopoverContent
 				onOpenAutoFocus={(e) => e.preventDefault()}
 				align="end"
-				className="bg-base border-surface-1 overflow-hidden p-0 w-max min-w-[200px] text-text"
+				className="overflow-hidden w-max min-w-[200px] gap-0 p-0"
 			>
 				<Link
 					to={`/users/${userData.id}`}
-					className="w-full hover:bg-surface-0 flex items-center p-3 px-5 gap-3 border-surface-1 border-b"
+					className={buttonVariants({
+						variant: "ghost",
+						className:
+							"w-full h-10 rounded-none flex items-center justify-start p-3 px-5 gap-3 border-border! border-0 border-b",
+					})}
 					onClick={() => setPopOpen(false)}
 					viewTransition
 				>
@@ -91,7 +96,11 @@ export default function UserBadge() {
 				{userData.role === ROLE.ADMIN && (
 					<Link
 						to={`/admin`}
-						className="w-full hover:bg-surface-0 flex items-center p-3 px-5 gap-3 border-surface-1 border-b"
+						className={buttonVariants({
+							variant: "ghost",
+							className:
+								"w-full h-10 rounded-none flex items-center justify-start p-3 px-5 gap-3 border-border! border-0 border-b",
+						})}
 						onClick={() => setPopOpen(false)}
 						viewTransition
 					>
@@ -100,7 +109,11 @@ export default function UserBadge() {
 					</Link>
 				)}
 				<button
-					className="w-full hover:bg-surface-0 flex items-center p-3 px-5 gap-3 text-red"
+					className={buttonVariants({
+						variant: "ghost",
+						className:
+							"w-full h-10 rounded-none flex items-center justify-start p-3 px-5 gap-3 border-border! border-0 border-b text-red",
+					})}
 					type="button"
 					onClick={async () => {
 						setPopOpen(false);

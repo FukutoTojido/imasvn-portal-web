@@ -50,24 +50,21 @@ const Delete = ({ id, animeId }: { id: number; animeId: number }) => {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<Button className="text-text bg-transparent hover:bg-text hover:text-base">
+				<Button variant={"ghost"}>
 					<Trash />
 				</Button>
 			</AlertDialogTrigger>
-			<AlertDialogContent className="bg-base border-surface-1 text-text">
+			<AlertDialogContent>
 				<AlertDialogHeader>
 					<AlertDialogTitle>Deleting Episode?</AlertDialogTitle>
-					<AlertDialogDescription className="text-subtext-0">
+					<AlertDialogDescription>
 						This action cannot be undone and will permanently delete this
 						episode from the server.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel className="dark:bg-text dark:text-mantle hover:dark:bg-subtext-0">
-						Cancel
-					</AlertDialogCancel>
+					<AlertDialogCancel>Cancel</AlertDialogCancel>
 					<AlertDialogAction
-						className="bg-crust text-text hover:bg-surface-0"
 						onClick={async () => {
 							try {
 								await axios.delete(
@@ -123,11 +120,11 @@ export default function Episodes({ id }: { id: number }) {
 	const [loading, setLoading] = useState(false);
 
 	return (
-		<Card className="flex-1 bg-base border border-surface-1">
+		<Card className="flex-1">
 			<CardHeader>
-				<CardTitle className="text-text">Edit Episodes</CardTitle>
+				<CardTitle>Edit Episodes</CardTitle>
 			</CardHeader>
-			<CardContent>
+			<CardContent className="flex-1">
 				<Sortable
 					value={sorted ?? ([] as AnimeEpisode[])}
 					getItemValue={(item) => item.id}
@@ -152,43 +149,40 @@ export default function Episodes({ id }: { id: number }) {
 					}}
 				>
 					<Table>
-						<TableHeader className="[&_tr]:border-b-overlay-2">
-							<TableRow className="hover:bg-surface-0 rounded-xl">
-								<TableHead className="w-[50px] bg-transparent" />
-								<TableHead className="text-text">Index</TableHead>
-								<TableHead className="text-text">Title</TableHead>
-								<TableHead className="text-text">State</TableHead>
-								<TableHead className="text-text">Actions</TableHead>
+						<TableHeader>
+							<TableRow>
+								<TableHead />
+								<TableHead>Index</TableHead>
+								<TableHead>Title</TableHead>
+								<TableHead>State</TableHead>
+								<TableHead>Actions</TableHead>
 							</TableRow>
 						</TableHeader>
 						<SortableContent asChild>
-							<TableBody className="[&_tr]:border-b-surface-2">
+							<TableBody>
 								{isLoading || loading ? (
-									<TableRow className="hover:bg-surface-0">
-										<TableCell
-											colSpan={5}
-											className="h-24 text-center text-text"
-										>
+									<TableRow>
+										<TableCell colSpan={5} className="h-24 text-center">
 											<Loader2 className="animate-spin mx-auto" />
 										</TableCell>
 									</TableRow>
 								) : sorted?.length ? (
 									sorted.map((row) => (
 										<SortableItem key={row.id} value={row.id} asChild>
-											<TableRow className="hover:bg-surface-0 data-[state=selected]:bg-base rounded-xl has-[button:hover]:bg-transparent">
+											<TableRow>
 												<TableCell className="w-[50px]">
 													<SortableItemHandle asChild>
 														<Button
 															variant="ghost"
 															size="icon"
-															className="size-8 hover:dark:bg-text hover:text-mantle"
+															className="size-8"
 														>
 															<GripVertical className="h-4 w-4" />
 														</Button>
 													</SortableItemHandle>
 												</TableCell>
 												<TableCell
-													className="text-text cursor-pointer"
+													className="cursor-pointer"
 													onClick={() => {
 														stateRef.current?.setEpisodeId(row.id);
 														stateRef.current?.setOpen(true);
@@ -197,7 +191,7 @@ export default function Episodes({ id }: { id: number }) {
 													{row.index}
 												</TableCell>
 												<TableCell
-													className="text-text cursor-pointer"
+													className="cursor-pointer"
 													onClick={() => {
 														stateRef.current?.setEpisodeId(row.id);
 														stateRef.current?.setOpen(true);
@@ -206,7 +200,7 @@ export default function Episodes({ id }: { id: number }) {
 													{row.title}
 												</TableCell>
 												<TableCell
-													className="text-text cursor-pointer"
+													className="cursor-pointer"
 													onClick={() => {
 														stateRef.current?.setEpisodeId(row.id);
 														stateRef.current?.setOpen(true);
@@ -218,18 +212,15 @@ export default function Episodes({ id }: { id: number }) {
 													{row.state === null ||
 														(row.state === undefined && "Unknown")}
 												</TableCell>
-												<TableCell className="text-text cursor-pointer">
+												<TableCell className="cursor-pointer">
 													<Delete animeId={id} id={row.id} />
 												</TableCell>
 											</TableRow>
 										</SortableItem>
 									))
 								) : (
-									<TableRow className="hover:bg-surface-0">
-										<TableCell
-											colSpan={5}
-											className="h-24 text-center text-text"
-										>
+									<TableRow>
+										<TableCell colSpan={5} className="h-24 text-center">
 											No results.
 										</TableCell>
 									</TableRow>
@@ -246,7 +237,7 @@ export default function Episodes({ id }: { id: number }) {
 			<CardFooter>
 				<Button
 					type="button"
-					className="bg-text text-mantle hover:bg-subtext-0 ml-auto"
+					className="ml-auto"
 					onClick={() => {
 						stateRef.current?.setEpisodeId(null);
 						stateRef.current?.setOpen(true);

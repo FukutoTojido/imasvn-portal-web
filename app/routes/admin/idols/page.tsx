@@ -10,6 +10,7 @@ import axios from "axios";
 import { ChevronLeft, ChevronRight, Trash } from "lucide-react";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import useSWR, { mutate } from "swr";
 import {
@@ -24,10 +25,10 @@ import {
 	AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
+import { Card, CardContent } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import type { CharacterData } from "~/routes/calendar/types";
 import TableComponent from "../components/Table";
-import { useNavigate } from "react-router";
 
 const columns: ColumnDef<CharacterData>[] = [
 	{
@@ -37,7 +38,7 @@ const columns: ColumnDef<CharacterData>[] = [
 			<img
 				src={props.cell.getValue() as string}
 				alt=""
-				className="w-[50px] aspect-square object-top object-cover"
+				className="w-[50px] aspect-square object-top object-cover rounded-md"
 			/>
 		),
 	},
@@ -57,24 +58,21 @@ const columns: ColumnDef<CharacterData>[] = [
 			return (
 				<AlertDialog>
 					<AlertDialogTrigger asChild>
-						<Button className="text-text bg-transparent hover:bg-text hover:text-base">
+						<Button variant="ghost">
 							<Trash />
 						</Button>
 					</AlertDialogTrigger>
-					<AlertDialogContent className="bg-base border-surface-1 text-text">
+					<AlertDialogContent>
 						<AlertDialogHeader>
 							<AlertDialogTitle>Deleting Event?</AlertDialogTitle>
-							<AlertDialogDescription className="text-subtext-0">
+							<AlertDialogDescription>
 								This action cannot be undone and will permanently delete this
 								event entry from the server.
 							</AlertDialogDescription>
 						</AlertDialogHeader>
 						<AlertDialogFooter>
-							<AlertDialogCancel className="bg-text! text-mantle! hover:bg-subtext-0!">
-								Cancel
-							</AlertDialogCancel>
+							<AlertDialogCancel>Cancel</AlertDialogCancel>
 							<AlertDialogAction
-								className="bg-crust text-text hover:bg-surface-0"
 								onClick={async () => {
 									try {
 										await axios.delete(
@@ -152,55 +150,57 @@ export default function Page() {
 
 	return (
 		<>
-			<div className="text-5xl font-medium text-text">Idols Manager</div>
-			<div className="w-full p-2.5 border border-surface-1 rounded-xl bg-base flex flex-col gap-2.5">
-				<div className="flex items-center justify-end space-x-2">
-					<Input
-						className="flex-1 bg-mantle border border-overlay-0 text-text h-[40px]"
-						placeholder="Search events..."
-						value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-						onChange={(event) => {
-							table.getColumn("name")?.setFilterValue(event.target.value);
-							setFilter(event.target.value ? event.target.value : null);
-						}}
-					/>
-				</div>
-				<div className="w-full flex items-center justify-end gap-2.5">
-					<div className="flex-1 px-2.5 text-sm text-subtext-0">
-						Page {table.getState().pagination.pageIndex + 1} of{" "}
-						{table.getPageCount()}
+			<div className="text-5xl font-bold">Idols Manager</div>
+			<Card className="w-full">
+				<CardContent className="space-y-2">
+					<div className="flex items-center justify-end space-x-2">
+						<Input
+							className="flex-1 h-10"
+							placeholder="Search events..."
+							value={
+								(table.getColumn("name")?.getFilterValue() as string) ?? ""
+							}
+							onChange={(event) => {
+								table.getColumn("name")?.setFilterValue(event.target.value);
+								setFilter(event.target.value ? event.target.value : null);
+							}}
+						/>
 					</div>
-					<Button
-						className="bg-text text-mantle hover:bg-subtext-0 disabled:bg-crust disabled:text-text"
-						onClick={() => {
-							table.previousPage();
-							setPage(table.getState().pagination.pageIndex - 1);
-						}}
-						disabled={!table.getCanPreviousPage()}
-					>
-						<ChevronLeft />
-					</Button>
-					<Button
-						className="bg-text text-mantle hover:bg-subtext-0 disabled:bg-crust disabled:text-text"
-						onClick={() => {
-							table.nextPage();
-							setPage(table.getState().pagination.pageIndex + 1);
-						}}
-						disabled={!table.getCanNextPage()}
-					>
-						<ChevronRight />
-					</Button>
-				</div>
-				<TableComponent
-					table={table}
-					columns={columns}
-					onRowClick={(row) =>
-						navigate(`/admin/idols/${row.original.id}`, {
-							viewTransition: true,
-						})
-					}
-				/>
-			</div>
+					<div className="w-full flex items-center justify-end gap-2.5">
+						<div className="flex-1 px-2.5 text-sm">
+							Page {table.getState().pagination.pageIndex + 1} of{" "}
+							{table.getPageCount()}
+						</div>
+						<Button
+							onClick={() => {
+								table.previousPage();
+								setPage(table.getState().pagination.pageIndex - 1);
+							}}
+							disabled={!table.getCanPreviousPage()}
+						>
+							<ChevronLeft />
+						</Button>
+						<Button
+							onClick={() => {
+								table.nextPage();
+								setPage(table.getState().pagination.pageIndex + 1);
+							}}
+							disabled={!table.getCanNextPage()}
+						>
+							<ChevronRight />
+						</Button>
+					</div>
+					<TableComponent
+						table={table}
+						columns={columns}
+						onRowClick={(row) =>
+							navigate(`/admin/idols/${row.original.id}`, {
+								viewTransition: true,
+							})
+						}
+					/>
+				</CardContent>
+			</Card>
 		</>
 	);
 }

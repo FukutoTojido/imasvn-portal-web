@@ -3,34 +3,43 @@ import * as htmlToImage from "html-to-image";
 import { Copy, Loader2 } from "lucide-react";
 import QRCode from "qrcode";
 import {
-    type RefObject,
-    useCallback,
-    useEffect,
-    useRef,
-    useState,
+	type RefObject,
+	useCallback,
+	useEffect,
+	useRef,
+	useState,
 } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
-import { ComboBox } from "~/components/ui/combobox";
+import { Card, CardContent } from "~/components/ui/card";
+import {
+	Combobox,
+	ComboboxContent,
+	ComboboxEmpty,
+	ComboboxInput,
+	ComboboxItem,
+	ComboboxList,
+} from "~/components/ui/combobox";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
 } from "~/components/ui/select";
 import { Slider } from "~/components/ui/slider";
+import type { CharacterData } from "~/routes/calendar/types";
 import PreviewImage from "../components/PreviewImage";
 import { getEvents } from "../events";
 import { getCharacters } from "../idols/page";
+import type { Route } from "./+types/[id]";
 import BackCard from "./components/BackCard";
 import FrontCard from "./components/FrontCard";
 import "./style.css";
-import type { Route } from "./+types/[id]";
 
 type FormType = {
 	name: string;
@@ -252,187 +261,192 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 	return (
 		<FormProvider {...methods}>
 			<div className="w-full h-full flex md:flex-row gap-5 flex-col-reverse">
-				<form
-					onSubmit={handleSubmit(update)}
-					className="max-w-full md:w-[500px] w-full h-full bg-base rounded-xl border border-surface-1 p-5 grid grid-cols-2 gap-5"
-				>
-					<div className="flex flex-col gap-2.5">
-						<Label>Producer Name</Label>
-						<Input
-							{...register("name", { required: true })}
-							className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
-							autoComplete="off"
-						/>
-					</div>
-					<div className="flex flex-col gap-2.5">
-						<Label>Title</Label>
-						<Input
-							{...register("title", { required: true })}
-							className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
-							autoComplete="off"
-						/>
-					</div>
-
-					<div className="flex flex-1 flex-col gap-2.5">
-						<Label>Idol Name</Label>
-						<ComboBox
-							placeholder="Idol"
-							defaultValue={`${idolIndex}`}
-							options={loaderData?.characters.map((idol, idx) => ({
-								value: `${idx}`,
-								label: idol.name,
-							}))}
-							onValueChange={(value) => {
-								const idol = loaderData?.characters[+value];
-								if (!idol) return;
-
-								setValue("idol", idol.name);
-								setValue("idolJapanese", idol.japaneseName ?? "");
-								setIdolIndex(+value);
-							}}
-							className="w-full"
-						/>
-					</div>
-					<div className="flex flex-col gap-2.5">
-						<Label>Event</Label>
-						<Select
-							defaultValue={loaderData?.cardData.event?.toString()}
-							onValueChange={async (value) => {
-								setValue("event", value);
-							}}
+				<Card className="max-w-full md:w-[500px]">
+					<CardContent>
+						<form
+							onSubmit={handleSubmit(update)}
+							className="w-full h-full grid grid-cols-2 gap-5"
 						>
-							<SelectTrigger className="bg-mantle border-surface-1 w-full focus-visible:ring-overlay-0 ">
-								<SelectValue
-									placeholder="Event..."
-									className="placeholder:text-subtext-0"
+							<div className="flex flex-col gap-2.5">
+								<Label>Producer Name</Label>
+								<Input
+									{...register("name", { required: true })}
+									autoComplete="off"
 								/>
-							</SelectTrigger>
-							<SelectContent className="bg-mantle border border-surface-1 text-text">
-								<SelectGroup>
-									{(loaderData?.events ?? []).map((event) => (
-										<SelectItem
-											key={event.id}
-											value={event.id.toString()}
-											className="data-[highlighted]:bg-surface-0 data-[highlighted]:text-text text-wrap"
-										>
-											{event.name}
-										</SelectItem>
-									))}
-								</SelectGroup>
-							</SelectContent>
-						</Select>
-					</div>
-					<div className="flex flex-col gap-2.5 col-span-full">
-						<Label>Back Image</Label>
-						<Input
-							{...register("backImg")}
-							type="file"
-							className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text file:text-subtext-0 cursor-pointer"
-							autoComplete="off"
-						/>
-					</div>
-					<div className="flex flex-col gap-2.5 col-span-full">
-						<Label>Front Image</Label>
-						<Input
-							{...register("frontImg")}
-							type="file"
-							className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text file:text-subtext-0 cursor-pointer"
-							autoComplete="off"
-						/>
-					</div>
-					<div className="flex flex-col gap-2.5">
-						<Label>Position X</Label>
-						<div className="flex gap-5">
-							<Slider
-								{...register("config.x")}
-								defaultValue={[config?.x ? +config?.x : 0]}
-								max={100}
-								min={-100}
-								step={1}
-							/>
-							<span className="w-20 text-center">{x}%</span>
-						</div>
-					</div>
-					<div className="flex flex-col gap-2.5">
-						<Label>Position Y</Label>
-						<div className="flex gap-5">
-							<Slider
-								{...register("config.y")}
-								defaultValue={[config?.y ? +config?.y : 0]}
-								max={100}
-								min={-100}
-								step={1}
-							/>
-							<span className="w-20 text-center">{y}%</span>
-						</div>
-					</div>
-					<div className="flex flex-col gap-2.5 col-span-full">
-						<Label>Scale</Label>
-						<div className="flex gap-5">
-							<Slider
-								{...register("config.scale")}
-								defaultValue={[config?.scale ? +config?.scale : 100]}
-								max={200}
-								min={50}
-								step={1}
-							/>
-							<span className="w-20 text-center">{imgScale}%</span>
-						</div>
-					</div>
-					<div className="flex flex-col gap-2.5">
-						<Label>ID Image</Label>
-						<Input
-							{...register("img")}
-							type="file"
-							className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text file:text-subtext-0 cursor-pointer"
-							autoComplete="off"
-						/>
-					</div>
-					<div className="flex flex-col gap-2.5">
-						<Label>Actions</Label>
-						<div className="flex gap-2.5">
-							<Button
-								type="submit"
-								className="flex-1 bg-text text-crust hover:bg-crust hover:text-text"
-								disabled={copyingFront}
-								onClick={async () => {
-									setCopyingFront(true);
-									await copyImage(frontRef);
-									setCopyingFront(false);
-								}}
-							>
-								{copyingFront ? <Loader2 className="animate-spin" /> : <Copy />}
-								Front
-							</Button>
-							<Button
-								type="submit"
-								className="flex-1 bg-text text-crust hover:bg-crust hover:text-text"
-								disabled={copyingBack}
-								onClick={async () => {
-									setCopyingBack(true);
-									await copyImage(backRef);
-									setCopyingBack(false);
-								}}
-							>
-								{copyingBack ? <Loader2 className="animate-spin" /> : <Copy />}
-								Back
-							</Button>
-						</div>
-					</div>
-					<PreviewImage url={loaderData?.cardData.img} ref={getImageRef} />
-					<div className="col-span-full">
-						<Button
-							type="submit"
-							className="w-full bg-text text-crust hover:bg-crust hover:text-text"
-							disabled={submitting}
-						>
-							{submitting ? <Loader2 className="animate-spin" /> : ""}
-							Save
-						</Button>
-					</div>
-				</form>
+							</div>
+							<div className="flex flex-col gap-2.5">
+								<Label>Title</Label>
+								<Input
+									{...register("title", { required: true })}
+									autoComplete="off"
+								/>
+							</div>
+
+							<div className="flex flex-1 flex-col gap-2.5">
+								<Label>Idol Name</Label>
+								<Combobox
+									value={
+										idolIndex ? loaderData?.characters[idolIndex] : null
+									}
+									items={loaderData?.characters}
+									itemToStringLabel={(idol) => idol?.name ?? ""}
+									onValueChange={(idol: CharacterData | null) => {
+										if (!idol) return;
+
+										setValue("idol", idol.name);
+										setValue("idolJapanese", idol.japaneseName ?? "");
+
+										const idx = loaderData?.characters.findIndex(
+											(i) => i.id === idol.id,
+										);
+										setIdolIndex(idx);
+									}}
+								>
+									<ComboboxInput placeholder="Idol" />
+									<ComboboxContent>
+										<ComboboxEmpty>No idol found.</ComboboxEmpty>
+										<ComboboxList>
+											{(item: CharacterData) => (
+												<ComboboxItem key={item.id} value={item}>
+													{item.name}
+												</ComboboxItem>
+											)}
+										</ComboboxList>
+									</ComboboxContent>
+								</Combobox>
+							</div>
+							<div className="flex flex-col gap-2.5">
+								<Label>Event</Label>
+								<Select
+									defaultValue={loaderData?.cardData.event?.toString()}
+									onValueChange={async (value) => {
+										setValue("event", value);
+									}}
+								>
+									<SelectTrigger className="w-full">
+										<SelectValue placeholder="Event..." />
+									</SelectTrigger>
+									<SelectContent position="popper">
+										<SelectGroup>
+											{(loaderData?.events ?? []).map((event) => (
+												<SelectItem key={event.id} value={event.id.toString()}>
+													{event.name}
+												</SelectItem>
+											))}
+										</SelectGroup>
+									</SelectContent>
+								</Select>
+							</div>
+							<div className="flex flex-col gap-2.5 col-span-full">
+								<Label>Back Image</Label>
+								<Input
+									{...register("backImg")}
+									type="file"
+									autoComplete="off"
+								/>
+							</div>
+							<div className="flex flex-col gap-2.5 col-span-full">
+								<Label>Front Image</Label>
+								<Input
+									{...register("frontImg")}
+									type="file"
+									autoComplete="off"
+								/>
+							</div>
+							<div className="flex flex-col gap-2.5">
+								<Label>Position X</Label>
+								<div className="flex gap-5">
+									<Slider
+										{...register("config.x")}
+										defaultValue={[config?.x ? +config?.x : 0]}
+										max={100}
+										min={-100}
+										step={1}
+									/>
+									<span className="w-20 text-center">{x}%</span>
+								</div>
+							</div>
+							<div className="flex flex-col gap-2.5">
+								<Label>Position Y</Label>
+								<div className="flex gap-5">
+									<Slider
+										{...register("config.y")}
+										defaultValue={[config?.y ? +config?.y : 0]}
+										max={100}
+										min={-100}
+										step={1}
+									/>
+									<span className="w-20 text-center">{y}%</span>
+								</div>
+							</div>
+							<div className="flex flex-col gap-2.5 col-span-full">
+								<Label>Scale</Label>
+								<div className="flex gap-5">
+									<Slider
+										{...register("config.scale")}
+										defaultValue={[config?.scale ? +config?.scale : 100]}
+										max={200}
+										min={50}
+										step={1}
+									/>
+									<span className="w-20 text-center">{imgScale}%</span>
+								</div>
+							</div>
+							<div className="flex flex-col gap-2.5">
+								<Label>ID Image</Label>
+								<Input {...register("img")} type="file" autoComplete="off" />
+							</div>
+							<div className="flex flex-col gap-2.5">
+								<Label>Actions</Label>
+								<div className="flex gap-2.5">
+									<Button
+										className="flex-1"
+										type="submit"
+										disabled={copyingFront}
+										onClick={async () => {
+											setCopyingFront(true);
+											await copyImage(frontRef);
+											setCopyingFront(false);
+										}}
+									>
+										{copyingFront ? (
+											<Loader2 className="animate-spin" />
+										) : (
+											<Copy />
+										)}
+										Front
+									</Button>
+									<Button
+										type="submit"
+										className="flex-1"
+										disabled={copyingBack}
+										onClick={async () => {
+											setCopyingBack(true);
+											await copyImage(backRef);
+											setCopyingBack(false);
+										}}
+									>
+										{copyingBack ? (
+											<Loader2 className="animate-spin" />
+										) : (
+											<Copy />
+										)}
+										Back
+									</Button>
+								</div>
+							</div>
+							<PreviewImage url={loaderData?.cardData.img} ref={getImageRef} />
+							<div className="col-span-full">
+								<Button type="submit" className="w-full" disabled={submitting}>
+									{submitting ? <Loader2 className="animate-spin" /> : ""}
+									Save
+								</Button>
+							</div>
+						</form>
+					</CardContent>
+				</Card>
 				<div
-					className="relative h-full overflow-hidden flex flex-col items-center gap-5 text-white md:flex-1 md:w-auto w-full flex-initial"
+					className="relative md:h-full overflow-hidden flex flex-col items-center gap-5 text-white md:flex-1 md:w-auto w-full "
 					ref={ref}
 				>
 					<FrontCard

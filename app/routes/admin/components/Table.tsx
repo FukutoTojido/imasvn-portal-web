@@ -24,17 +24,17 @@ export default function TableComponent<T>({
 }) {
 	return (
 		<Table>
-			<TableHeader className="[&_tr]:border-b-overlay-2">
+			<TableHeader>
 				{table.getHeaderGroups().map((headerGroup) => (
-					<TableRow
-						key={headerGroup.id}
-						className="hover:bg-surface-0 rounded-xl"
-					>
+					<TableRow key={headerGroup.id}>
 						{headerGroup.headers.map((header) => {
 							return (
-								<TableHead key={header.id} className="text-text shrink-0" style={{
-									width: header.getSize()
-								}}>
+								<TableHead
+									key={header.id}
+									style={{
+										width: header.getSize(),
+									}}
+								>
 									{header.isPlaceholder
 										? null
 										: flexRender(
@@ -47,18 +47,17 @@ export default function TableComponent<T>({
 					</TableRow>
 				))}
 			</TableHeader>
-			<TableBody className="[&_tr]:border-b-surface-2">
+			<TableBody>
 				{table.getRowModel().rows?.length ? (
 					table.getRowModel().rows.map((row) => (
 						<TableRow
 							key={row.id}
 							data-state={row.getIsSelected() && "selected"}
-							className="hover:bg-surface-0 data-[state=selected]:bg-base rounded-xl has-[button:hover]:bg-transparent"
 						>
 							{row.getVisibleCells().map((cell) => (
 								<TableCell
 									key={cell.id}
-									className="text-text cursor-pointer"
+									className="cursor-pointer"
 									onClick={() => {
 										if (cell.column.columnDef.id === "actions") return;
 										onRowClick?.(row);
@@ -70,11 +69,8 @@ export default function TableComponent<T>({
 						</TableRow>
 					))
 				) : (
-					<TableRow className="hover:bg-surface-0">
-						<TableCell
-							colSpan={columns.length}
-							className="h-24 text-center text-text"
-						>
+					<TableRow>
+						<TableCell colSpan={columns.length} className="h-24 text-center">
 							No results.
 						</TableCell>
 					</TableRow>

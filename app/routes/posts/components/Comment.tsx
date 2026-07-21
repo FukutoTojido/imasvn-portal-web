@@ -61,7 +61,7 @@ export default function Comment({
 	if (currentUser.authType !== UserType.OK) return "";
 
 	return (
-		<div className="w-full bg-base border border-surface-1 rounded-lg p-2.5 flex flex-col gap-[5px]">
+		<div className="w-full bg-cat-base border border-surface-1 rounded-lg p-2.5 flex flex-col gap-[5px]">
 			<div className="flex w-full justify-between items-center">
 				<UserFlair data={data.user} />
 				{currentUser.id === data.user.id ? (
@@ -76,7 +76,7 @@ export default function Comment({
 								<Ellipsis />
 							</button>
 						</PopoverTrigger>
-						<PopoverContent align="end" className="bg-base p-0 w-max min-w-[150px] border border-surface-1 overflow-hidden">
+						<PopoverContent align="end" className="bg-cat-base p-0 w-max min-w-[150px] border border-surface-1 overflow-hidden">
 							<button
 								type="button"
 								className="w-full text-red relative p-4 hover:bg-surface-0 flex items-center gap-4"

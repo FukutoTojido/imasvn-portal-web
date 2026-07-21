@@ -1,6 +1,7 @@
 import { Outlet } from "react-router";
 import NavBar from "../components/NavBar";
 import "./Live.css";
+import { AlertCircleIcon } from "lucide-react";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -8,6 +9,7 @@ import {
 	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogHeader,
+	AlertDialogOverlay,
 	AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 
@@ -18,19 +20,21 @@ export default function Layout() {
 			<div className="bg-crust w-full flex flex-col flex-1 gap-5 md:p-2.5 overflow-hidden live">
 				<Outlet />
 				<AlertDialog defaultOpen>
-					<AlertDialogContent className="bg-base border-surface-1 text-text z-999">
+					<AlertDialogOverlay className="z-998" />
+					<AlertDialogContent className="z-999">
 						<AlertDialogHeader>
-							<AlertDialogTitle>Lưu ý!</AlertDialogTitle>
-							<AlertDialogDescription className="text-subtext-0">
-								Vui lòng không chia sẻ hình ảnh các buổi Live được phát sóng
-								trên nền tảng này ở các mạng xã hội một cách công khai.
+							<AlertDialogTitle className="flex items-center gap-2">
+								<AlertCircleIcon /> Lưu ý!
+							</AlertDialogTitle>
+							<AlertDialogDescription>
+								Vui lòng không chia sẻ hình ảnh các buổi Live trên nền tảng này!
 								<br />
 								Trong trường hợp phát hiện được, chúng mình sẽ có các biện pháp
 								để xử lý.
 							</AlertDialogDescription>
 						</AlertDialogHeader>
 						<AlertDialogFooter>
-							<AlertDialogAction className="bg-text text-mantle">Đồng ý</AlertDialogAction>
+							<AlertDialogAction className="w-full">Đồng ý</AlertDialogAction>
 						</AlertDialogFooter>
 					</AlertDialogContent>
 				</AlertDialog>

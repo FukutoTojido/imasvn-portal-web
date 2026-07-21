@@ -99,7 +99,7 @@ export default function Idol({
 			}}
 			type="button"
 			className={cn(
-				"h-30 relative rounded-md flex items-center text-white transition-all select-none cursor-pointer hover:bg-surface-0 bg-base border border-surface-1 overflow-hidden",
+				"h-30 relative rounded-md flex items-center text-white transition-all select-none cursor-pointer hover:bg-surface-0 bg-cat-base border border-surface-1 overflow-hidden",
 				className,
 			)}
 			style={{

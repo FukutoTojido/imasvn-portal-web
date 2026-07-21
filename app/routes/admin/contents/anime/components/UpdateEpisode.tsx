@@ -148,12 +148,9 @@ export default function UpdateEpisode({
 				}
 			}}
 		>
-			<DialogContent
-				onOpenAutoFocus={(e) => e.preventDefault()}
-				className="bg-base border-surface-1"
-			>
+			<DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
 				<DialogHeader>
-					<DialogTitle className="text-text">
+					<DialogTitle>
 						{id === null ? "Add Episode" : "Edit Episode"}
 					</DialogTitle>
 					<DialogDescription></DialogDescription>
@@ -161,29 +158,19 @@ export default function UpdateEpisode({
 				<form onSubmit={handleSubmit(submit)}>
 					<div className="w-full grid grid-cols-3 gap-5">
 						<div className="flex flex-col gap-2.5">
-							<Label className="text-text">Index</Label>
-							<Input
-								{...register("index", { required: true })}
-								className="dark:text-text dark:bg-mantle"
-							/>
+							<Label>Index</Label>
+							<Input {...register("index", { required: true })} />
 						</div>
 						<div className="flex flex-col gap-2.5 col-span-2">
-							<Label className="text-text">Title</Label>
-							<Input
-								{...register("title", { required: true })}
-								className="dark:text-text dark:bg-mantle"
-							/>
+							<Label>Title</Label>
+							<Input {...register("title", { required: true })} />
 						</div>
 						<div className="flex flex-col gap-2.5 col-span-3">
-							<Label className="text-text">Video File</Label>
-							<Input
-								type="file"
-								{...register("video", { required: !id })}
-								className="dark:text-text dark:bg-mantle"
-							/>
+							<Label>Video File</Label>
+							<Input type="file" {...register("video", { required: !id })} />
 						</div>
 						{(id !== null || previewVideo) && (
-							<div className="col-span-full overflow-hidden rounded-md aspect-video bg-mantle">
+							<div className="col-span-full overflow-hidden rounded-md aspect-video">
 								<VideoPlayer
 									animeId={animeId}
 									episodeId={id ?? undefined}
@@ -202,11 +189,7 @@ export default function UpdateEpisode({
 							</div>
 						)}
 						<DialogFooter className="col-span-full">
-							<Button
-								type="submit"
-								className="bg-text text-mantle hover:bg-subtext-0"
-								disabled={submitting}
-							>
+							<Button type="submit" disabled={submitting}>
 								{submitting ? <Loader2 className="animate-spin" /> : ""}
 								{!submitting
 									? "Save"

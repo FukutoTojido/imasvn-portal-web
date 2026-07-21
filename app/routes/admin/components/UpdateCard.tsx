@@ -167,13 +167,13 @@ export default function UpdateCard({
 				}}
 			>
 				<DialogTrigger className="w-max" asChild>
-					<Button className="bg-text text-crust hover:bg-base hover:text-text self-end font-normal">
+					<Button className="bg-text text-crust hover:bg-cat-base hover:text-text self-end font-normal">
 						Insert Card
 					</Button>
 				</DialogTrigger>
 				<DialogContent
 					aria-describedby={undefined}
-					className="bg-base border-surface-1 text-text sm:max-w-full w-[600px]"
+					className="bg-cat-base border-surface-1 text-text sm:max-w-full w-[600px]"
 					onOpenAutoFocus={(e) => e.preventDefault()}
 				>
 					<DialogTitle className="font-medium">

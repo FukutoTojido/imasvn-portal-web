@@ -16,7 +16,7 @@ const ChatContainer = ({
 }) => {
 	return (
 		<div
-			className="flex-1 w-full p-5 bg-base flex flex-col gap-5 overflow-auto overflow-x-hidden"
+			className="flex-1 w-full p-5 bg-cat-base flex flex-col gap-5 overflow-auto overflow-x-hidden"
 			ref={containerRef}
 		>
 			{messages.map((message, idx) => {

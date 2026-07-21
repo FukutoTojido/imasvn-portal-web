@@ -36,7 +36,7 @@ import { type UserState, UserType } from "~/types";
 export default function AdminSidebar({ me }: { me: UserState }) {
 	const dispatch = useDispatch();
 	return (
-		<Sidebar className="border-surface-1 text-text h-full" collapsible="icon">
+		<Sidebar className="h-full" collapsible="icon">
 			<SidebarContent>
 				<SidebarGroup>
 					<Link to="/" viewTransition>
@@ -53,14 +53,11 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 					</Link>
 				</SidebarGroup>
 				<SidebarGroup>
-					<SidebarGroupLabel className="text-subtext-0">Menu</SidebarGroupLabel>
+					<SidebarGroupLabel>Menu</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
 							<SidebarMenuItem>
-								<SidebarMenuButton
-									asChild
-									className="hover:bg-surface-1 hover:text-text"
-								>
+								<SidebarMenuButton asChild>
 									<Link to="/admin/producers" prefetch="render">
 										<IdCard />
 										Producers
@@ -68,10 +65,7 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 								</SidebarMenuButton>
 							</SidebarMenuItem>
 							<SidebarMenuItem>
-								<SidebarMenuButton
-									asChild
-									className="hover:bg-surface-1 hover:text-text"
-								>
+								<SidebarMenuButton asChild>
 									<Link to="/admin/cards" prefetch="render">
 										<CreditCard />
 										Cards
@@ -79,10 +73,7 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 								</SidebarMenuButton>
 							</SidebarMenuItem>
 							<SidebarMenuItem>
-								<SidebarMenuButton
-									asChild
-									className="hover:bg-surface-1 hover:text-text"
-								>
+								<SidebarMenuButton asChild>
 									<Link to="/admin/events" prefetch="render">
 										<Calendar1 />
 										Events
@@ -90,10 +81,7 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 								</SidebarMenuButton>
 							</SidebarMenuItem>
 							<SidebarMenuItem>
-								<SidebarMenuButton
-									asChild
-									className="hover:bg-surface-1 hover:text-text"
-								>
+								<SidebarMenuButton asChild>
 									<Link to="/admin/idols" prefetch="render">
 										<Sparkle />
 										Idols
@@ -104,16 +92,11 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 					</SidebarGroupContent>
 				</SidebarGroup>
 				<SidebarGroup>
-					<SidebarGroupLabel className="text-subtext-0">
-						Users
-					</SidebarGroupLabel>
+					<SidebarGroupLabel>Users</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
 							<SidebarMenuItem>
-								<SidebarMenuButton
-									asChild
-									className="hover:bg-surface-1 hover:text-text"
-								>
+								<SidebarMenuButton asChild>
 									<Link to="/admin/users" prefetch="render">
 										<User />
 										Users
@@ -124,14 +107,11 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 					</SidebarGroupContent>
 				</SidebarGroup>
 				<SidebarGroup>
-					<SidebarGroupLabel className="text-subtext-0">Live</SidebarGroupLabel>
+					<SidebarGroupLabel>Live</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
 							<SidebarMenuItem>
-								<SidebarMenuButton
-									asChild
-									className="hover:bg-surface-1 hover:text-text"
-								>
+								<SidebarMenuButton asChild>
 									<Link to="/admin/live/m3u8" prefetch="render">
 										<Link2 />
 										Streams
@@ -142,16 +122,11 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 					</SidebarGroupContent>
 				</SidebarGroup>
 				<SidebarGroup>
-					<SidebarGroupLabel className="text-subtext-0">
-						Contents
-					</SidebarGroupLabel>
+					<SidebarGroupLabel>Contents</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
 							<SidebarMenuItem>
-								<SidebarMenuButton
-									asChild
-									className="hover:bg-surface-1 hover:text-text"
-								>
+								<SidebarMenuButton asChild>
 									<Link to="/admin/anime" prefetch="render">
 										<Film />
 										Anime
@@ -166,14 +141,8 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 				<SidebarMenu>
 					<SidebarMenuItem>
 						<DropdownMenu>
-							<DropdownMenuTrigger
-								asChild
-								className="group-data-[collapsible=icon]:px-0! transition-all"
-							>
-								<SidebarMenuButton
-									className="group-data-[collapsible=icon]:px-0 transition-all group-data-[collapsible=icon]:border-0 h-auto data-[state=open]:bg-surface-0 hover:bg-surface-0 hover:text-text focus-visible:ring-0 border border-surface-1 bg-base"
-									tabIndex={-1}
-								>
+							<DropdownMenuTrigger asChild>
+								<SidebarMenuButton className="h-auto" tabIndex={-1}>
 									<Avatar>
 										<AvatarImage
 											src={me.authType === UserType.OK ? me.avatar : ""}
@@ -184,7 +153,7 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 										{me.authType === UserType.OK
 											? me.global_name
 											: "Loading..."}
-										<div className="text-xs text-subtext-0">
+										<div className="text-xs">
 											@
 											{me.authType === UserType.OK ? me.username : "Loading..."}
 										</div>
@@ -194,7 +163,7 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 							</DropdownMenuTrigger>
 							<DropdownMenuContent
 								side="top"
-								className="w-(--radix-dropdown-menu-trigger-width) bg-base text-text border-surface-1"
+								className="w-(--radix-dropdown-menu-trigger-width)"
 							>
 								<DropdownMenuItem asChild>
 									<SidebarMenuButton

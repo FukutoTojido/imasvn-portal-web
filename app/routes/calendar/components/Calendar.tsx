@@ -154,7 +154,7 @@ export default function Calendar({
 	}, [birthdays, month]);
 
 	return (
-		<div className="calendar w-full bg-base border border-surface-1 p-2.5 rounded-lg overflow-hidden grid grid-cols-7 auto-rows-max gap-2 h-max shadow-md">
+		<div className="calendar w-full bg-cat-base border border-surface-1 p-2.5 rounded-lg overflow-hidden grid grid-cols-7 auto-rows-max gap-2 h-max shadow-md">
 			<div className="flex items-center justify-between col-span-full rounded-md bg-surface-0 text-text border border-surface-1">
 				<div className="font-semibold p-2.5 px-5">
 					{monthMap[month as keyof typeof monthMap]} {year}
@@ -187,7 +187,7 @@ export default function Calendar({
 							// 	});
 							// });
 						}}
-						className="p-2.5 rounded-full hover:bg-base/60 hover:text-text transition-colors"
+						className="p-2.5 rounded-full hover:bg-cat-base/60 hover:text-text transition-colors"
 					>
 						<ChevronLeft size={20} />
 					</button>
@@ -218,7 +218,7 @@ export default function Calendar({
 							// 	});
 							// });
 						}}
-						className="p-2.5 rounded-full hover:bg-base/60 hover:text-text transition-colors"
+						className="p-2.5 rounded-full hover:bg-cat-base/60 hover:text-text transition-colors"
 					>
 						<ChevronRight size={20} />
 					</button>

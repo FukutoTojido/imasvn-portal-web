@@ -1,6 +1,10 @@
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 import { DateTime } from "luxon";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { Button } from "~/components/ui/button";
 import { Calendar } from "~/components/ui/calendar";
 import {
 	Card,
@@ -17,11 +21,7 @@ import ErrorComponent from "~/routes/components/Error";
 import type { Anime } from "~/types";
 import PreviewImage from "../../components/PreviewImage";
 import type { Route } from "./+types/page";
-import { Button } from "~/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { useState } from "react";
 import Episodes from "./components/Episodes";
-import { toast } from "sonner";
 
 export type AnimeDto = Omit<Anime, "time"> & { time: string };
 
@@ -90,7 +90,7 @@ export default function Page({
 				{ withCredentials: true },
 			);
 
-			toast("Update completed!")
+			toast("Update completed!");
 		} catch (e) {
 			console.error(e);
 		}
@@ -106,42 +106,32 @@ export default function Page({
 					onSubmit={handleSubmit(submit)}
 					className="self-center w-[600px] max-w-full shrink-0"
 				>
-					<Card className="w-full border-surface-1 bg-base">
+					<Card className="w-full">
 						<CardHeader>
-							<CardTitle className="text-text">Edit Anime</CardTitle>
+							<CardTitle>Edit Anime</CardTitle>
 							<CardDescription></CardDescription>
 						</CardHeader>
 						<CardContent>
 							<div className="w-full grid grid-cols-2 gap-5 auto-rows-auto">
 								<div className="flex flex-col gap-2.5">
-									<Label className="text-text">Title</Label>
-									<Input
-										{...register("title")}
-										className="text-text dark:bg-mantle"
-									/>
+									<Label>Title</Label>
+									<Input {...register("title")} />
 								</div>
 								<div className="flex flex-col gap-2.5">
-									<Label className="text-text">Title Japanese</Label>
-									<Input
-										{...register("titleJapanese")}
-										className="text-text dark:bg-mantle"
-									/>
+									<Label>Title Japanese</Label>
+									<Input {...register("titleJapanese")} />
 								</div>
 								<div className="flex flex-col gap-2.5 col-span-full">
-									<Label className="text-text">Sypnosis</Label>
+									<Label>Sypnosis</Label>
 									<Textarea
 										{...register("sypnosis")}
-										className="text-text bg-mantle resize-none"
+										className="resize-none field-sizing-fixed"
 										rows={10}
 									/>
 								</div>
 								<div className="flex flex-col gap-2.5 md:col-span-1 col-span-full">
-									<Label className="text-text">Image</Label>
-									<Input
-										type="file"
-										{...register("bg")}
-										className="text-text dark:bg-mantle"
-									/>
+									<Label>Image</Label>
+									<Input type="file" {...register("bg")} />
 									<PreviewImage
 										url={loaderData.bg}
 										className="md:flex-1 p-0 aspect-video"
@@ -151,24 +141,22 @@ export default function Page({
 									/>
 								</div>
 								<div className="flex flex-col gap-2.5 md:col-span-1 col-span-full">
-									<Label className="text-text">Released Date</Label>
+									<Label>Released Date</Label>
 									<Calendar
 										selected={date?.toJSDate()}
+										defaultMonth={date?.toJSDate()}
 										required={true}
 										onSelect={(selected) =>
 											setValue("time", DateTime.fromJSDate(selected))
 										}
 										mode="single"
-										className="rounded-xl bg-mantle border-surface-1 text-text border w-full"
+										className="rounded-lg border w-full"
 									/>
 								</div>
 							</div>
 						</CardContent>
 						<CardFooter>
-							<Button
-								type="submit"
-								className="bg-text text-mantle hover:bg-subtext-0 ml-auto"
-							>
+							<Button type="submit" className="ml-auto">
 								{submitting ? <Loader2 className="animate-spin" /> : ""}
 								Save
 							</Button>

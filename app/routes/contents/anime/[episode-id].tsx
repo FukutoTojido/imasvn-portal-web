@@ -150,7 +150,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 						<ChevronRight />
 					</Button>
 				</div>
-				<div className="w-[400px] max-w-full p-2.5 bg-base rounded-md border border-surface-1 gap-1 grid grid-cols-6">
+				<div className="w-[400px] max-w-full p-2.5 bg-cat-base rounded-md border border-surface-1 gap-1 grid grid-cols-6">
 					{episodes?.map(({ index, id: _id }) => (
 						<Button
 							key={_id}

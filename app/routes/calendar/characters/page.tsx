@@ -98,7 +98,7 @@ export default function Page() {
 						onInput={debounce((inputObject: HTMLTextAreaElement) => {
 							setQuery(inputObject.value);
 						})}
-						className="flex flex-1 p-3 bg-base border border-surface-1 rounded-md text-text"
+						className="flex flex-1 p-3 bg-cat-base border border-surface-1 rounded-md text-text"
 					/>
 				</div>
 			</div>

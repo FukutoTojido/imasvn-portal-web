@@ -15,6 +15,8 @@ import {
 import { debounce } from "../calendar/characters/page";
 import type { Route } from "./+types/streams";
 import "./Streams.css";
+import { RiCircleFill } from "@remixicon/react";
+import { Badge } from "~/components/ui/badge";
 import { cn } from "~/lib/utils";
 
 export const clientLoader = async () => {
@@ -36,13 +38,20 @@ export const clientLoader = async () => {
 	}
 };
 
-const RoomCard = ({ id, name, thumbnail, date, branch }: ProxyDataDto) => {
+const RoomCard = ({
+	id,
+	name,
+	thumbnail,
+	date,
+	branch,
+	archive,
+}: ProxyDataDto) => {
 	const url = `/live/${id === "root" ? "" : id}`;
 	const vt = useViewTransitionState(url);
 
 	return (
 		<Link
-			className="relative w-full h-[300px] flex flex-col text-white group bg-base border border-surface-1 rounded-3xl overflow-hidden hover:bg-surface-0 hover:rounded-md transition-all justify-end touch-manipulation"
+			className="relative w-full h-[300px] flex flex-col text-white group bg-cat-base border border-surface-1 rounded-3xl overflow-hidden hover:bg-surface-0 hover:rounded-md transition-all justify-end touch-manipulation"
 			to={`/live/${id === "root" ? "" : id}`}
 			viewTransition
 			style={{
@@ -56,6 +65,13 @@ const RoomCard = ({ id, name, thumbnail, date, branch }: ProxyDataDto) => {
 				className="absolute w-full h-full object-cover object-center group-hover:scale-110 transition-transform"
 			/>
 			<div className="absolute size-full bg-gradient-to-t from-crust to-transparent"></div>
+			{!archive && (
+				<div className="mb-auto relative p-4">
+					<Badge className="font-bold bg-destructive text-white no-underline! text-xl p-5">
+						<RiCircleFill /> LIVE
+					</Badge>
+				</div>
+			)}
 			<div className="relative flex gap-5 items-center p-5">
 				{branch && BRANCH_ICONS[+branch] ? (
 					<img
@@ -99,7 +115,7 @@ export const BRANCH_ICONS: Record<number, string> = {
 
 export default function Page({ loaderData }: Route.ComponentProps) {
 	const [search, setSearch] = useQueryState("search");
-	const [hideArchive, setHideArchives] = useQueryState("hide_archive");
+	const [showArchive, setShowArchives] = useQueryState("show_archive");
 	const [set, setSet] = useState(new Set<number>());
 	const setSearchDebounced = debounce((value: string) => setSearch(value), 200);
 
@@ -118,10 +134,10 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 		() =>
 			searched.filter(
 				({ archive, branch }) =>
-					(!hideArchive || (hideArchive && !archive)) &&
+					(showArchive || (!showArchive && !archive)) &&
 					(set.size === 0 || set.has(branch ?? 0)),
 			),
-		[searched, hideArchive, set],
+		[searched, showArchive, set],
 	);
 
 	return (
@@ -131,22 +147,22 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 					<div className="flex gap-5 items-center w-200 max-w-full">
 						<Input
 							placeholder="Search for live..."
-							className="text-text flex-1"
+							className="flex-1 h-10"
 							defaultValue={search ?? ""}
 							onChange={(e) => setSearchDebounced(e.target.value || null)}
 						/>
-						<Label className="shrink-0">Hide Archives</Label>
+						<Label className="shrink-0">Show Archives</Label>
 						<Switch
-							checked={Boolean(hideArchive)}
+							checked={Boolean(showArchive)}
 							onCheckedChange={(value) =>
-								setHideArchives(value ? "true" : null)
+								setShowArchives(value ? "true" : null)
 							}
 						/>
 					</div>
 					<div className="flex gap-2.5 flex-wrap justify-center">
 						{Object.entries(BRANCH_TYPES).map(([id, label]) => (
 							<Toggle
-								className="rounded-full px-5 data-[state=on]:bg-text data-[state=on]:text-base group/toggle"
+								className="rounded-full px-5 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground group/toggle"
 								variant={"outline"}
 								key={id}
 								pressed={set.has(+id)}
@@ -181,7 +197,14 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 										/>
 									</div>
 								)}
-								<span className={cn("hidden md:inline", +id === BranchType.OTHERS && "inline")}>{label}</span>
+								<span
+									className={cn(
+										"hidden md:inline",
+										+id === BranchType.OTHERS && "inline",
+									)}
+								>
+									{label}
+								</span>
 							</Toggle>
 						))}
 					</div>

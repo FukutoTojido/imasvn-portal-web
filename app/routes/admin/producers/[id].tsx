@@ -22,6 +22,7 @@ import {
 	AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
+import { Card as CardComponent, CardContent } from "~/components/ui/card";
 import ErrorComponent from "~/routes/components/Error";
 import TableComponent from "../components/Table";
 import type { Card, Producer } from "../types";
@@ -61,7 +62,7 @@ const columns: ColumnDef<Card>[] = [
 		cell: (props) => (
 			<div className="flex gap-5">
 				<Button
-					className="text-text bg-transparent hover:bg-text hover:text-base"
+					variant={"ghost"}
 					onClick={async (e) => {
 						e.stopPropagation();
 						await navigator.clipboard.writeText(
@@ -73,7 +74,7 @@ const columns: ColumnDef<Card>[] = [
 					<IdCard />
 				</Button>
 				<Button
-					className="text-text bg-transparent hover:bg-text hover:text-base"
+					variant={"ghost"}
 					onClick={async (e) => {
 						e.stopPropagation();
 						await navigator.clipboard.writeText(
@@ -96,7 +97,7 @@ const columns: ColumnDef<Card>[] = [
 					<Copy />
 				</Button>
 				<Button
-					className="text-text bg-transparent hover:bg-text hover:text-base"
+					variant={"ghost"}
 					onClick={async (e) => {
 						e.stopPropagation();
 						await navigator.clipboard.writeText(
@@ -109,24 +110,21 @@ const columns: ColumnDef<Card>[] = [
 				</Button>
 				<AlertDialog>
 					<AlertDialogTrigger asChild>
-						<Button className="text-text bg-transparent hover:bg-text hover:text-base">
+						<Button variant={"ghost"}>
 							<Trash />
 						</Button>
 					</AlertDialogTrigger>
-					<AlertDialogContent className="bg-base border-surface-1 text-text">
+					<AlertDialogContent>
 						<AlertDialogHeader>
 							<AlertDialogTitle>Deleting Card?</AlertDialogTitle>
-							<AlertDialogDescription className="text-subtext-0">
+							<AlertDialogDescription>
 								This action cannot be undone and will permanently delete this
 								card entry from the server.
 							</AlertDialogDescription>
 						</AlertDialogHeader>
 						<AlertDialogFooter>
-							<AlertDialogCancel className="bg-text text-mantle hover:bg-subtext-0">
-								Cancel
-							</AlertDialogCancel>
+							<AlertDialogCancel>Cancel</AlertDialogCancel>
 							<AlertDialogAction
-								className="bg-crust text-text hover:bg-surface-0"
 								onClick={async () => {
 									try {
 										await axios.delete(
@@ -208,15 +206,6 @@ export default function Page({ params }: Route.ComponentProps) {
 				<div className="text-5xl font-medium">{producerData.name}</div>
 				<div className="text-xl">Producer ID: {producerData.id}</div>
 			</div>
-			<div className="w-full p-2.5 border border-surface-1 rounded-xl bg-base flex flex-col gap-2.5">
-				<TableComponent
-					table={table}
-					columns={columns}
-					onRowClick={(row) => {
-						navigate(`/admin/cards/${row.getValue("id")}`);
-					}}
-				/>
-			</div>
 			<Button
 				disabled={loading}
 				onClick={async () => {
@@ -224,10 +213,20 @@ export default function Page({ params }: Route.ComponentProps) {
 					await insertCard(producerData.id);
 					setLoading(false);
 				}}
-				className="bg-text text-crust hover:bg-base hover:text-text self-end font-normal"
 			>
 				{loading && <LoaderCircle className="animate-spin" />} Insert Card
 			</Button>
+			<CardComponent>
+				<CardContent>
+					<TableComponent
+						table={table}
+						columns={columns}
+						onRowClick={(row) => {
+							navigate(`/admin/cards/${row.getValue("id")}`);
+						}}
+					/>
+				</CardContent>
+			</CardComponent>
 		</>
 	);
 }

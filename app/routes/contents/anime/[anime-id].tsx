@@ -107,7 +107,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 					/>
 					<div className="absolute w-full h-full bg-gradient-to-t from-base to-50% to-transparent"></div>
 				</div>
-				<div className="relative flex-1 self-stretch bg-base p-5 flex flex-col gap-2.5">
+				<div className="relative flex-1 self-stretch bg-cat-base p-5 flex flex-col gap-2.5">
 					<div className="flex flex-col w-full items-center text-center">
 						<div className="text-2xl font-bold">{title}</div>
 						<div className="text-lg">{titleJapanese}</div>

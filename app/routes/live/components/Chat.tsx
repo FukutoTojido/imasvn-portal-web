@@ -134,7 +134,7 @@ export default function Chat({
 
 	return (
 		<div
-			className={`bg-base md:rounded-md border border-surface-1 ${isFullscreen ? "md:!rounded-none" : ""} flex flex-col overflow-hidden h-full w-full relative`}
+			className={`bg-cat-base md:rounded-md border border-surface-1 ${isFullscreen ? "md:!rounded-none" : ""} flex flex-col overflow-hidden h-full w-full relative`}
 		>
 			<ChatContainer
 				containerRef={containerRef as RefObject<HTMLDivElement>}

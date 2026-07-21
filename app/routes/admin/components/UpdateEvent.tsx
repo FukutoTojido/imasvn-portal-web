@@ -13,6 +13,7 @@ import { FormProvider, useForm, useWatch } from "react-hook-form";
 import useSWR, { mutate } from "swr";
 import { Button } from "~/components/ui/button";
 import { Calendar } from "~/components/ui/calendar";
+import { CardContent } from "~/components/ui/card";
 import {
 	Dialog,
 	DialogContent,
@@ -198,77 +199,69 @@ export default function UpdateEvent({
 				}}
 			>
 				<DialogTrigger className="w-max" asChild>
-					<Button className="bg-text text-crust hover:bg-base hover:text-text self-end font-normal">
-						Add Event
-					</Button>
+					<Button>Add Event</Button>
 				</DialogTrigger>
 				<DialogContent
 					onOpenAutoFocus={(e) => e.preventDefault()}
-					className="bg-base border-surface-1 text-text sm:max-w-full w-[600px]"
+					className="sm:max-w-full w-[600px]"
 				>
 					<DialogHeader>
 						<DialogTitle>Event</DialogTitle>
-						<DialogDescription className="text-subtext-0">
-							Add or update a new event
-						</DialogDescription>
+						<DialogDescription>Add or update a new event</DialogDescription>
 					</DialogHeader>
-					{isLoading ? (
-						<Loader2 className="animate-spin" />
-					) : (
-						<form
-							className="gap-5 flex-col flex"
-							onSubmit={handleSubmit(id === null ? create : update)}
-						>
-							<div className="grid grid-cols-2 gap-5">
-								<div className="col-span-full flex flex-col gap-2.5">
-									<Label>Name</Label>
-									<Input
-										{...register("name", { required: true })}
-										className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text"
-										autoComplete="off"
-									/>
-								</div>
-								<div className="flex flex-col gap-2.5">
-									<Label>Event Period</Label>
-									<Calendar
-										selected={date}
-										month={date?.from}
-										required={true}
-										onSelect={(selected) => setValue("dateRange", selected)}
-										mode="range"
-										className="rounded-xl bg-mantle border-surface-1 border w-full"
-									/>
-								</div>
-								<div className="flex flex-col gap-2.5">
-									<Label>Image</Label>
-									<Input
-										{...register("img", { required: id === null })}
-										type="file"
-										className="bg-mantle border-overlay-0 focus-visible:ring-overlay-0 focus-visible:outline-0 text-text file:text-subtext-0 cursor-pointer"
-										autoComplete="off"
-									/>
-									<PreviewImage
-										url={data?.img}
-										ref={ref}
-										cropper={false}
-										className="h-full"
-									/>
-								</div>
-								<div className="flex flex-col gap-2.5 col-span-full">
-									<Label>Participants</Label>
-									<ProducerMenu participants={data?.participants} />
-								</div>
-							</div>
-							<Button
-								type="submit"
-								className="w-full bg-text text-crust hover:bg-crust hover:text-text"
-								disabled={submitting}
+					<CardContent>
+						{isLoading ? (
+							<Loader2 className="animate-spin" />
+						) : (
+							<form
+								className="gap-5 flex-col flex"
+								onSubmit={handleSubmit(id === null ? create : update)}
 							>
-								{submitting ? <Loader2 className="animate-spin" /> : ""}
-								Save
-							</Button>
-						</form>
-					)}
+								<div className="grid grid-cols-2 gap-5">
+									<div className="col-span-full flex flex-col gap-2.5">
+										<Label>Name</Label>
+										<Input
+											{...register("name", { required: true })}
+											autoComplete="off"
+										/>
+									</div>
+									<div className="flex flex-col gap-2.5">
+										<Label>Event Period</Label>
+										<Calendar
+											selected={date}
+											defaultMonth={date?.from}
+											required={true}
+											onSelect={(selected) => setValue("dateRange", selected)}
+											mode="range"
+											className="w-full rounded-lg border"
+										/>
+									</div>
+									<div className="flex flex-col gap-2.5">
+										<Label>Image</Label>
+										<Input
+											{...register("img", { required: id === null })}
+											type="file"
+											autoComplete="off"
+										/>
+										<PreviewImage
+											url={data?.img}
+											ref={ref}
+											cropper={false}
+											className="h-full"
+										/>
+									</div>
+									<div className="flex flex-col gap-2.5 col-span-full">
+										<Label>Participants</Label>
+										<ProducerMenu participants={data?.participants} />
+									</div>
+								</div>
+								<Button type="submit" className="w-full" disabled={submitting}>
+									{submitting ? <Loader2 className="animate-spin" /> : ""}
+									Save
+								</Button>
+							</form>
+						)}
+					</CardContent>
 				</DialogContent>
 			</Dialog>
 		</FormProvider>

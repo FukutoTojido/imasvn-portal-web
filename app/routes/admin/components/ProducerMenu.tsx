@@ -103,17 +103,20 @@ export default function ProducerMenu({
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
-				<Button className="bg-mantle border border-overlay-0 hover:bg-surface-0 text-text text-left overflow-hidden text-ellipsis whitespace-nowrap block">
+				<Button
+					variant="outline"
+					className="text-left overflow-hidden text-ellipsis whitespace-nowrap block"
+				>
 					{table
 						.getSelectedRowModel()
 						.rows.map((row) => row.original.name)
 						.join(", ")}
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) p-2.5 border border-surface-1 bg-mantle flex flex-col gap-2.5 shadow-md">
+			<DropdownMenuContent className="w-(--radix-dropdown-menu-trigger-width) p-4 space-y-2 shadow-md">
 				<div className="flex items-center justify-end space-x-2">
 					<Input
-						className="flex-1 bg-mantle border border-overlay-0 text-text h-full"
+						className="flex-1 h-full"
 						placeholder="Search producer..."
 						value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
 						onChange={(event) => {
@@ -127,12 +130,11 @@ export default function ProducerMenu({
 					onRowClick={(row) => row.toggleSelected(!row.getIsSelected())}
 				/>
 				<div className="w-full flex items-center justify-end gap-2.5">
-					<div className="flex-1 px-2.5 text-sm text-subtext-0">
+					<div className="flex-1 px-2.5 text-sm">
 						Page {table.getState().pagination.pageIndex + 1} of{" "}
 						{table.getPageCount()}
 					</div>
 					<Button
-						className="bg-text text-mantle hover:bg-subtext-0 disabled:bg-crust disabled:text-text"
 						onClick={() => {
 							table.previousPage();
 						}}
@@ -141,7 +143,6 @@ export default function ProducerMenu({
 						<ChevronLeft />
 					</Button>
 					<Button
-						className="bg-text text-mantle hover:bg-subtext-0 disabled:bg-crust disabled:text-text"
 						onClick={() => {
 							table.nextPage();
 						}}

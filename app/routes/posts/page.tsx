@@ -41,7 +41,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 				<div className="w-full flex flex-col bg-primary-3 rounded-lg">
 					<Post data={postData} redirect={false} />
 				</div>
-				<div className="w-full h-min bg-base border border-surface-1 md:rounded-lg p-5 flex flex-col gap-2.5 top-0 sticky">
+				<div className="w-full h-min bg-cat-base border border-surface-1 md:rounded-lg p-5 flex flex-col gap-2.5 top-0 sticky">
 					<div className="font-bold text-text">Comments</div>
 					<CommentsFeed
 						postData={postData}

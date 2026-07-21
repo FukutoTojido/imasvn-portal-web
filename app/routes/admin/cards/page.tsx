@@ -15,6 +15,7 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import useSWR from "swr";
 import { Button } from "~/components/ui/button";
+import { Card as CardComponent, CardContent } from "~/components/ui/card";
 import {
 	Select,
 	SelectContent,
@@ -75,7 +76,7 @@ export default function Page() {
 			},
 			{
 				accessorKey: "idol",
-				header: "Idol"
+				header: "Idol",
 			},
 			{
 				accessorKey: "event",
@@ -97,7 +98,7 @@ export default function Page() {
 				cell: (props) => (
 					<div className="flex gap-5">
 						<Button
-							className="text-text bg-transparent hover:bg-text hover:text-base"
+							variant={"ghost"}
 							onClick={async (e) => {
 								e.stopPropagation();
 								await navigator.clipboard.writeText(
@@ -109,7 +110,7 @@ export default function Page() {
 							<IdCard />
 						</Button>
 						<Button
-							className="text-text bg-transparent hover:bg-text hover:text-base"
+							variant={"ghost"}
 							onClick={async (e) => {
 								e.stopPropagation();
 								await navigator.clipboard.writeText(
@@ -163,64 +164,60 @@ export default function Page() {
 
 	return (
 		<>
-			<div className="text-5xl font-medium text-text">Cards List</div>
-			<div className="w-full p-2.5 border border-surface-1 rounded-xl bg-base flex flex-col gap-2.5">
-				<Select
-					onValueChange={(value) => {
-						table.getColumn("event")?.setFilterValue(value);
-						setFilter(value);
-					}}
-				>
-					<SelectTrigger className="w-full bg-mantle border-surface-1 focus-visible:ring-overlay-0">
-						<SelectValue placeholder="Select Event..." />
-					</SelectTrigger>
-					<SelectContent className="bg-mantle border border-surface-1 text-text">
-						<SelectGroup>
-							<SelectLabel>Events</SelectLabel>
-							{data?.events.map((event) => (
-								<SelectItem
-									value={`${event.id}`}
-									key={event.id}
-									className="data-[highlighted]:bg-surface-0 data-[highlighted]:text-text text-wrap"
-								>
-									{event.name}
-								</SelectItem>
-							))}
-						</SelectGroup>
-					</SelectContent>
-				</Select>
-				<div className="w-full flex items-center justify-end gap-2.5">
-					<div className="flex-1 px-2.5 text-sm text-subtext-0">
-						Page {table.getState().pagination.pageIndex + 1} of{" "}
-						{table.getPageCount()}
+			<div className="text-5xl font-bold">Cards List</div>
+			<CardComponent>
+				<CardContent className="space-y-2">
+					<Select
+						onValueChange={(value) => {
+							table.getColumn("event")?.setFilterValue(value);
+							setFilter(value);
+						}}
+					>
+						<SelectTrigger className="w-full h-10">
+							<SelectValue placeholder="Select Event..." />
+						</SelectTrigger>
+						<SelectContent position="popper">
+							<SelectGroup>
+								<SelectLabel>Events</SelectLabel>
+								{data?.events.map((event) => (
+									<SelectItem value={`${event.id}`} key={event.id}>
+										{event.name}
+									</SelectItem>
+								))}
+							</SelectGroup>
+						</SelectContent>
+					</Select>
+					<div className="w-full flex items-center justify-end gap-2.5">
+						<div className="flex-1 px-2.5 text-sm">
+							Page {table.getState().pagination.pageIndex + 1} of{" "}
+							{table.getPageCount()}
+						</div>
+						<Button
+							onClick={() => {
+								table.previousPage();
+								setPage(table.getState().pagination.pageIndex - 1);
+							}}
+							disabled={!table.getCanPreviousPage()}
+						>
+							<ChevronLeft />
+						</Button>
+						<Button
+							onClick={() => {
+								table.nextPage();
+								setPage(table.getState().pagination.pageIndex + 1);
+							}}
+							disabled={!table.getCanNextPage()}
+						>
+							<ChevronRight />
+						</Button>
 					</div>
-					<Button
-						className="bg-text text-mantle hover:bg-subtext-0 disabled:bg-crust disabled:text-text"
-						onClick={() => {
-							table.previousPage();
-							setPage(table.getState().pagination.pageIndex - 1);
-						}}
-						disabled={!table.getCanPreviousPage()}
-					>
-						<ChevronLeft />
-					</Button>
-					<Button
-						className="bg-text text-mantle hover:bg-subtext-0 disabled:bg-crust disabled:text-text"
-						onClick={() => {
-							table.nextPage();
-							setPage(table.getState().pagination.pageIndex + 1);
-						}}
-						disabled={!table.getCanNextPage()}
-					>
-						<ChevronRight />
-					</Button>
-				</div>
-				<TableComponent
-					table={table}
-					columns={columns}
-					onRowClick={(row) => navigate(`/admin/cards/${row.getValue("id")}`)}
-				/>
-			</div>
+					<TableComponent
+						table={table}
+						columns={columns}
+						onRowClick={(row) => navigate(`/admin/cards/${row.getValue("id")}`)}
+					/>
+				</CardContent>
+			</CardComponent>
 		</>
 	);
 }

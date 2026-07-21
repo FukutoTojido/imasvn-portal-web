@@ -129,7 +129,7 @@ export default function Post({
 
 	return (
 		<div
-			className="w-full p-5 bg-base md:border border-surface-1 md:rounded-md flex flex-col gap-5"
+			className="w-full p-5 bg-cat-base md:border border-surface-1 md:rounded-md flex flex-col gap-5"
 			style={{
 				cursor: redirect ? "pointer" : "initial",
 			}}
@@ -172,7 +172,7 @@ export default function Post({
 								<Ellipsis />
 							</button>
 						</PopoverTrigger>
-						<PopoverContent align="end" className="bg-base p-0 w-max min-w-[150px] border border-surface-1 overflow-hidden">
+						<PopoverContent align="end" className="bg-cat-base p-0 w-max min-w-[150px] border border-surface-1 overflow-hidden">
 							<button
 								type="button"
 								className="w-full text-red relative p-4 hover:bg-surface-0 flex items-center gap-4"

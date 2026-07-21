@@ -58,8 +58,8 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 							</OpenImage>
 						)}
 					</div>
-					<div className="relative flex gap-10 items-end justify-start h-[100px] p-5 w-full bg-base">
-						<div className="w-[150px] aspect-square rounded-full overflow-hidden relative border-4 border-base">
+					<div className="relative flex gap-10 items-end justify-start h-[100px] p-5 w-full bg-cat-base">
+						<div className="w-[150px] aspect-square rounded-full overflow-hidden relative border-4 border-cat-base">
 							{userData.avatar === "" ? (
 								""
 							) : (
@@ -90,7 +90,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 								to={`${import.meta.env.VITE_BASE_URL}/producer-id/${card.id}`}
 								target="_blank"
 								key={card.id}
-								className="p-5 w-full flex flex-col gap-5 items-center text-text bg-base border border-surface-1 rounded-md hover:bg-surface-0 cursor-pointer"
+								className="p-5 w-full flex flex-col gap-5 items-center text-text bg-cat-base border border-surface-1 rounded-md hover:bg-surface-0 cursor-pointer"
 							>
 								<div className="w-full aspect-square relative">
 									<img

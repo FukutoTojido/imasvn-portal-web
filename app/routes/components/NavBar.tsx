@@ -57,7 +57,7 @@ export default function NavBar() {
 	const pathname = `/${useLocation().pathname.split("/").at(1)}`;
 
 	return (
-		<div className="sticky top-0 self-start w-full h-[80px] flex gap-5 md:items-center overflow-hidden md:overflow-visible p-2.5 md:px-5 md:flex-row flex-col bg-base border-b-surface-1 border-b-1 z-50">
+		<div className="sticky top-0 self-start w-full h-[80px] flex gap-5 md:items-center overflow-hidden md:overflow-visible p-2.5 md:px-5 md:flex-row flex-col bg-cat-base border-b-surface-1 border-b-1 z-50">
 			<img
 				src="/imasvn.png"
 				alt="THE iDOLM@STER Vietnam Logo"

@@ -105,7 +105,7 @@ export default function Composer() {
 			<form
 				action=""
 				onSubmit={handleSubmit}
-				className="md:w-[600px] w-full bg-base border border-surface-1 rounded-lg p-5 gap-2.5 flex drop-shadow-lg"
+				className="md:w-[600px] w-full bg-cat-base border border-surface-1 rounded-lg p-5 gap-2.5 flex drop-shadow-lg"
 			>
 				<UserFlair
 					showName={false}
