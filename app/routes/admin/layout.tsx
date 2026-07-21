@@ -17,7 +17,7 @@ export default function Page() {
 
 	return (
 		<SidebarProvider>
-			<div className="w-screen h-screen flex bg-crust font-rubik text-text gridLoop">
+			<div className="w-screen h-screen flex bg-crust text-text gridLoop">
 				<AdminSidebar me={me} />
 				<div className="max-w-full flex-1 flex flex-col items-center p-5 overflow-auto">
 					<SidebarTrigger className="w-8 h-8 hover:bg-surface-1 hover:text-text self-start" />
