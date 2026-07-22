@@ -6,7 +6,7 @@ declare class ArtHlsPlayer extends Artplayer {
 	hls?: Hls;
 }
 
-export default function useHLS(id?: string) {
+export default function useHLS(serverURL?: string) {
 	const playM3u8 = useCallback(
 		(video: HTMLVideoElement, url: string, art: ArtHlsPlayer) => {
 			if (Hls.isSupported()) {
@@ -17,10 +17,10 @@ export default function useHLS(id?: string) {
 					enableWorker: true,
 					// requireKeySystemAccessOnStart: true,
 					emeEnabled: true,
-					widevineLicenseUrl: `${import.meta.env.VITE_BACKEND_API}/hls/drm/${id}`,
+					widevineLicenseUrl: serverURL,
 					drmSystems: {
 						"com.widevine.alpha": {
-							licenseUrl: `${import.meta.env.VITE_BACKEND_API}/hls/drm/${id}`,
+							licenseUrl: serverURL ?? "",
 						},
 					},
 				};
@@ -36,7 +36,7 @@ export default function useHLS(id?: string) {
 				art.notice.show = "Unsupported playback format: m3u8";
 			}
 		},
-		[id],
+		[serverURL],
 	);
 
 	return playM3u8;

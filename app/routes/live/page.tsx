@@ -119,7 +119,7 @@ export default function Page({ loaderData, params }: Route.ComponentProps) {
 	const url = useURL(contentID, bearer, type);
 
 	const { isFullscreen, hideChat } = useArtPlayer({
-		id: params.id ?? "root",
+		serverURL: `${import.meta.env.VITE_BACKEND_API}/hls/drm/${params.id ?? "root"}`,
 		player: playerRef.current,
 		page: pageRef.current,
 		url: !contentID?.includes("http") ? url : contentID,

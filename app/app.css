@@ -870,8 +870,8 @@ label {
 	--accent: var(--color-surface-0);
 	--accent-foreground: var(--color-text);
 	--destructive: oklch(0.704 0.191 22.216);
-	--border: color-mix(var(--color-text), transparent 90%);
-	--input: color-mix(var(--color-text), transparent 85%);
+	--border: color-mix(var(--color-text), transparent 80%);
+	--input: color-mix(var(--color-text), transparent 75%);
 	--ring: color-mix(var(--color-text), transparent 50%);
 	--chart-1: oklch(0.87 0 0);
 	--chart-2: oklch(0.556 0 0);
@@ -884,7 +884,7 @@ label {
 	--sidebar-primary-foreground: var(--color-text);
 	--sidebar-accent: var(--color-surface-0);
 	--sidebar-accent-foreground: var(--color-text);
-	--sidebar-border: color-mix(var(--color-text), transparent 90%);
+	--sidebar-border: color-mix(var(--color-text), transparent 80%);
 	--sidebar-ring: color-mix(var(--color-text), transparent 50%);
 }
 

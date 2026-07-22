@@ -18,8 +18,8 @@ export function DatePicker({
 	setDate,
 	className
 }: {
-	date: Date | undefined;
-	setDate: (date: Date | undefined) => void; 
+	date?: Date | undefined;
+	setDate?: (date: Date | undefined) => void; 
 	className?: string
 }) {
   return (

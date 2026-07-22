@@ -6,14 +6,14 @@ class ArtDashPlayer extends Artplayer {
 	dash?: MediaPlayerClass;
 }
 
-export default function useDASH(id?: string) {
+export default function useDASH(serverURL?: string) {
 	const fn = useCallback(
 		async (video: HTMLVideoElement, url: string, art: ArtDashPlayer) => {
 			const dashjs = await import("dashjs");
 
 			const protData: ProtectionDataSet = {
 				"com.widevine.alpha": {
-					serverURL: `${import.meta.env.VITE_BACKEND_API}/hls/drm/${id}`,
+					serverURL,
 					audioRobustness: "SW_SECURE_CRYPTO",
 					videoRobustness: "SW_SECURE_CRYPTO",
 					httpRequestHeaders: {
@@ -27,13 +27,13 @@ export default function useDASH(id?: string) {
 
 			const dash = dashjs.MediaPlayer().create();
 
-			if (id) dash.setProtectionData(protData);
+			if (serverURL) dash.setProtectionData(protData);
 			dash.initialize(video, url, art.option.autoplay);
 
 			art.dash = dash;
 			art.on("destroy", () => dash.destroy());
 		},
-		[id],
+		[serverURL],
 	);
 
 	return fn;

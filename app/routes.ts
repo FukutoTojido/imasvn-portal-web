@@ -19,12 +19,14 @@ export default [
 		]),
 		layout("routes/live/layout.tsx", [
 			route("live/:id?", "routes/live/page.tsx"),
+			route("_streams/:slug/archives/:broadcast_id", "routes/live/_streams/player.tsx"),
 		]),
 		layout("routes/live/chat/layout.tsx", [
 			route("live/chat/:id?", "routes/live/chat/page.tsx"),
 		]),
 		layout("routes/contents/layout.tsx", [
 			route("streams", "routes/live/streams.tsx"),
+			route("_streams", "routes/live/_streams/page.tsx"),
 			route("anime", "routes/contents/anime/page.tsx"),
 			route("anime/:id", "routes/contents/anime/[anime-id].tsx"),
 			route(
@@ -42,6 +44,8 @@ export default [
 			route("admin/idols/:id", "routes/admin/idols/[id].tsx"),
 			route("admin/events", "routes/admin/events.tsx"),
 			route("admin/users", "routes/admin/users.tsx"),
+			route("admin/live", "routes/admin/live/page.tsx"),
+			route("admin/live/:id", "routes/admin/live/[id].tsx"),
 			route("admin/live/m3u8", "routes/admin/live/m3u8.tsx"),
 			route("admin/anime", "routes/admin/contents/anime/page.tsx"),
 			route("admin/anime/:id", "routes/admin/contents/anime/[anime-id].tsx"),

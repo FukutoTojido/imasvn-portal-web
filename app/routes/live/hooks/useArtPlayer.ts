@@ -14,14 +14,14 @@ const typeMap = {
 };
 
 export default function useArtPlayer({
-	id,
+	serverURL,
 	page,
 	player,
 	url,
 	type,
 	isLive = false,
 }: {
-	id?: string;
+	serverURL?: string;
 	page?: HTMLDivElement | null;
 	player?: HTMLDivElement | null;
 	url: string | null;
@@ -33,8 +33,8 @@ export default function useArtPlayer({
 	const [hideChat, setHideChat] = useState(false);
 	const rtc = useRef<MediaMTXWebRTCReader | null>(null);
 
-	const playMpd = useDASH(id);
-	const playM3U8 = useHLS(id);
+	const playMpd = useDASH(serverURL);
+	const playM3U8 = useHLS(serverURL);
 
 	useEffect(() => {
 		if (!player || !url || !type) return;

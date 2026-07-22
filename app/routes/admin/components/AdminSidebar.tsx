@@ -118,6 +118,14 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 									</Link>
 								</SidebarMenuButton>
 							</SidebarMenuItem>
+							<SidebarMenuItem>
+								<SidebarMenuButton asChild>
+									<Link to="/admin/live" prefetch="render">
+										<Link2 />
+										Live
+									</Link>
+								</SidebarMenuButton>
+							</SidebarMenuItem>
 						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>
