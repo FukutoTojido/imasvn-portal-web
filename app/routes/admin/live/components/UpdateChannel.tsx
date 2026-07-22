@@ -214,7 +214,7 @@ export default function UpdateChannel({ data }: { data: LiveChannelDto }) {
 			<DialogTrigger asChild>
 				<Button variant="outline">{data?.channel_name}</Button>
 			</DialogTrigger>
-			<DialogContent className="max-h-[calc(100%-2rem)] overflow-auto">
+			<DialogContent className="max-h-[calc(100%-2rem)] overflow-auto max-w-full! w-200">
 				<DialogHeader>
 					<DialogTitle>{data?.channel_name}</DialogTitle>
 					<DialogDescription hidden></DialogDescription>
