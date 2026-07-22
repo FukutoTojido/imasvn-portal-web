@@ -151,13 +151,13 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 							defaultValue={search ?? ""}
 							onChange={(e) => setSearchDebounced(e.target.value || null)}
 						/>
-						<Label className="shrink-0">Show Archives</Label>
+						{/*<Label className="shrink-0">Show Archives</Label>
 						<Switch
 							checked={Boolean(showArchive)}
 							onCheckedChange={(value) =>
 								setShowArchives(value ? "true" : null)
 							}
-						/>
+						/>*/}
 					</div>
 					<div className="flex gap-2.5 flex-wrap justify-center">
 						{Object.entries(BRANCH_TYPES).map(([id, label]) => (
