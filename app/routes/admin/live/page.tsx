@@ -135,7 +135,7 @@ export default function Live() {
 							setPage(0);
 						}}
 					/>
-					<div className="w-full grid grid-cols-4 gap-4">
+					<div className="w-full grid md:grid-cols-4 grid-cols-2 gap-4">
 						{table
 							.getRowModel()
 							.rows.map(({ original: { slug, name, thumbnail, date } }) => (
