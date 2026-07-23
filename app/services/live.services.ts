@@ -128,6 +128,7 @@ export type LiveArchiveDto = {
 	broadcast_slug?: string;
 	broadcast_name?: string;
 	broadcast_date?: string | null;
+	public?: boolean | null;
 };
 
 export function useGetArchives(slug?: string) {

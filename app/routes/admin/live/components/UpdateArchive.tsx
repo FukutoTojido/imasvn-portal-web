@@ -41,6 +41,7 @@ import { Field, FieldGroup } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Separator } from "~/components/ui/separator";
+import { Switch } from "~/components/ui/switch";
 import {
 	type LiveArchiveDto,
 	type LiveEventDto,
@@ -82,7 +83,7 @@ const ArchiveUpdateForm = ({
 
 	const submit = async (formData: Omit<LiveArchiveDto, "id" | "event_id">) => {
 		try {
-			await mutateAsync(formData);
+			await mutateAsync({ ...formData, public: Boolean(formData.public) });
 			toast.info("Update event successfully");
 		} catch (e) {
 			console.error(e);
@@ -118,6 +119,16 @@ const ArchiveUpdateForm = ({
 								}
 								setDate={onChange}
 							/>
+						)}
+					/>
+				</Field>
+				<Field className="col-span-full flex-row">
+					<Label>Public</Label>
+					<Controller<Omit<LiveArchiveDto, "event_id" | "id">>
+						control={control}
+						name="public"
+						render={({ field: { value, onChange } }) => (
+							<Switch onCheckedChange={onChange} checked={Boolean(value)} />
 						)}
 					/>
 				</Field>
