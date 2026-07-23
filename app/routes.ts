@@ -19,14 +19,14 @@ export default [
 		]),
 		layout("routes/live/layout.tsx", [
 			route("live/:id?", "routes/live/page.tsx"),
-			route("_streams/:slug/archives/:broadcast_id", "routes/live/_streams/player.tsx"),
+			route("streams/:slug/archives/:broadcast_id", "routes/live/_streams/player.tsx"),
 		]),
 		layout("routes/live/chat/layout.tsx", [
 			route("live/chat/:id?", "routes/live/chat/page.tsx"),
 		]),
 		layout("routes/contents/layout.tsx", [
-			route("streams", "routes/live/streams.tsx"),
-			route("_streams", "routes/live/_streams/page.tsx"),
+			// route("streams", "routes/live/streams.tsx"),
+			route("streams", "routes/live/_streams/page.tsx"),
 			route("anime", "routes/contents/anime/page.tsx"),
 			route("anime/:id", "routes/contents/anime/[anime-id].tsx"),
 			route(
