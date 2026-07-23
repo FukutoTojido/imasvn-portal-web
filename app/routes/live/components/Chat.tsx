@@ -1,25 +1,24 @@
 import axios, { CanceledError } from "axios";
 import {
-	type Dispatch,
-	type RefObject,
-	type SetStateAction,
-	useEffect,
-	useRef,
-	useState,
+    type Dispatch,
+    type RefObject,
+    type SetStateAction,
+    useEffect,
+    useRef,
+    useState,
 } from "react";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router";
 import useWebSocket from "react-use-websocket";
 import type store from "~/store";
 import { UserType } from "~/types";
 import {
-	type JoinLeaveMessage,
-	type Message,
-	SOCKET_ENUM,
-	type Viewer,
+    type JoinLeaveMessage,
+    type Message,
+    SOCKET_ENUM,
+    type Viewer,
 } from "../types";
-
 import "./Chat.css";
-import { useParams } from "react-router";
 import ChatContainer from "./ChatContainer";
 import Input from "./Input";
 
@@ -134,7 +133,7 @@ export default function Chat({
 
 	return (
 		<div
-			className={`bg-cat-base md:rounded-md border border-surface-1 ${isFullscreen ? "md:!rounded-none" : ""} flex flex-col overflow-hidden h-full w-full relative`}
+			className={"flex flex-col overflow-hidden h-full w-full relative p-0"}
 		>
 			<ChatContainer
 				containerRef={containerRef as RefObject<HTMLDivElement>}

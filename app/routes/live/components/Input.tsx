@@ -18,6 +18,7 @@ import type store from "~/store";
 import ContentEditable from "~/lib/react-contenteditable";
 import { Popover, PopoverTrigger, PopoverContent } from "~/components/ui/popover";
 import EmotesContainer from "./EmotesContainer";
+import { Button } from "~/components/ui/button";
 
 function isCaretEnd(editableDiv: HTMLElement) {
 	const selection = window.getSelection();
@@ -136,7 +137,7 @@ const Input = ({
 
 	if (userData.authType === UserType.OK && userData.isJoinedServer)
 		return (
-			<div className="flex w-full gap-5 items-center p-5 chatBox border-t border-surface-1" ref={inputRef}>
+			<div className="flex w-full gap-5 items-center p-4 chatBox border-t border-foreground/10" ref={inputRef}>
 				<ContentEditable
 					tagName="span"
 					html={html}
@@ -149,23 +150,23 @@ const Input = ({
 					className="flex-1 text-text focus:outline-none chatInput break-words overflow-hidden"
 				/>
 
-				<div className="h-full border-r-2 border-[#56587d]" />
+				<div className="h-full border-r-1 border-foreground/10" />
 				<Popover modal>
 					<PopoverTrigger asChild>
-						<button type="button" popoverTarget="emote-container">
-							<Smile className="text-text" />
-						</button>
+						<Button variant="ghost" type="button" popoverTarget="emote-container" className="size-10 p-0">
+							<Smile className="size-6"/>
+						</Button>
 					</PopoverTrigger>
-					<PopoverContent className="bg-mantle border border-surface-1 mb-2" align="end" container={inputRef.current as HTMLElement}>
+					<PopoverContent align="end">
 						<EmotesContainer
 							chatRef={chatRef as RefObject<HTMLSpanElement>}
 							emotes={emotes}
 						/>
 					</PopoverContent>
 				</Popover>
-				<button type="button" onClick={() => sendMessage()}>
-					<SendHorizontal className="text-text" />
-				</button>
+				<Button variant="ghost" className="p-0 size-10" type="button" onClick={() => sendMessage()}>
+					<SendHorizontal className="size-6" />
+				</Button>
 			</div>
 		);
 

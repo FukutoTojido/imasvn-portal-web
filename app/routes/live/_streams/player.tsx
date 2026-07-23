@@ -5,13 +5,14 @@ import { DateTime } from "luxon";
 import { useQueryState } from "nuqs";
 import { useRef, useState } from "react";
 import { Badge } from "~/components/ui/badge";
+import { Card } from "~/components/ui/card";
 import { Dialog, DialogOverlay, DialogTrigger } from "~/components/ui/dialog";
 import { Toggle } from "~/components/ui/toggle";
 import { cn } from "~/lib/utils";
 import {
-    type LiveArchiveDto,
-    type LiveEventDto,
-    useGetChannels,
+	type LiveArchiveDto,
+	type LiveEventDto,
+	useGetChannels,
 } from "~/services/live.services";
 import Chat from "../components/Chat";
 import Viewers from "../components/Viewers";
@@ -109,7 +110,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 
 	return (
 		<div
-			className={`w-full h-full flex-1 flex md:gap-2.5 flex-col md:flex-row overflow-hidden${isFullscreen ? " md:!gap-0" : ""}`}
+			className={`w-full h-full max-h-full flex-1 flex md:gap-2.5 flex-col md:flex-row${isFullscreen ? " md:!gap-0" : ""}`}
 			ref={pageRef}
 		>
 			{selectedChannel && (
@@ -122,45 +123,47 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 						></div>
 						<div
 							className={cn(
-								"flex flex-col p-5 gap-1",
+								"flex md:items-center flex-col md:flex-row md:gap-4 p-5",
 								(hideChat || (selectedChannel?.archive && isFullscreen)) &&
 									"hidden",
 							)}
 						>
-							<div className="flex-1 line-clamp-2 font-bold">
-								{loaderData.title}
+							<div className={cn("flex flex-col gap-1 md:flex-1")}>
+								<div className="flex-1 line-clamp-2 font-bold">
+									{loaderData.title}
+								</div>
+								{isLive && (
+									<div className="flex items-center gap-5">
+										<DialogTrigger asChild>
+											<button
+												type="button"
+												className="flex gap-2.5 items-center group/badge underline-offset-2"
+											>
+												<Badge className="font-bold bg-destructive text-white no-underline!">
+													<RiCircleFill /> LIVE
+												</Badge>
+												<Users className="pointer-events-none" size={14} />
+												<span className="pointer-events-none text-xs group-hover/badge:underline">
+													{viewers.length} viewer
+													{viewers.length > 1 ? "s" : ""} watching
+												</span>
+											</button>
+										</DialogTrigger>
+									</div>
+								)}
+								{!isLive && (
+									<div className="w-full flex gap-2.5 items-center">
+										<Badge className="font-bold">Archive</Badge>
+										<Clock3Icon className="pointer-events-none" size={14} />
+										<span className="pointer-events-none text-xs">
+											{loaderData.archiveData?.broadcast_date &&
+												DateTime.fromISO(
+													loaderData.archiveData?.broadcast_date,
+												)?.toFormat("LLL dd yyyy")}
+										</span>
+									</div>
+								)}
 							</div>
-							{isLive && (
-								<div className="flex items-center gap-5">
-									<DialogTrigger asChild>
-										<button
-											type="button"
-											className="flex gap-2.5 items-center group/badge underline-offset-2"
-										>
-											<Badge className="font-bold bg-destructive text-white no-underline!">
-												<RiCircleFill /> LIVE
-											</Badge>
-											<Users className="pointer-events-none" size={14} />
-											<span className="pointer-events-none text-xs group-hover/badge:underline">
-												{viewers.length} viewer{viewers.length > 1 ? "s" : ""}{" "}
-												watching
-											</span>
-										</button>
-									</DialogTrigger>
-								</div>
-							)}
-							{!isLive && (
-								<div className="w-full flex gap-2.5 items-center">
-									<Badge className="font-bold">Archive</Badge>
-									<Clock3Icon className="pointer-events-none" size={14} />
-									<span className="pointer-events-none text-xs">
-										{loaderData.archiveData?.broadcast_date &&
-											DateTime.fromISO(
-												loaderData.archiveData?.broadcast_date,
-											)?.toFormat("LLL dd yyyy")}
-									</span>
-								</div>
-							)}
 							<div className="flex gap-2 mt-2 md:justify-start justify-center">
 								{channels?.map((data, idx) => (
 									<Toggle
@@ -180,9 +183,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 						</div>
 					</div>
 					{isLive && (
-						<div
+						<Card
 							id="chatContainer"
-							className={`lg:w-[400px] md:w-[300px] w-full flex flex-col overflow-hidden md:flex-none flex-1 ${hideChat ? "hidden" : ""}`}
+							className={`${isFullscreen ? "md:rounded-none!" : ""} max-md:rounded-none lg:w-[400px] md:w-[300px] p-0 w-full flex flex-col overflow-hidden md:flex-none flex-1 ${hideChat ? "hidden" : ""}`}
 						>
 							<Chat
 								isFullscreen={isFullscreen}
@@ -190,7 +193,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 								isLive={isLive}
 								forceId={`${loaderData.eventData?.slug}_${loaderData.archiveData?.broadcast_slug}`}
 							/>
-						</div>
+						</Card>
 					)}
 					{isLive && <Viewers viewers={viewers} />}
 				</Dialog>

@@ -16,10 +16,10 @@ const ChatContainer = ({
 }) => {
 	return (
 		<div
-			className="flex-1 w-full p-5 bg-cat-base flex flex-col gap-5 overflow-auto overflow-x-hidden"
+			className="flex-1 w-full p-5 flex flex-col gap-5 overflow-auto overflow-x-hidden"
 			ref={containerRef}
 		>
-			{messages.map((message, idx) => {
+			{messages.map((data, idx) => ({ ...data, idx })).map(({ idx, ...message }) => {
 				if ((message as Message).content) {
 					const mes = message as Message;
 					return (

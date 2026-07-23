@@ -17,7 +17,7 @@ export default function Layout() {
 	return (
 		<>
 			<NavBar />
-			<div className="bg-crust w-full flex flex-col flex-1 gap-5 md:p-2.5 overflow-hidden live">
+			<div className="bg-mantle w-full flex flex-col flex-1 gap-5 md:p-2.5 overflow-hidden live">
 				<Outlet />
 				<AlertDialog defaultOpen>
 					<AlertDialogOverlay className="z-998" />
