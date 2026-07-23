@@ -164,7 +164,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 							<div className="flex gap-2 mt-2 md:justify-start justify-center">
 								{channels?.map((data, idx) => (
 									<Toggle
-										className="rounded-full px-5 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground group/toggle md:flex-initial flex-1"
+										className="px-5 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground group/toggle md:flex-initial flex-1"
 										variant={"outline"}
 										key={data.id}
 										pressed={+(channel ?? 0) === idx}
