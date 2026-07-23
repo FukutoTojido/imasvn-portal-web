@@ -33,7 +33,7 @@ const ArchiveSelector = ({ data: { slug } }: { data: LiveEventDto }) => {
 			{data?.map((archive) => (
 				<Link
 					key={archive.id}
-					to={`/_streams/${slug}/archives/${archive.id}`}
+					to={`/streams/${slug}/archives/${archive.id}`}
 					className={buttonVariants({
 						variant: "outline",
 						className: "w-full py-2 px-3 flex items-center h-max text-left",
