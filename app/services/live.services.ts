@@ -8,6 +8,7 @@ export type LiveEventDto = {
 	event_slug: string | null;
 	date: string | null;
 	thumbnail: string | null;
+	public: boolean | null;
 };
 
 export function useGetLives() {

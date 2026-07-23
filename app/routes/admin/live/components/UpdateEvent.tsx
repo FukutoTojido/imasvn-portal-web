@@ -17,7 +17,6 @@ import {
 	AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
-import { Calendar } from "~/components/ui/calendar";
 import {
 	Card,
 	CardContent,
@@ -30,6 +29,7 @@ import { DatePicker } from "~/components/ui/date-picker";
 import { Field } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { Switch } from "~/components/ui/switch";
 import { cn } from "~/lib/utils";
 import {
 	type LiveEventDto,
@@ -39,7 +39,7 @@ import {
 
 export default function UpdateEvent({ data }: { data?: LiveEventDto }) {
 	const navigate = useNavigate();
-	const { register, setValue, handleSubmit, reset, control } =
+	const { register, handleSubmit, reset, control } =
 		useForm<Omit<LiveEventDto, "slug">>();
 	const { mutateAsync, isPending } = useUpdateLive(data?.slug);
 	const deleteLive = useDeleteLive(data?.slug);
@@ -48,8 +48,6 @@ export default function UpdateEvent({ data }: { data?: LiveEventDto }) {
 		name: "thumbnail",
 		control,
 	});
-	const date = useWatch<Omit<LiveEventDto, "slug">>({ name: "date", control });
-	const _date = date ? DateTime.fromISO(date).toJSDate() : undefined;
 
 	useEffect(() => {
 		if (!data) {
@@ -63,7 +61,7 @@ export default function UpdateEvent({ data }: { data?: LiveEventDto }) {
 
 	const submit = async (formData: Omit<LiveEventDto, "slug">) => {
 		try {
-			await mutateAsync(formData);
+			await mutateAsync({ ...formData, public: Boolean(formData.public) });
 			toast.info("Update event successfully");
 		} catch (e) {
 			console.error(e);
@@ -147,22 +145,32 @@ export default function UpdateEvent({ data }: { data?: LiveEventDto }) {
 									date={
 										typeof value === "string"
 											? DateTime.fromISO(value as string).toJSDate()
-											: (value ?? undefined)
+											: ((value as unknown as Date) ?? undefined)
 									}
 									setDate={onChange}
 								/>
 							)}
 						/>
 					</Field>
-						<div
-							style={{
-								backgroundImage: `url(${thumbnail})`,
-							}}
-							className={cn(
-								"col-span-full aspect-video bg-cover rounded-lg bg-secondary",
-								"border-2 border-dashed",
+					<Field className="col-span-full flex-row">
+						<Label>Public</Label>
+						<Controller<Omit<LiveEventDto, "slug">>
+							control={control}
+							name="public"
+							render={({ field: { value, onChange } }) => (
+								<Switch onCheckedChange={onChange} checked={Boolean(value)} />
 							)}
 						/>
+					</Field>
+					<div
+						style={{
+							backgroundImage: `url(${thumbnail})`,
+						}}
+						className={cn(
+							"col-span-full aspect-video bg-cover rounded-lg bg-secondary",
+							"border-2 border-dashed",
+						)}
+					/>
 				</CardContent>
 				<CardFooter>
 					<Button className="w-full" type="submit" disabled={isPending}>
