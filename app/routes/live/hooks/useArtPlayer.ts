@@ -46,6 +46,7 @@ export default function useArtPlayer({
 			pip: true,
 			isLive,
 			useSSR: false,
+			autoplay: true,
 			customType: {
 				mpd: playMpd,
 				m3u8: playM3U8 as (
