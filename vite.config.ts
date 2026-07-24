@@ -9,7 +9,7 @@ export default defineConfig({
 		tailwindcss(),
 		reactRouter(),
 		tsconfigPaths(),
-		ViteImageOptimizer(),
+		// ViteImageOptimizer(),
 	],
 	ssr: {
 		noExternal: ["react-easy-crop", "tslib"],
