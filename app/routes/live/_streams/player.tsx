@@ -7,17 +7,16 @@ import { useRef, useState } from "react";
 import { Badge } from "~/components/ui/badge";
 import { Card } from "~/components/ui/card";
 import {
-	Dialog,
-	DialogOverlay,
-	DialogPortal,
-	DialogTrigger,
+    Dialog,
+    DialogOverlay,
+    DialogTrigger
 } from "~/components/ui/dialog";
 import { Toggle } from "~/components/ui/toggle";
 import { cn } from "~/lib/utils";
 import {
-	type LiveArchiveDto,
-	type LiveEventDto,
-	useGetChannels,
+    type LiveArchiveDto,
+    type LiveEventDto,
+    useGetChannels,
 } from "~/services/live.services";
 import Chat from "../components/Chat";
 import Viewers from "../components/Viewers";
