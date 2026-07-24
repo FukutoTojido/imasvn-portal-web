@@ -1,9 +1,24 @@
 import { useEffect, useState } from "react";
 
+export const getReturnValue = (
+	json: any,
+	stream_type: "dash" | "hls" | "whep" | null,
+	isLive: boolean,
+) => {
+	if (isLive) {
+		return json.data.Channel.Custom_live_url;
+	}
+
+	return stream_type === "dash"
+		? json.ex_content.dash_streaming_url
+		: json.ex_content.streaming_url;
+};
+
 export default function useURL(
 	contentID: string | null,
 	bearer: string | null,
-	type: "dash" | "hls" | "whep" | null
+	type: "dash" | "hls" | "whep" | null,
+	isLive = false,
 ) {
 	const [url, setURL] = useState<string | null>(null);
 
@@ -15,7 +30,9 @@ export default function useURL(
 		const fetchBearer = async () => {
 			if (contentID.includes("http")) return;
 
-			const url = `${import.meta.env.VITE_SURVEY_URL}/${contentID}/get_by_cuid?t=${Date.now()}`;
+			const url = isLive
+				? `${import.meta.env.VITE_EX_URL}/${contentID}?t=${Date.now()}`
+				: `${import.meta.env.VITE_SURVEY_URL}/${contentID}/get_by_cuid?t=${Date.now()}`;
 
 			try {
 				const res = await fetch(url, {
@@ -30,7 +47,8 @@ export default function useURL(
 				}
 
 				const json = await res.json();
-				setURL(type === "dash" ? json.ex_content.dash_streaming_url : json.ex_content.streaming_url);
+
+				setURL(getReturnValue(json, type, isLive));
 			} catch (error) {
 				console.error(error);
 				return;
@@ -42,7 +60,7 @@ export default function useURL(
 		return () => {
 			controller.abort();
 		};
-	}, [contentID, bearer, type]);
+	}, [contentID, bearer, type, isLive]);
 
 	return url;
 }

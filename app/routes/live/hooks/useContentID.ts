@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { LiveChannelDto } from "~/services/live.services";
+import { getReturnValue } from "./useURL";
 
 export default function useContentID(
 	data: LiveChannelDto | null,
@@ -10,7 +11,7 @@ export default function useContentID(
 	useEffect(() => {
 		if (!data || !bearer) return;
 
-		const { channel_id, url, stream_type } = data;
+		const { channel_id, url, stream_type, archive } = data;
 		if (url) {
 			setURL(url);
 			return;
@@ -19,7 +20,9 @@ export default function useContentID(
 		const controller = new AbortController();
 
 		const fetchBearer = async () => {
-			const url = `${import.meta.env.VITE_SURVEY_URL}/${channel_id}/get_by_cuid?t=${Date.now()}`;
+			const url = archive
+				? `${import.meta.env.VITE_SURVEY_URL}/${channel_id}/get_by_cuid?t=${Date.now()}`
+				: `${import.meta.env.VITE_EX_URL}/${channel_id}?t=${Date.now()}`;
 
 			try {
 				const res = await fetch(url, {
@@ -35,9 +38,7 @@ export default function useContentID(
 
 				const json = await res.json();
 				setURL(
-					stream_type === "dash"
-						? json.ex_content.dash_streaming_url
-						: json.ex_content.streaming_url,
+					getReturnValue(json, stream_type ?? null, !archive)
 				);
 			} catch (error) {
 				console.error(error);
