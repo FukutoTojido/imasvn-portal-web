@@ -12,10 +12,8 @@ import type { Viewer } from "../types";
 
 function Viewers({
 	viewers,
-	container,
 }: {
 	viewers: Viewer[];
-	container?: HTMLElement;
 }) {
 	return (
 		<DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="z-100">
@@ -35,7 +33,7 @@ function Viewers({
 							key={id}
 							className={buttonVariants({
 								variant: "ghost",
-								className: "h-auto p-2 gap-2 justify-start",
+								className: "h-auto p-2 gap-2 justify-start w-full overflow-hidden",
 							})}
 						>
 							<Avatar>
@@ -43,9 +41,9 @@ function Viewers({
 									src={`${import.meta.env.VITE_BACKEND_API}/users/${id}/avatar`}
 								/>
 							</Avatar>
-							<div className="flex flex-col">
-								<span className="font-semibold">{displayName}</span>
-								<span className="text-xs">@{username}</span>
+							<div className="flex flex-col w-full overflow-hidden">
+								<div className="font-semibold line-clamp-1 w-full whitespace-nowrap overflow-hidden text-ellipsis block">{displayName}asdasdqwdqdasd</div>
+								<div className="text-xs">@{username}</div>
 							</div>
 						</Link>
 					);
