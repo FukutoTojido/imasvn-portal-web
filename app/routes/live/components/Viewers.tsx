@@ -42,7 +42,7 @@ function Viewers({
 								/>
 							</Avatar>
 							<div className="flex flex-col w-full overflow-hidden">
-								<div className="font-semibold line-clamp-1 w-full whitespace-nowrap overflow-hidden text-ellipsis block">{displayName}asdasdqwdqdasd</div>
+								<div className="font-semibold line-clamp-1 w-full whitespace-nowrap overflow-hidden text-ellipsis block">{displayName}</div>
 								<div className="text-xs">@{username}</div>
 							</div>
 						</Link>
