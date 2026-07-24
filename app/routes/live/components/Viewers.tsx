@@ -24,7 +24,7 @@ function Viewers({
 				<DialogDescription>その目、だれの目？</DialogDescription>
 			</DialogHeader>
 			<div className="w-full grid md:grid-cols-4 grid-cols-2 gap-2.5 overflow-auto">
-				{Array(40).fill(viewers[0]).map(({ username, id, displayName }) => {
+				{viewers.map(({ username, id, displayName }) => {
 					return (
 						<Link
 							to={`/users/${id}`}
