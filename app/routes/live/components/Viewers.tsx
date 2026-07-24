@@ -16,15 +16,15 @@ function Viewers({
 	viewers: Viewer[];
 }) {
 	return (
-		<DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="z-100">
+		<DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="z-100 max-w-[calc(100%-2rem)]! w-300 max-h-[calc(100%-2rem)] overflow-auto">
 			<DialogHeader>
 				<DialogTitle>
 					{viewers.length} Viewer{viewers.length > 1 ? "s" : ""}
 				</DialogTitle>
 				<DialogDescription>その目、だれの目？</DialogDescription>
 			</DialogHeader>
-			<div className="w-full grid grid-cols-2 gap-2.5 flex-1 overflow-auto">
-				{viewers.map(({ username, id, displayName }) => {
+			<div className="w-full grid md:grid-cols-4 grid-cols-2 gap-2.5 overflow-auto">
+				{Array(40).fill(viewers[0]).map(({ username, id, displayName }) => {
 					return (
 						<Link
 							to={`/users/${id}`}
@@ -43,7 +43,7 @@ function Viewers({
 							</Avatar>
 							<div className="flex flex-col w-full overflow-hidden">
 								<div className="font-semibold line-clamp-1 w-full whitespace-nowrap overflow-hidden text-ellipsis block">{displayName}</div>
-								<div className="text-xs">@{username}</div>
+								<div className="text-xs line-clamp-1 w-full whitespace-nowrap overflow-hidden text-ellipsis block">@{username}</div>
 							</div>
 						</Link>
 					);
