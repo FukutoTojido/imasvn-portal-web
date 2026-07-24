@@ -22,7 +22,7 @@ export default function useContentID(
 		const fetchBearer = async () => {
 			const url = archive
 				? `${import.meta.env.VITE_SURVEY_URL}/${channel_id}/get_by_cuid?t=${Date.now()}`
-				: `${import.meta.env.VITE_EX_URL}/${channel_id}?t=${Date.now()}`;
+				: `${import.meta.env.VITE_EX_URL}/${channel_id}?embed=channel&t=${Date.now()}`;
 
 			try {
 				const res = await fetch(url, {
