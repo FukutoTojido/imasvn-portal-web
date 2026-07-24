@@ -4,45 +4,44 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger,
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { Button } from "~/components/ui/button";
 import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "~/components/ui/dialog";
 import { Field } from "~/components/ui/field";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import {
-	Select,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from "~/components/ui/select";
 import { Separator } from "~/components/ui/separator";
-import { Switch } from "~/components/ui/switch";
 import { Textarea } from "~/components/ui/textarea";
 import {
-	type LiveChannelDto,
-	useDeleteChannel,
-	useGetChannel,
-	useUpdateChannel,
+    type LiveChannelDto,
+    useDeleteChannel,
+    useGetChannel,
+    useUpdateChannel,
 } from "~/services/live.services";
 
 const ChannelUpdateForm = ({
@@ -77,7 +76,7 @@ const ChannelUpdateForm = ({
 		formData: Omit<LiveChannelDto, "event_id" | "id" | "broadcast_id">,
 	) => {
 		try {
-			await mutateAsync({ ...formData, archive: Boolean(formData.archive) });
+			await mutateAsync({ ...formData });
 			toast.info("Update event successfully");
 		} catch (e) {
 			console.error(e);
@@ -146,17 +145,6 @@ const ChannelUpdateForm = ({
 						rows={6}
 						className="font-mono resize-none field-sizing-fixed"
 						{...register("headers")}
-					/>
-				</Field>
-				<Separator className="col-span-full my-2" />
-				<Field className="col-span-full flex-row">
-					<Label>Archive</Label>
-					<Controller<Omit<LiveChannelDto, "id" | "event_id" | "broadcast_id">>
-						control={control}
-						name="archive"
-						render={({ field: { value, onChange } }) => (
-							<Switch onCheckedChange={onChange} checked={Boolean(value)} />
-						)}
 					/>
 				</Field>
 			</div>

@@ -129,6 +129,7 @@ export type LiveArchiveDto = {
 	broadcast_name?: string;
 	broadcast_date?: string | null;
 	public?: boolean | null;
+	archive?: boolean | null;
 };
 
 export function useGetArchives(slug?: string) {
@@ -265,7 +266,6 @@ export type LiveChannelDto = {
 	forward_url?: string;
 	cookies?: string;
 	headers?: string;
-	archive?: boolean;
 };
 
 export function useGetChannels(slug?: string, broadcast_id?: number) {

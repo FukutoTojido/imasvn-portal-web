@@ -83,7 +83,11 @@ const ArchiveUpdateForm = ({
 
 	const submit = async (formData: Omit<LiveArchiveDto, "id" | "event_id">) => {
 		try {
-			await mutateAsync({ ...formData, public: Boolean(formData.public) });
+			await mutateAsync({
+				...formData,
+				public: Boolean(formData.public),
+				archive: Boolean(formData.archive),
+			});
 			toast.info("Update event successfully");
 		} catch (e) {
 			console.error(e);
@@ -115,7 +119,7 @@ const ArchiveUpdateForm = ({
 								date={
 									typeof value === "string"
 										? DateTime.fromISO(value as string).toJSDate()
-										: (value ?? undefined)
+										: ((value as unknown as Date) ?? undefined)
 								}
 								setDate={onChange}
 							/>
@@ -127,6 +131,16 @@ const ArchiveUpdateForm = ({
 					<Controller<Omit<LiveArchiveDto, "event_id" | "id">>
 						control={control}
 						name="public"
+						render={({ field: { value, onChange } }) => (
+							<Switch onCheckedChange={onChange} checked={Boolean(value)} />
+						)}
+					/>
+				</Field>
+				<Field className="col-span-full flex-row">
+					<Label>Archive</Label>
+					<Controller<Omit<LiveArchiveDto, "id" | "event_id">>
+						control={control}
+						name="archive"
 						render={({ field: { value, onChange } }) => (
 							<Switch onCheckedChange={onChange} checked={Boolean(value)} />
 						)}

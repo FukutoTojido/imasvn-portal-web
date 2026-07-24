@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
-import type { LiveChannelDto } from "~/services/live.services";
+import type { LiveArchiveDto, LiveChannelDto } from "~/services/live.services";
 import { getReturnValue } from "./useURL";
 
 export default function useContentID(
 	data: LiveChannelDto | null,
+	archiveData: LiveArchiveDto | null,
 	bearer: string | null,
 ) {
 	const [url, setURL] = useState<string | null>(null);
 
 	useEffect(() => {
-		if (!data || !bearer) return;
+		if (!data || !archiveData || !bearer) return;
 
-		const { channel_id, url, stream_type, archive } = data;
+		const { channel_id, url, stream_type } = data;
+		const { archive } = archiveData;
+		
 		if (url) {
 			setURL(url);
 			return;
@@ -51,7 +54,7 @@ export default function useContentID(
 		return () => {
 			controller.abort();
 		};
-	}, [data, bearer]);
+	}, [data,archiveData, bearer]);
 
 	return url;
 }

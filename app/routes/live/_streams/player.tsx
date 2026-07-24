@@ -95,9 +95,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 	const [viewers, setViewers] = useState<Viewer[]>([]);
 
 	const bearer = useBearer();
-	const url = useContentID(selectedChannel, bearer);
+	const url = useContentID(selectedChannel, loaderData.archiveData ?? null, bearer);
 
-	const isLive = Boolean(!selectedChannel?.archive);
+	const isLive = Boolean(!loaderData.archiveData?.archive);
 
 	const { isFullscreen, hideChat } = useArtPlayer({
 		serverURL: `${import.meta.env.VITE_BACKEND_API}/live/events/${loaderData.eventData?.slug}/archives/${loaderData.archiveData?.id}/channels/${selectedChannel?.id}/drm`,
@@ -124,7 +124,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 						<div
 							className={cn(
 								"flex md:items-center flex-col md:flex-row md:gap-4 p-5",
-								(hideChat || (selectedChannel?.archive && isFullscreen)) &&
+								(hideChat || (!isLive && isFullscreen)) &&
 									"hidden",
 							)}
 						>
