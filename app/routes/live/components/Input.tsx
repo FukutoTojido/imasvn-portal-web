@@ -1,5 +1,5 @@
-import { UserType } from "~/types";
 import { SendHorizontal, Smile } from "lucide-react";
+import { Popover as PopoverPrimitive } from "radix-ui";
 import {
 	type KeyboardEventHandler,
 	memo,
@@ -9,16 +9,21 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { useSelector } from "react-redux";
-import { SOCKET_ENUM } from "../types";
-import Anchorize from "~/routes/components/Anchorize";
 import { renderToString } from "react-dom/server";
+import { useSelector } from "react-redux";
 import type { SendJsonMessage } from "react-use-websocket/dist/lib/types";
-import type store from "~/store";
-import ContentEditable from "~/lib/react-contenteditable";
-import { Popover, PopoverTrigger, PopoverContent } from "~/components/ui/popover";
-import EmotesContainer from "./EmotesContainer";
 import { Button } from "~/components/ui/button";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "~/components/ui/popover";
+import ContentEditable from "~/lib/react-contenteditable";
+import Anchorize from "~/routes/components/Anchorize";
+import type store from "~/store";
+import { UserType } from "~/types";
+import { SOCKET_ENUM } from "../types";
+import EmotesContainer from "./EmotesContainer";
 
 function isCaretEnd(editableDiv: HTMLElement) {
 	const selection = window.getSelection();
@@ -35,6 +40,7 @@ const Input = ({
 	chatRef,
 	sendJsonMessage,
 	emotes,
+	pageRef,
 }: {
 	chatRef: RefObject<HTMLSpanElement | null>;
 	sendJsonMessage: SendJsonMessage;
@@ -42,6 +48,7 @@ const Input = ({
 		id: string;
 		name: string;
 	}[];
+	pageRef?: HTMLDivElement;
 }) => {
 	const userData = useSelector(
 		(state: ReturnType<typeof store.getState>) => state.auth.user,
@@ -137,7 +144,10 @@ const Input = ({
 
 	if (userData.authType === UserType.OK && userData.isJoinedServer)
 		return (
-			<div className="flex w-full gap-5 items-center p-4 chatBox border-t border-foreground/10" ref={inputRef}>
+			<div
+				className="flex w-full gap-5 items-center p-4 chatBox border-t border-foreground/10"
+				ref={inputRef}
+			>
 				<ContentEditable
 					tagName="span"
 					html={html}
@@ -149,22 +159,31 @@ const Input = ({
 					contentEditable="plaintext-only"
 					className="flex-1 text-text focus:outline-none chatInput break-words overflow-hidden"
 				/>
-
 				<div className="h-full border-r-1 border-foreground/10" />
 				<Popover modal>
 					<PopoverTrigger asChild>
-						<Button variant="ghost" type="button" popoverTarget="emote-container" className="size-10 p-0">
-							<Smile className="size-6"/>
+						<Button
+							variant="ghost"
+							type="button"
+							popoverTarget="emote-container"
+							className="size-10 p-0"
+						>
+							<Smile className="size-6" />
 						</Button>
 					</PopoverTrigger>
-					<PopoverContent align="end">
+					<PopoverContent align="end" container={pageRef}>
 						<EmotesContainer
 							chatRef={chatRef as RefObject<HTMLSpanElement>}
 							emotes={emotes}
 						/>
 					</PopoverContent>
 				</Popover>
-				<Button variant="ghost" className="p-0 size-10" type="button" onClick={() => sendMessage()}>
+				<Button
+					variant="ghost"
+					className="p-0 size-10"
+					type="button"
+					onClick={() => sendMessage()}
+				>
 					<SendHorizontal className="size-6" />
 				</Button>
 			</div>

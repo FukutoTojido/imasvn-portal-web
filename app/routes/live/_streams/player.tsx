@@ -6,7 +6,12 @@ import { useQueryState } from "nuqs";
 import { useRef, useState } from "react";
 import { Badge } from "~/components/ui/badge";
 import { Card } from "~/components/ui/card";
-import { Dialog, DialogOverlay, DialogTrigger } from "~/components/ui/dialog";
+import {
+	Dialog,
+	DialogOverlay,
+	DialogPortal,
+	DialogTrigger,
+} from "~/components/ui/dialog";
 import { Toggle } from "~/components/ui/toggle";
 import { cn } from "~/lib/utils";
 import {
@@ -95,7 +100,11 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 	const [viewers, setViewers] = useState<Viewer[]>([]);
 
 	const bearer = useBearer();
-	const url = useContentID(selectedChannel, loaderData.archiveData ?? null, bearer);
+	const url = useContentID(
+		selectedChannel,
+		loaderData.archiveData ?? null,
+		bearer,
+	);
 
 	const isLive = Boolean(!loaderData.archiveData?.archive);
 
@@ -115,7 +124,6 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 		>
 			{selectedChannel && (
 				<Dialog>
-					<DialogOverlay className="z-99" />
 					<div className="w-full md:h-full flex flex-col">
 						<div
 							className="artplayer-app w-full flex-1 aspect-video md:aspect-auto md:rounded-xl overflow-hidden bg-card"
@@ -124,8 +132,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 						<div
 							className={cn(
 								"flex md:items-center flex-col md:flex-row md:gap-4 p-5",
-								(hideChat || (!isLive && isFullscreen)) &&
-									"hidden",
+								(hideChat || (!isLive && isFullscreen)) && "hidden",
 							)}
 						>
 							<div className={cn("flex flex-col gap-1 md:flex-1")}>
@@ -192,10 +199,16 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 								setViewers={setViewers}
 								isLive={isLive}
 								forceId={`${loaderData.eventData?.slug}_${loaderData.archiveData?.broadcast_slug}`}
+								pageRef={pageRef.current ?? undefined}
 							/>
 						</Card>
 					)}
-					{isLive && <Viewers viewers={viewers} />}
+					{isLive && (
+						<>
+							<DialogOverlay className="z-99" />
+							<Viewers viewers={viewers} container={pageRef.current} />
+						</>
+					)}
 				</Dialog>
 			)}
 			{isLoading && (

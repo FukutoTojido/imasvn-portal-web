@@ -57,15 +57,16 @@ function useEmotes() {
 }
 
 export default function Chat({
-	isFullscreen,
 	setViewers,
 	forceId,
 	isLive,
+	pageRef,
 }: {
 	isFullscreen: boolean;
 	setViewers: Dispatch<SetStateAction<Viewer[]>>;
 	forceId?: string;
 	isLive?: boolean;
+	pageRef?: HTMLDivElement
 }) {
 	const userData = useSelector(
 		(state: ReturnType<typeof store.getState>) => state.auth.user,
@@ -144,6 +145,7 @@ export default function Chat({
 				chatRef={chatRef}
 				sendJsonMessage={sendJsonMessage}
 				emotes={emotes}
+				pageRef={pageRef}
 			/>
 		</div>
 	);

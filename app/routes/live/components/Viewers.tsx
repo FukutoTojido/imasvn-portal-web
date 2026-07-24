@@ -1,22 +1,24 @@
-import { memo } from "react";
+import { type ComponentProps, memo } from "react";
 import { Link } from "react-router";
 import { Avatar, AvatarImage } from "~/components/ui/avatar";
 import { buttonVariants } from "~/components/ui/button";
 import {
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
 } from "~/components/ui/dialog";
 import type { Viewer } from "../types";
 
 function Viewers({
 	viewers,
+	container,
 }: {
 	viewers: Viewer[];
+	container?: ComponentProps<typeof DialogContent>["container"]
 }) {
 	return (
-		<DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="z-100 max-w-[calc(100%-2rem)]! w-300 max-h-[calc(100%-2rem)] overflow-auto">
+		<DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="z-100 max-w-[calc(100%-2rem)]! w-300 max-h-[calc(100%-2rem)] overflow-auto" container={container}>
 			<DialogHeader>
 				<DialogTitle>
 					{viewers.length} Viewer{viewers.length > 1 ? "s" : ""}
