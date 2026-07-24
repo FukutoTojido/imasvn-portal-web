@@ -20,7 +20,7 @@ export default [
 		layout("routes/live/layout.tsx", [
 			route("live/:id?", "routes/live/page.tsx"),
 			route("streams/:slug/archives/:broadcast_id", "routes/live/_streams/player.tsx"),
-			route("streams/:slug", "routes/live/_streams/decoy.tsx"),
+			// route("streams/:slug", "routes/live/_streams/decoy.tsx"),
 		]),
 		layout("routes/live/chat/layout.tsx", [
 			route("live/chat/:id?", "routes/live/chat/page.tsx"),
