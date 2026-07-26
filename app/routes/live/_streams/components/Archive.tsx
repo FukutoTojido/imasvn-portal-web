@@ -5,12 +5,12 @@ import { Link } from "react-router";
 import { buttonVariants } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
 } from "~/components/ui/dialog";
 import { type LiveEventDto, useGetArchives } from "~/services/live.services";
 
@@ -33,7 +33,7 @@ const ArchiveSelector = ({ data: { slug } }: { data: LiveEventDto }) => {
 			{data?.map((archive) => (
 				<Link
 					key={archive.id}
-					to={`/streams/${slug}/archives/${archive.id}`}
+					to={`/streams/${slug}/${archive.archive ? "archives" : "lives"}/${archive.broadcast_slug}`}
 					className={buttonVariants({
 						variant: "outline",
 						className: "w-full py-2 px-3 flex items-center h-max text-left",
