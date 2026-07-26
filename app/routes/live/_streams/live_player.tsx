@@ -1,7 +1,6 @@
 import axios from "axios";
-import NotFound from "~/routes/components/NotFound";
 import type { LiveArchiveDto, LiveEventDto } from "~/services/live.services";
-import type { Route } from "./+types/player";
+import type { Route } from "./+types/live_player";
 import PlayerPage from "./components/PlayerPage";
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -10,8 +9,10 @@ export async function loader({ params }: Route.LoaderArgs) {
 			`${import.meta.env.VITE_BACKEND_API}/live/events/${params.slug}`,
 		);
 		const { data: archiveData } = await axios.get<LiveArchiveDto>(
-			`${import.meta.env.VITE_BACKEND_API}/live/events/${params.slug}/archives/${params.broadcast_id}`,
+			`${import.meta.env.VITE_BACKEND_API}/live/events/${params.slug}/lives/${params.broadcast_slug}`,
 		);
+
+		console.log(archiveData);
 
 		return {
 			title:
@@ -33,11 +34,11 @@ export async function loader({ params }: Route.LoaderArgs) {
 export function meta({ data: { title, url } }: Route.MetaArgs) {
 	return [
 		{ title },
-		{ name: "description", content: "Archive | THE iDOLM@STER Vietnam Portal" },
+		{ name: "description", content: "Live | THE iDOLM@STER Vietnam Portal" },
 		{ property: "og:title", content: title },
 		{
 			property: "og:description",
-			content: "Archive | THE iDOLM@STER Vietnam Portal",
+			content: "Live | THE iDOLM@STER Vietnam Portal",
 		},
 		{
 			property: "og:image",
@@ -51,7 +52,7 @@ export function meta({ data: { title, url } }: Route.MetaArgs) {
 		},
 		{
 			name: "twitter:description",
-			content: "Archive | THE iDOLM@STER Vietnam Portal",
+			content: "Live | THE iDOLM@STER Vietnam Portal",
 		},
 		{
 			name: "twitter:image",
@@ -64,8 +65,15 @@ export function meta({ data: { title, url } }: Route.MetaArgs) {
 
 export default function Page({ loaderData }: Route.ComponentProps) {
 	if (!loaderData.eventData || !loaderData.archiveData) {
-		return <NotFound />;
+		return (
+			<div className="size-full flex flex-col items-center justify-center text-4xl font-bold">
+				Thank you for tuning in!
+				<div className="text-base font-normal">
+					The broadcast has ended. See you next time!
+				</div>
+			</div>
+		);
 	}
-
+	
 	return <PlayerPage loaderData={loaderData} />;
 }
