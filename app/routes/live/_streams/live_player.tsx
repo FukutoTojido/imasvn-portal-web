@@ -12,8 +12,6 @@ export async function loader({ params }: Route.LoaderArgs) {
 			`${import.meta.env.VITE_BACKEND_API}/live/events/${params.slug}/lives/${params.broadcast_slug}`,
 		);
 
-		console.log(archiveData);
-
 		return {
 			title:
 				`${eventData.name} | ${archiveData.broadcast_name}` ||
