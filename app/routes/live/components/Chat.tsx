@@ -79,7 +79,7 @@ export default function Chat({
 
 	const { sendJsonMessage } = useWebSocket(
 		isLive
-			? `${import.meta.env.VITE_WEBSOCKET_ENDPOINT}/${forceId ?? params.id ?? "root"}`
+			? `${import.meta.env.VITE_WEBSOCKET_ENDPOINT}/${forceId ?? `${params.slug}_${params.broadcast_slug}`}`
 			: null,
 		{
 			onOpen: () => {

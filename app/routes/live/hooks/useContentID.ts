@@ -1,6 +1,19 @@
 import { useEffect, useState } from "react";
 import type { LiveArchiveDto, LiveChannelDto } from "~/services/live.services";
-import { getReturnValue } from "./useURL";
+
+const getReturnValue = (
+	json: any,
+	stream_type: "dash" | "hls" | "whep" | null,
+	isLive: boolean,
+) => {
+	if (isLive) {
+		return json.data.Channel.Custom_live_url;
+	}
+
+	return stream_type === "dash"
+		? json.ex_content.dash_streaming_url
+		: json.ex_content.streaming_url;
+};
 
 export default function useContentID(
 	data: LiveChannelDto | null,

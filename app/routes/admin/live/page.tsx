@@ -21,7 +21,7 @@ import {
 	CardTitle,
 } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
-import { BRANCH_ALIAS } from "~/routes/live/_streams/page";
+import { BRANCH_ALIAS } from "~/routes/live/streams/page";
 import { type LiveEventDto, useGetLives } from "~/services/live.services";
 import AddEvent from "./components/AddEvent";
 

@@ -112,14 +112,6 @@ export default function AdminSidebar({ me }: { me: UserState }) {
 						<SidebarMenu>
 							<SidebarMenuItem>
 								<SidebarMenuButton asChild>
-									<Link to="/admin/live/m3u8" prefetch="render">
-										<Link2 />
-										Streams
-									</Link>
-								</SidebarMenuButton>
-							</SidebarMenuItem>
-							<SidebarMenuItem>
-								<SidebarMenuButton asChild>
 									<Link to="/admin/live" prefetch="render">
 										<Link2 />
 										Live
