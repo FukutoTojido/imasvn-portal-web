@@ -32,14 +32,14 @@ import "../Streams.css";
 import Archive from "./components/Archive";
 
 export const BRANCH_ALIAS: Record<number, string[]> = {
-	[BranchType.ALLSTARS]: ["765as"],
+	[BranchType.ALLSTARS]: ["765as", "961production"],
 	[BranchType.CINDERELLA_GIRLS]: ["cinderella"],
 	[BranchType.MILLION_LIVE]: ["million"],
 	[BranchType.SHINY_COLORS]: ["shinycolors"],
 	[BranchType.SIDE_M]: ["sidem", "315passionhour"],
 	[BranchType.GAKUEN]: ["gakuen"],
 	[BranchType.DEARLY_STARS]: ["valiv"],
-	[BranchType.IMAS]: ["idolmaster"],
+	[BranchType.IMAS]: ["idolmaster", "ijigenfes"],
 };
 
 export const BRANCH_ICONS: Record<number, string> = {
