@@ -75,7 +75,7 @@ export default function Archive({ data }: { data: LiveEventDto }) {
 					</CardContent>
 				</Card>
 			</DialogTrigger>
-			<DialogContent>
+			<DialogContent className="max-h-[calc(100%-2rem)] overflow-auto">
 				<DialogHeader className="w-[calc(100%-20px)]">
 					<DialogTitle>{data.name}</DialogTitle>
 					<DialogDescription>
