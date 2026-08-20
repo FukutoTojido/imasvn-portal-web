@@ -7,7 +7,9 @@ const getReturnValue = (
 	isLive: boolean,
 ) => {
 	if (isLive) {
-		return json.data.Channel.Custom_live_url;
+		return stream_type === "dash"
+			? json.data.Channel.Custom_dash_live_url
+			: json.data.Channel.Custom_hls_live_url;
 	}
 
 	return stream_type === "dash"
@@ -27,7 +29,7 @@ export default function useContentID(
 
 		const { channel_id, url, stream_type } = data;
 		const { archive } = archiveData;
-		
+
 		if (url) {
 			setURL(url);
 			return;
@@ -53,9 +55,7 @@ export default function useContentID(
 				}
 
 				const json = await res.json();
-				setURL(
-					getReturnValue(json, stream_type ?? null, !archive)
-				);
+				setURL(getReturnValue(json, stream_type ?? null, !archive));
 			} catch (error) {
 				console.error(error);
 				return;
@@ -67,7 +67,7 @@ export default function useContentID(
 		return () => {
 			controller.abort();
 		};
-	}, [data,archiveData, bearer]);
+	}, [data, archiveData, bearer]);
 
 	return url;
 }
