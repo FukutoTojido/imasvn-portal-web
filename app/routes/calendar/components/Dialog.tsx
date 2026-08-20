@@ -1,6 +1,6 @@
 import type { Dispatch, RefObject, SetStateAction } from "react";
-import type { CharacterData, RefList } from "../types";
 import { flushSync } from "react-dom";
+import type { CharacterData, RefList } from "../types";
 import Popup from "./Popup";
 
 export default function Dialog({
@@ -24,8 +24,8 @@ export default function Dialog({
 			className="bg-transparent fixed inset-0 w-screen h-screen overflow-hidden pt-[80px]"
 		>
 			<div className="w-full h-full flex justify-center items-center p-5">
-				{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-				<div
+				<button
+					type="button"
 					className="absolute top-0 left-0 w-full h-full bg-black/50 cursor-pointer"
 					onClick={() => {
 						if (!popupRefList?.current || !cardRefList?.current) return;
@@ -61,7 +61,6 @@ export default function Dialog({
 							});
 						});
 					}}
-					tabIndex={-1}
 				/>
 				<Popup idolInfo={idolInfo} popupRefList={popupRefList} />
 			</div>

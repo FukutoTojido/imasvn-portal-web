@@ -1,13 +1,13 @@
+import axios, { CanceledError } from "axios";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
 	type Dispatch,
 	type SetStateAction,
-	useState,
-	useRef,
 	useEffect,
+	useRef,
+	useState,
 } from "react";
 import type { CharacterData } from "../types";
-import axios, { CanceledError } from "axios";
 import { monthMap } from "../utils";
 
 const getDatesOfMonth = (month: number, year: number) => {
@@ -20,7 +20,7 @@ const getDatesOfMonth = (month: number, year: number) => {
 
 	const dates = [firstDayOfMonth];
 	for (let i = 0; i < 5; i++) {
-		// biome-ignore lint/style/noNonNullAssertion: <explanation>
+		// biome-ignore lint/style/noNonNullAssertion: Pretty sure there is a value
 		const date = new Date(dates.at(-1)!);
 		date.setDate(date.getDate() + 7);
 
@@ -135,7 +135,6 @@ export default function Calendar({
 
 	const days = getDatesOfMonth(month, year);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		const date = new Date();
 		setCurrentDate(date);
@@ -151,7 +150,7 @@ export default function Calendar({
 
 		setIdols?.(chars);
 		setCurrDate(date);
-	}, [birthdays, month]);
+	}, [setCurrDate, setIdols, birthdays, month]);
 
 	return (
 		<div className="calendar w-full bg-cat-base border border-surface-1 p-2.5 rounded-lg overflow-hidden grid grid-cols-7 auto-rows-max gap-2 h-max shadow-md">

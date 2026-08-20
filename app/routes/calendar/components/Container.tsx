@@ -1,8 +1,8 @@
 import { X } from "lucide-react";
-import type { Dispatch, SetStateAction, RefObject } from "react";
+import type { Dispatch, RefObject, SetStateAction } from "react";
 import type { CharacterData, RefList } from "../types";
-import Idol from "./Idol";
 import { monthMap } from "../utils";
+import Idol from "./Idol";
 
 export default function Container({
 	idolProps,
