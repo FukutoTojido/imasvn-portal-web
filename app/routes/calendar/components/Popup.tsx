@@ -1,6 +1,6 @@
+import { DateTime } from "luxon";
 import { type HTMLProps, type RefObject, useEffect, useRef } from "react";
 import type { CharacterData, RefList } from "../types";
-import { DateTime } from "luxon";
 
 export default function Popup({
 	idolInfo,
@@ -55,10 +55,10 @@ export default function Popup({
 						</li>
 						<li>
 							<span className="font-bold">Birthday</span>:{" "}
-							{DateTime.fromFormat(
-								`${idolInfo?.birthdate}/${idolInfo?.birthmonth}`,
-								"d/m",
-							).toFormat("dd LLL")}
+							{DateTime.fromObject({
+								day: idolInfo?.birthdate,
+								month: idolInfo?.birthmonth,
+							}).toFormat("dd LLL")}
 						</li>
 						<li>
 							<span className="font-bold">Image Color</span>:{" "}
