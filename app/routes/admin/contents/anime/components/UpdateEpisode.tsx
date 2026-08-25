@@ -165,7 +165,7 @@ export default function UpdateEpisode({
 											.map(([key, url]: [string, string]) => {
 												const file = [...(e.target.files ?? [])].find(
 													(file) =>
-														`anime/${animeId}/${id}/${file.webkitRelativePath.split("/").slice(1).join("/")}` ===
+														`${import.meta.env.VITE_CDN_PREFIX || ""}anime/${animeId}/${id}/${file.webkitRelativePath.split("/").slice(1).join("/")}` ===
 														key,
 												);
 
