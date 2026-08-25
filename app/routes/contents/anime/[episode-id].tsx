@@ -1,22 +1,20 @@
 import axios from "axios";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRef } from "react";
 import { Link, useNavigate } from "react-router";
 import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbSeparator,
+	Breadcrumb,
+	BreadcrumbItem,
+	BreadcrumbLink,
+	BreadcrumbList,
+	BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import type { AnimeDto } from "~/routes/admin/contents/anime/[anime-id]";
 import ErrorComponent from "~/routes/components/Error";
-import { EPISODE_STATE } from "~/types";
-import type { Route } from "./+types/[episode-id]";
-import VideoPlayer from "./components/VideoPlayer";
-import { useRef } from "react";
 import useArtPlayer from "~/routes/live/hooks/useArtPlayer";
+import type { Route } from "./+types/[episode-id]";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 	try {
@@ -83,26 +81,23 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 	const navigate = useNavigate();
 	const playerRef = useRef<HTMLDivElement>(null);
 	const pageRef = useRef<HTMLDivElement>(null);
-	
+
 	useArtPlayer({
 		page: pageRef.current,
 		player: playerRef.current,
-		url: `${import.meta.env.VITE_BACKEND_API}/anime/${loaderData?.id}/episodes/${loaderData?.episodeId}/assets/video.m3u8`,
-		type: "hls"
-	})
+		url: `${import.meta.env.VITE_CDN_BJNBJN}/anime/${loaderData?.id}/${loaderData?.episodeId}/video.m3u8`,
+		type: "hls",
+	});
 
 	if (!loaderData) return <ErrorComponent />;
 
 	const { id, episodeId, title, episodes: _e } = loaderData;
-	const episodes = _e?.filter(
-		(episodes) => episodes.state === EPISODE_STATE.READY,
-	);
+	const episodes = _e;
 
 	const currIndex =
 		episodes?.findIndex((episode) => episode.id === +episodeId) ?? -1;
 	const previousEpisode = episodes?.[currIndex - 1]?.id;
 	const nextEpisode = episodes?.[currIndex + 1]?.id;
-
 
 	return (
 		<div className="w-[960px] max-w-full mx-auto md:p-5 p-0 flex flex-col gap-5">
@@ -110,22 +105,30 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 				<BreadcrumbList>
 					<BreadcrumbItem className="text-subtext-0">
 						<BreadcrumbLink asChild className="hover:text-text">
-							<Link to="/anime" viewTransition>Anime</Link>
+							<Link to="/anime" viewTransition>
+								Anime
+							</Link>
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator className="text-subtext-0" />
 					<BreadcrumbItem className="text-subtext-0">
 						<BreadcrumbLink asChild className="hover:text-text">
-							<Link to={`/anime/${id}`} viewTransition>{title}</Link>
+							<Link to={`/anime/${id}`} viewTransition>
+								{title}
+							</Link>
 						</BreadcrumbLink>
 					</BreadcrumbItem>
 					<BreadcrumbSeparator className="text-subtext-0" />
 					<BreadcrumbItem className="text-text font-semibold">
-						Episode {episodes?.[currIndex]?.index} - {episodes?.[currIndex]?.title}
+						Episode {episodes?.[currIndex]?.index} -{" "}
+						{episodes?.[currIndex]?.title}
 					</BreadcrumbItem>
 				</BreadcrumbList>
 			</Breadcrumb>
-			<div className="w-full aspect-video rounded-md overflow-hidden" ref={pageRef}>
+			<div
+				className="w-full aspect-video rounded-md overflow-hidden"
+				ref={pageRef}
+			>
 				<div
 					className="artplayer-app w-full h-full aspect-video md:aspect-auto md:rounded-xl overflow-hidden"
 					ref={playerRef}
@@ -160,7 +163,9 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 								+episodeId === _id && "bg-text text-mantle hover:bg-subtext-0",
 							)}
 						>
-							<Link to={`/anime/${id}/episode/${_id}`} viewTransition>{index}</Link>
+							<Link to={`/anime/${id}/episode/${_id}`} viewTransition>
+								{index}
+							</Link>
 						</Button>
 					))}
 				</div>

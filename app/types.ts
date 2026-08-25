@@ -78,7 +78,7 @@ export type Anime = {
 
 export enum EPISODE_STATE {
 	PROCESSING = 0,
-	READY = 1
+	READY = 1,
 }
 
 export type AnimeEpisode = {
@@ -87,5 +87,6 @@ export type AnimeEpisode = {
 	title?: string;
 	index?: string;
 	odr?: number;
-	state?: EPISODE_STATE
+	state?: EPISODE_STATE;
+	uploadedFiles?: number;
 };

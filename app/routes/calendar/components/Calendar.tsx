@@ -162,29 +162,13 @@ export default function Calendar({
 					<button
 						type="button"
 						onClick={() => {
-							// if (calendarRef.current) {
-							// 	calendarRef.current.style.viewTransitionName = "calendarBack";
-							// }
-
 							if (month === 0) {
 								setMonth(11);
 								setYear(year - 1);
-								// document.startViewTransition(() => {
-								// 	flushSync(() => {
-								// 		setMonth(11);
-								// 		setYear(year - 1);
-								// 	});
-								// });
-
 								return;
 							}
 
 							setMonth(month - 1);
-							// document.startViewTransition(() => {
-							// 	flushSync(() => {
-							// 		setMonth(month - 1);
-							// 	});
-							// });
 						}}
 						className="p-2.5 rounded-full hover:bg-cat-base/60 hover:text-text transition-colors"
 					>
@@ -193,29 +177,13 @@ export default function Calendar({
 					<button
 						type="button"
 						onClick={() => {
-							// if (calendarRef.current) {
-							// 	calendarRef.current.style.viewTransitionName = "calendarNext";
-							// }
-
 							if (month === 11) {
 								setMonth(0);
 								setYear(year + 1);
-								// document.startViewTransition(() => {
-								// 	flushSync(() => {
-								// 		setMonth(0);
-								// 		setYear(year + 1);
-								// 	});
-								// });
-
 								return;
 							}
 
 							setMonth(month + 1);
-							// document.startViewTransition(() => {
-							// 	flushSync(() => {
-							// 		setMonth(month + 1);
-							// 	});
-							// });
 						}}
 						className="p-2.5 rounded-full hover:bg-cat-base/60 hover:text-text transition-colors"
 					>

@@ -1,15 +1,16 @@
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { Loader2 } from "lucide-react";
+import { Loader2, TrashIcon } from "lucide-react";
 import {
 	type Dispatch,
 	type RefObject,
 	type SetStateAction,
 	useImperativeHandle,
-	useMemo,
+	useRef,
 	useState,
 } from "react";
 import { useForm } from "react-hook-form";
-import useSWR, { mutate } from "swr";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
 	Dialog,
@@ -21,22 +22,14 @@ import {
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import VideoPlayer from "~/routes/contents/anime/components/VideoPlayer";
+import {
+	useCreateEpisode,
+	useDeleteContent,
+	useEditEpisode,
+	useGetEpisode,
+} from "~/services/anime.services";
+import { getPresignedUrls } from "~/services/r2.services";
 import type { AnimeEpisode } from "~/types";
-
-const getEpisode = async (id: number | null, animeId: number) => {
-	if (!id) return null;
-	try {
-		const { data: episode } = await axios.get<AnimeEpisode>(
-			`${import.meta.env.VITE_BACKEND_API}/anime/${animeId}/episodes/${id}`,
-			{ withCredentials: true },
-		);
-		return episode;
-	} catch (e) {
-		console.error(e);
-		return null;
-	}
-};
 
 export default function UpdateEpisode({
 	animeId,
@@ -50,12 +43,18 @@ export default function UpdateEpisode({
 }) {
 	const [open, setOpen] = useState(false);
 	const [id, setEpisodeId] = useState<number | null>(null);
-	const { data } = useSWR(
-		id ? `episode-${id}` : null,
-		async () => await getEpisode(id, animeId),
-	);
+	const { data } = useGetEpisode({ id: animeId, episode: id });
+	const deleteContent = useDeleteContent({
+		id: animeId,
+		episode: id,
+	});
+	const createEpisode = useCreateEpisode({ id: animeId });
+	const editEpisode = useEditEpisode({ id: animeId, episode: id });
+	const queryClient = useQueryClient();
 
-	const { register, handleSubmit, watch, reset } = useForm<
+	const presignedsRef = useRef<{ key: string; url: string; file: File }[]>([]);
+
+	const { register, handleSubmit, reset } = useForm<
 		Omit<AnimeEpisode, "id" | "animeId"> & { video: FileList | null }
 	>({
 		defaultValues: {
@@ -70,8 +69,6 @@ export default function UpdateEpisode({
 		},
 	});
 
-	const video = watch("video");
-
 	useImperativeHandle(
 		stateRef,
 		() => ({
@@ -83,46 +80,35 @@ export default function UpdateEpisode({
 
 	const [submitting, setSubmitting] = useState(false);
 	const [loadingProgress, setLoadingProgress] = useState(0);
+	const [deleting, setDeleting] = useState(false);
 
 	const submit = async (
 		formData: Omit<AnimeEpisode, "id" | "animeId"> & { video: FileList | null },
 	) => {
-		const payload = new FormData();
-		if (formData.title) payload.append("title", formData.title.trim());
-		if (formData.index) payload.append("index", formData.index.trim());
-		if (formData.video?.length) payload.append("video", formData.video[0]);
+		const payload = {
+			title: formData.title?.trim(),
+			index: formData.index?.trim(),
+		};
 
 		setSubmitting(true);
 
 		try {
-			if (id === null) {
-				await axios.post(
-					`${import.meta.env.VITE_BACKEND_API}/anime/${animeId}/episodes`,
-					payload,
-					{
-						withCredentials: true,
-						onUploadProgress: (progress) => {
-							setLoadingProgress(progress.progress ?? 0);
-						},
-					},
+			if (presignedsRef.current.length) {
+				setLoadingProgress(0);
+				await Promise.all(
+					presignedsRef.current.map(async ({ url, file }) => {
+						await axios.put(url, file);
+						setLoadingProgress((progress) => progress + 1);
+					}),
 				);
+				setLoadingProgress(0);
 			}
 
-			if (id) {
-				await axios.patch(
-					`${import.meta.env.VITE_BACKEND_API}/anime/${animeId}/episodes/${id}`,
-					payload,
-					{
-						withCredentials: true,
-						onUploadProgress: (progress) => {
-							setLoadingProgress(progress.progress ?? 0);
-						},
-					},
-				);
-			}
+			await (id === null ? createEpisode : editEpisode).mutateAsync(payload);
+			queryClient.invalidateQueries({
+				queryKey: ["anime", animeId, "episode"],
+			});
 
-			setLoadingProgress(0);
-			mutate(`episodes-${animeId}`);
 			setOpen(false);
 			reset();
 		} catch (e) {
@@ -131,11 +117,6 @@ export default function UpdateEpisode({
 
 		setSubmitting(false);
 	};
-
-	const previewVideo = useMemo(() => {
-		if (!video?.length) return undefined;
-		return URL.createObjectURL(new Blob([video[0]]));
-	}, [video]);
 
 	return (
 		<Dialog
@@ -165,17 +146,70 @@ export default function UpdateEpisode({
 							<Label>Title</Label>
 							<Input {...register("title", { required: true })} />
 						</div>
-						<div className="flex flex-col gap-2.5 col-span-3">
-							<Label>Video File</Label>
-							<Input type="file" {...register("video", { required: !id })} />
-						</div>
-						{(id !== null || previewVideo) && (
-							<div className="col-span-full overflow-hidden rounded-md aspect-video">
-								<VideoPlayer
-									animeId={animeId}
-									episodeId={id ?? undefined}
-									src={previewVideo}
+						{id !== null && (
+							<div className="flex flex-col gap-2.5 col-span-3">
+								<Label>Upload Videos</Label>
+								<Input
+									type="file"
+									onChange={async (e) => {
+										const keys = [...(e.target.files ?? [])].map(
+											(file) =>
+												`anime/${animeId}/${id}/${file.webkitRelativePath.split("/").slice(1).join("/")}`,
+										);
+
+										setSubmitting(true);
+										const pair = await getPresignedUrls(keys);
+										setSubmitting(false);
+
+										const filePresigneds = pair
+											.map(([key, url]: [string, string]) => {
+												const file = [...(e.target.files ?? [])].find(
+													(file) =>
+														`anime/${animeId}/${id}/${file.webkitRelativePath.split("/").slice(1).join("/")}` ===
+														key,
+												);
+
+												if (!file) return null;
+
+												return {
+													key,
+													url,
+													file,
+												};
+											})
+											.filter(
+												(
+													file: { key: string; url: string; file: File } | null,
+												) => file !== null,
+											);
+
+										console.log(filePresigneds);
+										presignedsRef.current = filePresigneds;
+									}}
+									multiple
+									// @ts-expect-error
+									webkitdirectory="true"
+									disabled={submitting}
 								/>
+							</div>
+						)}
+						{id !== null && (
+							<div className="flex gap-2 items-center">
+								<Badge className="h-full px-4" variant={"secondary"}>
+									Uploaded Files: {data?.uploadedFiles ?? 0}
+								</Badge>
+								<Button
+									variant={"destructive"}
+									onClick={async () => {
+										setDeleting(true);
+										await deleteContent.mutateAsync();
+										setDeleting(false);
+									}}
+									type="button"
+								>
+									{deleting && <Loader2 className="animate-spin" />}
+									<TrashIcon />
+								</Button>
 							</div>
 						)}
 						{submitting && (
@@ -183,7 +217,7 @@ export default function UpdateEpisode({
 								<div
 									className="absolute top-0 left-0 h-full rounded-full bg-text transition-all"
 									style={{
-										width: `${loadingProgress * 100}%`,
+										width: `${(loadingProgress / (presignedsRef.current.length || 1)) * 100}%`,
 									}}
 								></div>
 							</div>

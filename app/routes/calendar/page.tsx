@@ -1,13 +1,11 @@
 import { useState } from "react";
-import type { Route } from "./+types/page";
 import Calendar from "./components/Calendar";
 import Container from "./components/Container";
-import useIdolPopup from "./hooks/useIdolPopup";
 import Dialog from "./components/Dialog";
+import useIdolPopup from "./hooks/useIdolPopup";
 import type { CharacterData } from "./types";
 
-// biome-ignore lint/correctness/noEmptyPattern: <explanation>
-export function meta({}: Route.MetaArgs) {
+export function meta() {
 	return [
 		{ title: "Calendar | THE iDOLM@STER Vietnam Portal" },
 		{ name: "description", content: "THE iDOLM@STER Birthday Calendar" },
@@ -77,9 +75,8 @@ export default function Page() {
 					currDate={currDate}
 					setCurrDate={setCurrDate}
 				/>
-				{/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
-				{/** biome-ignore lint/a11y/noStaticElementInteractions: <explanation> */}
-				<div
+				<button
+					type="button"
 					className={`sm:hidden ${idols ? "fixed" : "hidden"} top-0 left-0 bg-black opacity-40 w-full h-full`}
 					tabIndex={-1}
 					onClick={() => {

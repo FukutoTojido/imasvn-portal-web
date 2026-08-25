@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { GripVertical, Loader2, Trash } from "lucide-react";
 import {
@@ -8,7 +9,6 @@ import {
 	useState,
 } from "react";
 import { toast } from "sonner";
-import useSWR, { mutate } from "swr";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -43,10 +43,16 @@ import {
 	TableHeader,
 	TableRow,
 } from "~/components/ui/table";
-import { type AnimeEpisode, EPISODE_STATE } from "~/types";
+import {
+	useDeleteEpisode,
+	useGetAnimeEpisodes,
+} from "~/services/anime.services";
+import type { AnimeEpisode } from "~/types";
 import UpdateEpisode from "./UpdateEpisode";
 
 const Delete = ({ id, animeId }: { id: number; animeId: number }) => {
+	const queryClient = useQueryClient();
+	const deleteEpisode = useDeleteEpisode({ id: animeId, episode: id });
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
@@ -67,12 +73,12 @@ const Delete = ({ id, animeId }: { id: number; animeId: number }) => {
 					<AlertDialogAction
 						onClick={async () => {
 							try {
-								await axios.delete(
-									`${import.meta.env.VITE_BACKEND_API}/anime/${animeId}/episodes/${id}`,
-									{ withCredentials: true },
-								);
+								await deleteEpisode.mutateAsync();
 								toast("Episode deleted");
-								mutate(`episodes-${animeId}`);
+
+								queryClient.invalidateQueries({
+									queryKey: ["anime", animeId, "episode"],
+								});
 							} catch (e) {
 								console.error(e);
 								toast.error("Cannot delete episode");
@@ -87,25 +93,9 @@ const Delete = ({ id, animeId }: { id: number; animeId: number }) => {
 	);
 };
 
-const getEpisodes = async (id: number) => {
-	if (!id) return null;
-	try {
-		const { data: episodes } = await axios.get<AnimeEpisode[]>(
-			`${import.meta.env.VITE_BACKEND_API}/anime/${id}/episodes/`,
-			{ withCredentials: true },
-		);
-		return episodes;
-	} catch (e) {
-		console.error(e);
-		return null;
-	}
-};
-
 export default function Episodes({ id }: { id: number }) {
-	const { data, isLoading } = useSWR(
-		`episodes-${id}`,
-		async () => await getEpisodes(id),
-	);
+	const { data, isLoading } = useGetAnimeEpisodes({ id });
+	const queryClient = useQueryClient();
 	const [sorted, setSorted] = useState(data);
 
 	const stateRef = useRef<{
@@ -140,7 +130,9 @@ export default function Episodes({ id }: { id: number }) {
 								{ withCredentials: true },
 							);
 
-							mutate(`episodes-${id}`);
+							queryClient.invalidateQueries({
+								queryKey: ["anime", id, "episode"],
+							});
 						} catch (e) {
 							console.error(e);
 						}
@@ -154,7 +146,6 @@ export default function Episodes({ id }: { id: number }) {
 								<TableHead />
 								<TableHead>Index</TableHead>
 								<TableHead>Title</TableHead>
-								<TableHead>State</TableHead>
 								<TableHead>Actions</TableHead>
 							</TableRow>
 						</TableHeader>
@@ -198,19 +189,6 @@ export default function Episodes({ id }: { id: number }) {
 													}}
 												>
 													{row.title}
-												</TableCell>
-												<TableCell
-													className="cursor-pointer"
-													onClick={() => {
-														stateRef.current?.setEpisodeId(row.id);
-														stateRef.current?.setOpen(true);
-													}}
-												>
-													{row.state === EPISODE_STATE.PROCESSING &&
-														"Processing"}
-													{row.state === EPISODE_STATE.READY && "Ready"}
-													{row.state === null ||
-														(row.state === undefined && "Unknown")}
 												</TableCell>
 												<TableCell className="cursor-pointer">
 													<Delete animeId={id} id={row.id} />

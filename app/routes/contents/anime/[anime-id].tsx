@@ -10,10 +10,10 @@ import {
 	BreadcrumbSeparator,
 } from "~/components/ui/breadcrumb";
 import { Button } from "~/components/ui/button";
-import ErrorComponent from "~/routes/components/Error";
-import { type Anime, EPISODE_STATE } from "~/types";
-import type { Route } from "./+types/[anime-id]";
 import { cn } from "~/lib/utils";
+import ErrorComponent from "~/routes/components/Error";
+import type { Anime } from "~/types";
+import type { Route } from "./+types/[anime-id]";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 	try {
@@ -72,10 +72,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 
 	if (!loaderData) return <ErrorComponent />;
 
-	const eps = episodes?.filter(
-		(episodes) => episodes.state === EPISODE_STATE.READY,
-	);
-
+	const eps = episodes;
 	return (
 		<div className="w-[960px] max-w-full mx-auto flex flex-col gap-5 sm:p-5 text-text">
 			<Breadcrumb className="md:pt-0 md:px-0 pt-5 px-5">
