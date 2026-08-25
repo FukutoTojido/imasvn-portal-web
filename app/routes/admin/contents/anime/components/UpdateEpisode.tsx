@@ -154,7 +154,7 @@ export default function UpdateEpisode({
 									onChange={async (e) => {
 										const keys = [...(e.target.files ?? [])].map(
 											(file) =>
-												`anime/${animeId}/${id}/${file.webkitRelativePath.split("/").slice(1).join("/")}`,
+												`${import.meta.env.VITE_CDN_PREFIX || ""}anime/${animeId}/${id}/${file.webkitRelativePath.split("/").slice(1).join("/")}`,
 										);
 
 										setSubmitting(true);
