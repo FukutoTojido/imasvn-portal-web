@@ -350,7 +350,7 @@ button {
 		linear-gradient(to right, var(--muted) 1px, transparent 1px),
 		linear-gradient(to bottom, var(--muted) 1px, transparent 1px);
 
-	animation: linear loopGrid 500ms infinite;
+	/* animation: linear loopGrid 500ms infinite; */
 }
 
 @keyframes loopGrid {
