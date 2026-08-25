@@ -85,7 +85,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 	useArtPlayer({
 		page: pageRef.current,
 		player: playerRef.current,
-		url: `${import.meta.env.VITE_CDN_BJNBJN}/anime/${loaderData?.id}/${loaderData?.episodeId}/video.m3u8`,
+		url: `${import.meta.env.VITE_CDN_BJNBJN}/${import.meta.env.VITE_CDN_PREFIX || ""}anime/${loaderData?.id}/${loaderData?.episodeId}/video.m3u8`,
 		type: "hls",
 	});
 
