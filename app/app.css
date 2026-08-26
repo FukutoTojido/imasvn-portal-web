@@ -1008,3 +1008,7 @@ label {
 .card-back {
 	rotate: y -180deg;
 }
+
+.libassjs-canvas {
+	z-index: 20;
+}

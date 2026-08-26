@@ -86,6 +86,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 		page: pageRef.current,
 		player: playerRef.current,
 		url: `${import.meta.env.VITE_CDN_BJNBJN}/${import.meta.env.VITE_CDN_PREFIX || ""}anime/${loaderData?.id}/${loaderData?.episodeId}/video.m3u8`,
+		subtitles: `${import.meta.env.VITE_CDN_BJNBJN}/${import.meta.env.VITE_CDN_PREFIX || ""}anime/${loaderData?.id}/${loaderData?.episodeId}/subtitles.ass`,
 		type: "hls",
 	});
 

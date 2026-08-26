@@ -148,7 +148,7 @@ export default function UpdateEpisode({
 						</div>
 						{id !== null && (
 							<div className="flex flex-col gap-2.5 col-span-3">
-								<Label>Upload Videos</Label>
+								<Label>Upload Folder</Label>
 								<Input
 									type="file"
 									onChange={async (e) => {
@@ -189,6 +189,49 @@ export default function UpdateEpisode({
 									multiple
 									// @ts-expect-error
 									webkitdirectory="true"
+									disabled={submitting}
+								/>
+								<Label>Upload File</Label>
+								<Input
+									type="file"
+									onChange={async (e) => {
+										const keys = [...(e.target.files ?? [])].map(
+											(file) =>
+												`${import.meta.env.VITE_CDN_PREFIX || ""}anime/${animeId}/${id}/${file.name}`,
+										);
+
+										setSubmitting(true);
+										const pair = await getPresignedUrls(keys);
+										setSubmitting(false);
+
+										const filePresigneds = pair
+											.map(([key, url]: [string, string]) => {
+												const file = [...(e.target.files ?? [])].find(
+													(file) =>
+														`${import.meta.env.VITE_CDN_PREFIX || ""}anime/${animeId}/${id}/${file.name}` ===
+														key,
+												);
+
+												if (!file) return null;
+
+												return {
+													key,
+													url,
+													file,
+												};
+											})
+											.filter(
+												(
+													file: { key: string; url: string; file: File } | null,
+												) => file !== null,
+											);
+
+										console.log(filePresigneds);
+										presignedsRef.current = [
+											...presignedsRef.current,
+											...filePresigneds,
+										];
+									}}
 									disabled={submitting}
 								/>
 							</div>

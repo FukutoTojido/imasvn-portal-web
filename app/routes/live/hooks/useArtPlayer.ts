@@ -3,6 +3,7 @@ import artplayerPluginDashControl from "artplayer-plugin-dash-control";
 import artplayerPluginHlsControl from "artplayer-plugin-hls-control";
 import { useEffect, useRef, useState } from "react";
 import type MediaMTXWebRTCReader from "~/lib/reader";
+import SubtitleOctopus from "~/lib/subtitles-octopus";
 import playWHEP from "./playWHEP";
 import useDASH from "./useDASH";
 import useHLS from "./useHLS";
@@ -18,6 +19,7 @@ export default function useArtPlayer({
 	page,
 	player,
 	url,
+	subtitles,
 	type,
 	isLive = false,
 }: {
@@ -25,6 +27,7 @@ export default function useArtPlayer({
 	page?: HTMLDivElement | null;
 	player?: HTMLDivElement | null;
 	url: string | null;
+	subtitles?: string;
 	type: "hls" | "dash" | "whep" | null;
 	isLive?: boolean;
 }) {
@@ -140,11 +143,25 @@ export default function useArtPlayer({
 
 		artPlayer.current = art;
 
+		const options = {
+			video: artPlayer.current.video,
+			subUrl: subtitles,
+			availableFonts: {
+				"vf-dom": "/fonts/Vf-Dom.ttf",
+				"vf-kabo": "/fonts/Vf-Kabo.ttf",
+			},
+			workerUrl: "/subtitles-octopus-worker.js",
+			targetFps: 60,
+		};
+
+		const instance = subtitles ? new SubtitleOctopus(options) : null;
+
 		return () => {
 			art.destroy();
 			rtc.current?.close();
+			instance?.dispose();
 		};
-	}, [url, playMpd, playM3U8, player, page, type, isLive]);
+	}, [url, playMpd, playM3U8, player, page, type, isLive, subtitles]);
 
 	useEffect(() => {
 		if (!artPlayer.current) return;
@@ -171,5 +188,6 @@ export default function useArtPlayer({
 	return {
 		isFullscreen,
 		hideChat,
+		artPlayer,
 	};
 }

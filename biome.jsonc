@@ -1,5 +1,10 @@
 {
-    "files": {
-        "includes": ["**", "!**/app/components/**/*.tsx", "!**/node_modules/**/*"]
-    }
+	"files": {
+		"includes": ["**", "!**/app/components/**/*.tsx", "!**/node_modules/**/*"]
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		}
+	}
 }

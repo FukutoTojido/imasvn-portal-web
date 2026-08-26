@@ -41,6 +41,7 @@
         "artplayer": "^5.4.0",
         "artplayer-plugin-dash-control": "^1.1.0",
         "artplayer-plugin-hls-control": "^1.1.0",
+        "artplayer-plugin-jassub": "^1.1.0",
         "axios": "^1.7.9",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
@@ -659,6 +660,8 @@
     "artplayer-plugin-dash-control": ["artplayer-plugin-dash-control@1.1.0", "", {}, "sha512-EssRkzYXWcln3a6nAzi4ESacBhzMih8s0bzdjXuvBBCh2UFmvK99ITD5E+0cuU8i5ZzIQGQSdce1/gANTrX0BQ=="],
 
     "artplayer-plugin-hls-control": ["artplayer-plugin-hls-control@1.1.0", "", {}, "sha512-lWN5oUOWDorWFHdzKcmy9Z8eHcf5f5EcUGDrxBsZBX7aEL5dGRlHPQ5+wqQEizr38D9PYPfTI/nCyun2yFopEw=="],
+
+    "artplayer-plugin-jassub": ["artplayer-plugin-jassub@1.1.0", "", {}, "sha512-vQwEtZMmkwr5utbxfUAeE/gRccl2nfcz+SYP2Subn/L8cVIFdMXWMgicm7ZkPVtAoBbCav7p0yP4pwXkCKMzAg=="],
 
     "ast-types": ["ast-types@0.16.1", "", { "dependencies": { "tslib": "^2.0.1" } }, "sha512-6t10qk83GOG8p0vKmaCr8eiilZwO171AvbROMtvvNiwrTly62t+7XkA8RdIIVbpMhCASAsxgAzdRSwh6nw/5Dg=="],
 
