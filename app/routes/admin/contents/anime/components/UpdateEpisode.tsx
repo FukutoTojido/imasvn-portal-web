@@ -1,14 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { Loader2, TrashIcon } from "lucide-react";
-import {
-	type Dispatch,
-	type RefObject,
-	type SetStateAction,
-	useImperativeHandle,
-	useRef,
-	useState,
-} from "react";
+import { type ReactNode, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
@@ -19,6 +12,7 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
+	DialogTrigger,
 } from "~/components/ui/dialog";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -33,17 +27,15 @@ import type { AnimeEpisode } from "~/types";
 
 export default function UpdateEpisode({
 	animeId,
-	ref: stateRef,
+	episodeId: id,
+	children,
 }: {
 	animeId: number;
-	ref: RefObject<{
-		setOpen: Dispatch<SetStateAction<boolean>>;
-		setEpisodeId: Dispatch<SetStateAction<number | null>>;
-	} | null>;
+	episodeId: number | null;
+	children: ReactNode;
 }) {
 	const [open, setOpen] = useState(false);
-	const [id, setEpisodeId] = useState<number | null>(null);
-	const { data } = useGetEpisode({ id: animeId, episode: id });
+	const { data, isLoading } = useGetEpisode({ id: animeId, episode: id });
 	const deleteContent = useDeleteContent({
 		id: animeId,
 		episode: id,
@@ -55,36 +47,20 @@ export default function UpdateEpisode({
 	const presignedsRef = useRef<{ key: string; url: string; file: File }[]>([]);
 
 	const { register, handleSubmit, reset } = useForm<
-		Omit<AnimeEpisode, "id" | "animeId"> & { video: FileList | null }
+		Omit<AnimeEpisode, "id" | "animeId">
 	>({
-		defaultValues: {
-			title: data?.title ?? "",
-			index: data?.index ?? "",
-			video: null,
-		},
 		values: {
 			title: data?.title ?? "",
 			index: data?.index ?? "",
-			video: null,
 		},
 	});
 
-	useImperativeHandle(
-		stateRef,
-		() => ({
-			setOpen,
-			setEpisodeId,
-		}),
-		[],
-	);
-
 	const [submitting, setSubmitting] = useState(false);
+	const [signing, setSigning] = useState(false);
 	const [loadingProgress, setLoadingProgress] = useState(0);
 	const [deleting, setDeleting] = useState(false);
 
-	const submit = async (
-		formData: Omit<AnimeEpisode, "id" | "animeId"> & { video: FileList | null },
-	) => {
+	const submit = async (formData: Omit<AnimeEpisode, "id" | "animeId">) => {
 		const payload = {
 			title: formData.title?.trim(),
 			index: formData.index?.trim(),
@@ -109,6 +85,8 @@ export default function UpdateEpisode({
 				queryKey: ["anime", animeId, "episode"],
 			});
 
+			presignedsRef.current = [];
+
 			setOpen(false);
 			reset();
 		} catch (e) {
@@ -118,17 +96,62 @@ export default function UpdateEpisode({
 		setSubmitting(false);
 	};
 
+	const mapPresigned = async (
+		files: FileList | null,
+		keyTransformer: (file: File) => string,
+	) => {
+		const keys = [...(files ?? [])].map(keyTransformer);
+
+		setSigning(true);
+		const pair = await getPresignedUrls(keys);
+		setSigning(false);
+
+		const filePresigneds = pair
+			.map(([key, url]: [string, string]) => {
+				const file = [...(files ?? [])].find(
+					(file) => keyTransformer(file) === key,
+				);
+
+				if (!file) return null;
+
+				return {
+					key,
+					url,
+					file,
+				};
+			})
+			.filter(
+				(
+					file: {
+						key: string;
+						url: string;
+						file: File;
+					} | null,
+				) => file !== null,
+			);
+
+		console.log(filePresigneds);
+
+		if (!files || files.length === 0) {
+			presignedsRef.current = [];
+			return;
+		}
+
+		presignedsRef.current = [...presignedsRef.current, ...filePresigneds];
+	};
+
 	return (
 		<Dialog
 			open={open}
 			onOpenChange={(val) => {
 				setOpen(val);
+
 				if (!val) {
-					setEpisodeId(null);
-					reset();
+					presignedsRef.current = [];
 				}
 			}}
 		>
+			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent onOpenAutoFocus={(e) => e.preventDefault()}>
 				<DialogHeader>
 					<DialogTitle>
@@ -136,147 +159,95 @@ export default function UpdateEpisode({
 					</DialogTitle>
 					<DialogDescription></DialogDescription>
 				</DialogHeader>
-				<form onSubmit={handleSubmit(submit)}>
-					<div className="w-full grid grid-cols-3 gap-5">
-						<div className="flex flex-col gap-2.5">
-							<Label>Index</Label>
-							<Input {...register("index", { required: true })} />
-						</div>
-						<div className="flex flex-col gap-2.5 col-span-2">
-							<Label>Title</Label>
-							<Input {...register("title", { required: true })} />
-						</div>
-						{id !== null && (
-							<div className="flex flex-col gap-2.5 col-span-3">
-								<Label>Upload Folder</Label>
-								<Input
-									type="file"
-									onChange={async (e) => {
-										const keys = [...(e.target.files ?? [])].map(
-											(file) =>
-												`${import.meta.env.VITE_CDN_PREFIX || ""}anime/${animeId}/${id}/${file.webkitRelativePath.split("/").slice(1).join("/")}`,
-										);
-
-										setSubmitting(true);
-										const pair = await getPresignedUrls(keys);
-										setSubmitting(false);
-
-										const filePresigneds = pair
-											.map(([key, url]: [string, string]) => {
-												const file = [...(e.target.files ?? [])].find(
-													(file) =>
-														`${import.meta.env.VITE_CDN_PREFIX || ""}anime/${animeId}/${id}/${file.webkitRelativePath.split("/").slice(1).join("/")}` ===
-														key,
-												);
-
-												if (!file) return null;
-
-												return {
-													key,
-													url,
-													file,
-												};
-											})
-											.filter(
-												(
-													file: { key: string; url: string; file: File } | null,
-												) => file !== null,
-											);
-
-										console.log(filePresigneds);
-										presignedsRef.current = filePresigneds;
-									}}
-									multiple
-									// @ts-expect-error
-									webkitdirectory="true"
-									disabled={submitting}
-								/>
-								<Label>Upload File</Label>
-								<Input
-									type="file"
-									onChange={async (e) => {
-										const keys = [...(e.target.files ?? [])].map(
-											(file) =>
-												`${import.meta.env.VITE_CDN_PREFIX || ""}anime/${animeId}/${id}/${file.name}`,
-										);
-
-										setSubmitting(true);
-										const pair = await getPresignedUrls(keys);
-										setSubmitting(false);
-
-										const filePresigneds = pair
-											.map(([key, url]: [string, string]) => {
-												const file = [...(e.target.files ?? [])].find(
-													(file) =>
-														`${import.meta.env.VITE_CDN_PREFIX || ""}anime/${animeId}/${id}/${file.name}` ===
-														key,
-												);
-
-												if (!file) return null;
-
-												return {
-													key,
-													url,
-													file,
-												};
-											})
-											.filter(
-												(
-													file: { key: string; url: string; file: File } | null,
-												) => file !== null,
-											);
-
-										console.log(filePresigneds);
-										presignedsRef.current = [
-											...presignedsRef.current,
-											...filePresigneds,
-										];
-									}}
-									disabled={submitting}
-								/>
+				{isLoading && <Loader2 className="animate-spin mx-auto" />}
+				{data && (
+					<form onSubmit={handleSubmit(submit)}>
+						<div className="w-full grid grid-cols-3 gap-5">
+							<div className="flex flex-col gap-2.5">
+								<Label>Index</Label>
+								<Input {...register("index", { required: true })} />
 							</div>
-						)}
-						{id !== null && (
-							<div className="flex gap-2 items-center">
-								<Badge className="h-full px-4" variant={"secondary"}>
-									Uploaded Files: {data?.uploadedFiles ?? 0}
-								</Badge>
-								<Button
-									variant={"destructive"}
-									onClick={async () => {
-										setDeleting(true);
-										await deleteContent.mutateAsync();
-										setDeleting(false);
-									}}
-									type="button"
-								>
-									{deleting && <Loader2 className="animate-spin" />}
-									<TrashIcon />
+							<div className="flex flex-col gap-2.5 col-span-2">
+								<Label>Title</Label>
+								<Input {...register("title", { required: true })} />
+							</div>
+							{id !== null && (
+								<div className="flex flex-col gap-2.5 col-span-3">
+									<Label>Upload Folder</Label>
+									<Input
+										type="file"
+										onChange={(e) => {
+											mapPresigned(
+												e.target.files,
+												(file) =>
+													`${import.meta.env.VITE_CDN_PREFIX || ""}anime/${animeId}/${id}/${file.webkitRelativePath.split("/").slice(1).join("/")}`,
+											);
+										}}
+										multiple
+										// @ts-expect-error
+										webkitdirectory="true"
+										disabled={submitting}
+									/>
+									<Label>Upload File</Label>
+									<Input
+										type="file"
+										onChange={async (e) => {
+											mapPresigned(
+												e.target.files,
+												(file) =>
+													`${import.meta.env.VITE_CDN_PREFIX || ""}anime/${animeId}/${id}/${file.name}`,
+											);
+										}}
+										disabled={submitting}
+									/>
+								</div>
+							)}
+							{id !== null && (
+								<div className="flex gap-2 items-center">
+									<Badge className="h-full px-4" variant={"secondary"}>
+										Uploaded Files: {data?.uploadedFiles ?? 0}
+									</Badge>
+									<Button
+										variant={"destructive"}
+										onClick={async () => {
+											setDeleting(true);
+											await deleteContent.mutateAsync();
+											setDeleting(false);
+										}}
+										type="button"
+									>
+										{deleting && <Loader2 className="animate-spin" />}
+										<TrashIcon />
+									</Button>
+								</div>
+							)}
+							{submitting && (
+								<div className="h-2 rounded-full col-span-full bg-crust relative">
+									<div
+										className="absolute top-0 left-0 h-full rounded-full bg-text transition-all"
+										style={{
+											width: `${(loadingProgress / (presignedsRef.current.length || 1)) * 100}%`,
+										}}
+									></div>
+								</div>
+							)}
+							<DialogFooter className="col-span-full">
+								<Button type="submit" disabled={submitting || signing}>
+									{submitting || signing ? (
+										<Loader2 className="animate-spin" />
+									) : (
+										""
+									)}
+									{!submitting && !signing
+										? "Save"
+										: submitting
+											? "Uploading"
+											: "Presigning"}
 								</Button>
-							</div>
-						)}
-						{submitting && (
-							<div className="h-2 rounded-full col-span-full bg-crust relative">
-								<div
-									className="absolute top-0 left-0 h-full rounded-full bg-text transition-all"
-									style={{
-										width: `${(loadingProgress / (presignedsRef.current.length || 1)) * 100}%`,
-									}}
-								></div>
-							</div>
-						)}
-						<DialogFooter className="col-span-full">
-							<Button type="submit" disabled={submitting}>
-								{submitting ? <Loader2 className="animate-spin" /> : ""}
-								{!submitting
-									? "Save"
-									: loadingProgress >= 1
-										? "Processing"
-										: "Uploading"}
-							</Button>
-						</DialogFooter>
-					</div>
-				</form>
+							</DialogFooter>
+						</div>
+					</form>
+				)}
 			</DialogContent>
 		</Dialog>
 	);

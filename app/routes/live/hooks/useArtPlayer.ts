@@ -1,7 +1,13 @@
 import Artplayer from "artplayer";
 import artplayerPluginDashControl from "artplayer-plugin-dash-control";
 import artplayerPluginHlsControl from "artplayer-plugin-hls-control";
-import { useEffect, useRef, useState } from "react";
+import {
+	type RefObject,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from "react";
 import type MediaMTXWebRTCReader from "~/lib/reader";
 import SubtitleOctopus from "~/lib/subtitles-octopus";
 import playWHEP from "./playWHEP";
@@ -20,12 +26,12 @@ export default function useArtPlayer({
 	player,
 	url,
 	subtitles,
-	type,
+	type = "hls",
 	isLive = false,
 }: {
 	serverURL?: string;
-	page?: HTMLDivElement | null;
-	player?: HTMLDivElement | null;
+	page?: RefObject<HTMLDivElement | null>;
+	player?: RefObject<HTMLDivElement | null>;
 	url: string | null;
 	subtitles?: string;
 	type: "hls" | "dash" | "whep" | null;
@@ -39,12 +45,13 @@ export default function useArtPlayer({
 	const playMpd = useDASH(serverURL);
 	const playM3U8 = useHLS(serverURL);
 
-	useEffect(() => {
-		if (!player || !url || !type) return;
+	useLayoutEffect(() => {
+		console.log("hewwo!");
+		if (!player?.current || !url || !type) return;
 
 		const art = new Artplayer({
-			container: player,
-			url: url,
+			container: player.current,
+			url,
 			type: typeMap[type],
 			pip: true,
 			isLive,
@@ -102,7 +109,7 @@ export default function useArtPlayer({
 							return;
 						}
 
-						page?.requestFullscreen();
+						page?.current?.requestFullscreen();
 						setIsFullscreen(true);
 						// biome-ignore lint/suspicious/noExplicitAny: I cant
 						(screen.orientation as any).lock("landscape");
@@ -154,12 +161,13 @@ export default function useArtPlayer({
 			targetFps: 60,
 		};
 
-		const instance = subtitles ? new SubtitleOctopus(options) : null;
+		if (subtitles) {
+			new SubtitleOctopus(options);
+		}
 
 		return () => {
 			art.destroy();
 			rtc.current?.close();
-			instance?.dispose();
 		};
 	}, [url, playMpd, playM3U8, player, page, type, isLive, subtitles]);
 
@@ -167,6 +175,7 @@ export default function useArtPlayer({
 		if (!artPlayer.current) return;
 
 		artPlayer.current.controls.update({
+			position: "right",
 			name: "fullscreen",
 			html: isFullscreen
 				? '<i class="ri-fullscreen-exit-line text-2xl"></i>'
@@ -175,15 +184,16 @@ export default function useArtPlayer({
 	}, [isFullscreen]);
 
 	useEffect(() => {
-		if (!artPlayer.current) return;
+		if (!artPlayer.current || !isLive) return;
 
 		artPlayer.current.controls.update({
+			position: "right",
 			name: "chat",
 			html: hideChat
 				? '<i class="ri-message-2-line text-2xl"></i>'
 				: '<i class="ri-chat-off-line text-2xl"></i>',
 		});
-	}, [hideChat]);
+	}, [hideChat, isLive]);
 
 	return {
 		isFullscreen,

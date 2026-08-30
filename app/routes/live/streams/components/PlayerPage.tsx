@@ -8,7 +8,11 @@ import { Card } from "~/components/ui/card";
 import { Dialog, DialogOverlay, DialogTrigger } from "~/components/ui/dialog";
 import { Toggle } from "~/components/ui/toggle";
 import { cn } from "~/lib/utils";
-import { type LiveArchiveDto, type LiveEventDto, useGetChannels } from "~/services/live.services";
+import {
+	type LiveArchiveDto,
+	type LiveEventDto,
+	useGetChannels,
+} from "~/services/live.services";
 import Chat from "../../components/Chat";
 import Viewers from "../../components/Viewers";
 import useArtPlayer from "../../hooks/useArtPlayer";
@@ -45,8 +49,8 @@ export default function PlayerPage({
 
 	const { isFullscreen, hideChat } = useArtPlayer({
 		serverURL: `${import.meta.env.VITE_BACKEND_API}/live/events/${loaderData.eventData?.slug}/archives/${loaderData.archiveData?.id}/channels/${selectedChannel?.id}/drm`,
-		player: playerRef.current,
-		page: pageRef.current,
+		player: playerRef,
+		page: pageRef,
 		url,
 		type: selectedChannel?.stream_type ?? "hls",
 		isLive,

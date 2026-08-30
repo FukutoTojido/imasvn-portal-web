@@ -1,13 +1,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { GripVertical, Loader2, Trash } from "lucide-react";
-import {
-	type Dispatch,
-	type SetStateAction,
-	useEffect,
-	useRef,
-	useState,
-} from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import {
 	AlertDialog,
@@ -98,11 +92,6 @@ export default function Episodes({ id }: { id: number }) {
 	const queryClient = useQueryClient();
 	const [sorted, setSorted] = useState(data);
 
-	const stateRef = useRef<{
-		setOpen: Dispatch<SetStateAction<boolean>>;
-		setEpisodeId: Dispatch<SetStateAction<number | null>>;
-	}>(null);
-
 	useEffect(() => {
 		setSorted(data);
 	}, [data]);
@@ -159,42 +148,28 @@ export default function Episodes({ id }: { id: number }) {
 									</TableRow>
 								) : sorted?.length ? (
 									sorted.map((row) => (
-										<SortableItem key={row.id} value={row.id} asChild>
-											<TableRow>
-												<TableCell className="w-[50px]">
-													<SortableItemHandle asChild>
-														<Button
-															variant="ghost"
-															size="icon"
-															className="size-8"
-														>
-															<GripVertical className="h-4 w-4" />
-														</Button>
-													</SortableItemHandle>
-												</TableCell>
-												<TableCell
-													className="cursor-pointer"
-													onClick={() => {
-														stateRef.current?.setEpisodeId(row.id);
-														stateRef.current?.setOpen(true);
-													}}
-												>
-													{row.index}
-												</TableCell>
-												<TableCell
-													className="cursor-pointer"
-													onClick={() => {
-														stateRef.current?.setEpisodeId(row.id);
-														stateRef.current?.setOpen(true);
-													}}
-												>
-													{row.title}
-												</TableCell>
-												<TableCell className="cursor-pointer">
-													<Delete animeId={id} id={row.id} />
-												</TableCell>
-											</TableRow>
-										</SortableItem>
+										<UpdateEpisode key={row.id} animeId={id} episodeId={row.id}>
+											<SortableItem value={row.id} asChild>
+												<TableRow>
+													<TableCell className="w-[50px]">
+														<SortableItemHandle asChild>
+															<Button
+																variant="ghost"
+																size="icon"
+																className="size-8"
+															>
+																<GripVertical className="h-4 w-4" />
+															</Button>
+														</SortableItemHandle>
+													</TableCell>
+													<TableCell>{row.index}</TableCell>
+													<TableCell>{row.title}</TableCell>
+													<TableCell className="cursor-pointer">
+														<Delete animeId={id} id={row.id} />
+													</TableCell>
+												</TableRow>
+											</SortableItem>
+										</UpdateEpisode>
 									))
 								) : (
 									<TableRow>
@@ -210,19 +185,13 @@ export default function Episodes({ id }: { id: number }) {
 						<div className="size-full rounded-none bg-primary/10" />
 					</SortableOverlay>
 				</Sortable>
-				<UpdateEpisode ref={stateRef} animeId={id} />
 			</CardContent>
 			<CardFooter>
-				<Button
-					type="button"
-					className="ml-auto"
-					onClick={() => {
-						stateRef.current?.setEpisodeId(null);
-						stateRef.current?.setOpen(true);
-					}}
-				>
-					New Episode
-				</Button>
+				<UpdateEpisode animeId={id} episodeId={null}>
+					<Button type="button" className="ml-auto">
+						New Episode
+					</Button>
+				</UpdateEpisode>
 			</CardFooter>
 		</Card>
 	);

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useRef } from "react";
 import { Link, useNavigate } from "react-router";
 import {
 	Breadcrumb,
@@ -13,8 +12,8 @@ import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import type { AnimeDto } from "~/routes/admin/contents/anime/[anime-id]";
 import ErrorComponent from "~/routes/components/Error";
-import useArtPlayer from "~/routes/live/hooks/useArtPlayer";
 import type { Route } from "./+types/[episode-id]";
+import VideoPlayer from "./components/VideoPlayer";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
 	try {
@@ -79,16 +78,6 @@ export const meta = ({
 
 export default function Page({ loaderData }: Route.ComponentProps) {
 	const navigate = useNavigate();
-	const playerRef = useRef<HTMLDivElement>(null);
-	const pageRef = useRef<HTMLDivElement>(null);
-
-	useArtPlayer({
-		page: pageRef.current,
-		player: playerRef.current,
-		url: `${import.meta.env.VITE_CDN_BJNBJN}/${import.meta.env.VITE_CDN_PREFIX || ""}anime/${loaderData?.id}/${loaderData?.episodeId}/video.m3u8`,
-		subtitles: `${import.meta.env.VITE_CDN_BJNBJN}/${import.meta.env.VITE_CDN_PREFIX || ""}anime/${loaderData?.id}/${loaderData?.episodeId}/subtitles.ass`,
-		type: "hls",
-	});
 
 	if (!loaderData) return <ErrorComponent />;
 
@@ -126,15 +115,10 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 					</BreadcrumbItem>
 				</BreadcrumbList>
 			</Breadcrumb>
-			<div
-				className="w-full aspect-video rounded-md overflow-hidden"
-				ref={pageRef}
-			>
-				<div
-					className="artplayer-app w-full h-full aspect-video md:aspect-auto md:rounded-xl overflow-hidden"
-					ref={playerRef}
-				></div>
-			</div>
+			<VideoPlayer
+				url={`${import.meta.env.VITE_CDN_BJNBJN}/${import.meta.env.VITE_CDN_PREFIX || ""}anime/${loaderData?.id}/${loaderData?.episodeId}/video.m3u8`}
+				subtitles={`${import.meta.env.VITE_CDN_BJNBJN}/${import.meta.env.VITE_CDN_PREFIX || ""}anime/${loaderData?.id}/${loaderData?.episodeId}/subtitles.ass`}
+			/>
 			<div className="w-full flex flex-col items-center gap-2.5">
 				<div className="flex gap-2.5">
 					<Button
