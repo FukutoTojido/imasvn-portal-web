@@ -100,11 +100,11 @@ export default function Page({
 	if (!loaderData) return <ErrorComponent />;
 
 	return (
-		<div className="flex gap-5 md:flex-row flex-col">
+		<div className="flex gap-5 lg:flex-row flex-col">
 			<FormProvider {...methods}>
 				<form
 					onSubmit={handleSubmit(submit)}
-					className="self-center w-[600px] max-w-full shrink-0"
+					className="self-center lg:self-start w-lg max-w-full shrink-0"
 				>
 					<Card className="w-full">
 						<CardHeader>
@@ -150,7 +150,7 @@ export default function Page({
 											setValue("time", DateTime.fromJSDate(selected))
 										}
 										mode="single"
-										className="rounded-lg border w-full"
+										className="rounded-lg border"
 									/>
 								</div>
 							</div>

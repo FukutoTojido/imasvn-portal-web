@@ -99,7 +99,7 @@ export default function Episodes({ id }: { id: number }) {
 	const [loading, setLoading] = useState(false);
 
 	return (
-		<Card className="flex-1">
+		<Card className="w-lg self-center lg:self-start">
 			<CardHeader>
 				<CardTitle>Edit Episodes</CardTitle>
 			</CardHeader>
