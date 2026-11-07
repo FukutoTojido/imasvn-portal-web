@@ -1,8 +1,23 @@
 import { RiCircleFill } from "@remixicon/react";
+import {
+	createPlayer,
+	liveVideoFeatures,
+	qualityFeature,
+	streamTypeFeature,
+} from "@videojs/react";
+import {
+	type ShakaAdapter,
+	ShakaVideo,
+} from "@videojs/react/media/shaka-video";
+import { shaka } from "@videojs/shaka-video";
 import { Clock3Icon, Loader2, Users } from "lucide-react";
 import { DateTime } from "luxon";
 import { useQueryState } from "nuqs";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { LiveVideoSkin } from "~/components/imas-videojs/live-video/skin";
+import { ChatButton } from "~/components/imas-videojs/ui/chat-button";
+import { FullscreenButton } from "~/components/imas-videojs/ui/fullscreen-button";
+import { VideoSkin } from "~/components/imas-videojs/video/skin";
 import { Badge } from "~/components/ui/badge";
 import { Card } from "~/components/ui/card";
 import { Dialog, DialogOverlay, DialogTrigger } from "~/components/ui/dialog";
@@ -15,10 +30,15 @@ import {
 } from "~/services/live.services";
 import Chat from "../../components/Chat";
 import Viewers from "../../components/Viewers";
-import useArtPlayer from "../../hooks/useArtPlayer";
 import useBearer from "../../hooks/useBearer";
 import useContentID from "../../hooks/useContentID";
 import type { Viewer } from "../../types";
+
+const { Player } = createPlayer({
+	features: [...liveVideoFeatures, qualityFeature, streamTypeFeature].filter(
+		(feature) => feature.name !== "fullscreen",
+	),
+});
 
 export default function PlayerPage({
 	loaderData,
@@ -26,7 +46,7 @@ export default function PlayerPage({
 	loaderData: { eventData?: LiveEventDto; archiveData?: LiveArchiveDto };
 }) {
 	const pageRef = useRef<HTMLDivElement>(null);
-	const playerRef = useRef<HTMLDivElement>(null);
+	const shakaRef = useRef<ShakaAdapter>(null);
 
 	const {
 		data: channels,
@@ -46,15 +66,27 @@ export default function PlayerPage({
 	);
 
 	const isLive = Boolean(!loaderData.archiveData?.archive);
+	const DRMServer = `${import.meta.env.VITE_BACKEND_API}/live/events/${loaderData.eventData?.slug}/archives/${loaderData.archiveData?.id}/channels/${selectedChannel?.id}/drm`;
 
-	const { isFullscreen, hideChat } = useArtPlayer({
-		serverURL: `${import.meta.env.VITE_BACKEND_API}/live/events/${loaderData.eventData?.slug}/archives/${loaderData.archiveData?.id}/channels/${selectedChannel?.id}/drm`,
-		player: playerRef,
-		page: pageRef,
-		url,
-		type: selectedChannel?.stream_type ?? "hls",
-		isLive,
-	});
+	const [hideChat, setIsHideChat] = useState(false);
+	const [isFullscreen, setFullscreen] = useState(false);
+
+	useEffect(() => {
+		if (!url) return;
+
+		shakaRef.current?.engine
+			?.getNetworkingEngine()
+			?.registerRequestFilter((type, request) => {
+				if (type === shaka.net.NetworkingEngine.RequestType.LICENSE) {
+					request.allowCrossSiteCredentials = true;
+					request.headers = {
+						"Content-Type": "application/octet-stream",
+					};
+				}
+			});
+	}, [url]);
+
+	const Skin = isLive ? LiveVideoSkin : VideoSkin;
 
 	return (
 		<div
@@ -64,10 +96,51 @@ export default function PlayerPage({
 			{selectedChannel && (
 				<Dialog>
 					<div className="w-full md:h-full flex flex-col">
-						<div
-							className="artplayer-app w-full flex-1 aspect-video md:aspect-auto md:rounded-xl overflow-hidden bg-card"
-							ref={playerRef}
-						></div>
+						<div className="w-full flex-1 overflow-hidden">
+							<Player>
+								<Skin
+									controls={
+										<>
+											{isLive && (
+												<ChatButton state={hideChat} setState={setIsHideChat} />
+											)}
+											<FullscreenButton
+												state={isFullscreen}
+												setState={setFullscreen}
+												onClick={(isFullscreen) => {
+													if (!isFullscreen) {
+														document.exitFullscreen();
+														screen.orientation.unlock();
+														return;
+													}
+
+													pageRef.current?.requestFullscreen();
+													// biome-ignore lint/suspicious/noExplicitAny: I can't
+													(screen.orientation as any).lock("landscape");
+												}}
+											/>
+										</>
+									}
+								>
+									{url && (
+										<ShakaVideo
+											source={{
+												src: url ?? "",
+												drm: {
+													"com.widevine.alpha": {
+														licenseUrl: DRMServer,
+													},
+												},
+											}}
+											streamType={isLive ? "live" : "on-demand"}
+											mediaRef={shakaRef}
+											autoPlay
+											muted
+										/>
+									)}
+								</Skin>
+							</Player>
+						</div>
 						<div
 							className={cn(
 								"flex md:items-center flex-col md:flex-row md:gap-4 p-5",
