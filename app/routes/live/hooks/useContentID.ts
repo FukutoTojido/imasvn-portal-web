@@ -9,7 +9,8 @@ const getReturnValue = (
 	if (isLive) {
 		return stream_type === "dash"
 			? json.data.Channel.Custom_drm_dash_live_url
-			: json.data.Channel.Custom_drm_hls_live_url;
+			: (json.data.Channel.Custom_drm_hls_live_url ??
+					json.data.Channel.Custom_live_url);
 	}
 
 	return stream_type === "dash"
