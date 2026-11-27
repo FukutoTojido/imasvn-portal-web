@@ -14,8 +14,8 @@ const getReturnValue = (
 	}
 
 	return stream_type === "dash"
-		? json.ex_content.dash_streaming_url
-		: json.ex_content.streaming_url;
+		? json.payload.dash_streaming_url
+		: json.payload.streaming_url;
 };
 
 export default function useContentID(
@@ -26,7 +26,7 @@ export default function useContentID(
 	const [url, setURL] = useState<string | null>(null);
 
 	useEffect(() => {
-		if (!data || !archiveData || !bearer) return;
+		if (!data || !archiveData) return;
 
 		const { channel_id, url, stream_type } = data;
 		const { archive } = archiveData;
@@ -40,14 +40,13 @@ export default function useContentID(
 
 		const fetchBearer = async () => {
 			const url = archive
-				? `${import.meta.env.VITE_SURVEY_URL}/${channel_id}/get_by_cuid?t=${Date.now()}`
+				? `${import.meta.env.VITE_BACKEND_API}/hls/vod/${channel_id}`
 				: `${import.meta.env.VITE_EX_URL}/${channel_id}?embed=channel&t=${Date.now()}`;
 
 			try {
 				const res = await fetch(url, {
-					headers: {
-						Authorization: `Bearer ${bearer}`,
-					},
+					...(bearer && { headers: { Authorization: `Bearer ${bearer}` } }),
+					credentials: "include",
 					signal: controller.signal,
 				});
 
