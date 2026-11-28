@@ -30,7 +30,6 @@ import {
 } from "~/services/live.services";
 import Chat from "../../components/Chat";
 import Viewers from "../../components/Viewers";
-import useBearer from "../../hooks/useBearer";
 import useContentID from "../../hooks/useContentID";
 import type { Viewer } from "../../types";
 
@@ -58,12 +57,7 @@ export default function PlayerPage({
 	const selectedChannel = channels?.[+(channel ?? 0)] ?? null;
 	const [viewers, setViewers] = useState<Viewer[]>([]);
 
-	const bearer = useBearer();
-	const url = useContentID(
-		selectedChannel,
-		loaderData.archiveData ?? null,
-		bearer,
-	);
+	const url = useContentID(selectedChannel, loaderData.archiveData ?? null);
 
 	const isLive = Boolean(!loaderData.archiveData?.archive);
 	const DRMServer = `${import.meta.env.VITE_BACKEND_API}/live/events/${loaderData.eventData?.slug}/archives/${loaderData.archiveData?.id}/channels/${selectedChannel?.id}/drm`;

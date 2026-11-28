@@ -21,7 +21,6 @@ const getReturnValue = (
 export default function useContentID(
 	data: LiveChannelDto | null,
 	archiveData: LiveArchiveDto | null,
-	bearer: string | null,
 ) {
 	const [url, setURL] = useState<string | null>(null);
 
@@ -41,11 +40,10 @@ export default function useContentID(
 		const fetchBearer = async () => {
 			const url = archive
 				? `${import.meta.env.VITE_BACKEND_API}/hls/vod/${channel_id}`
-				: `${import.meta.env.VITE_EX_URL}/${channel_id}?embed=channel&t=${Date.now()}`;
+				: `${import.meta.env.VITE_BACKEND_API}/hls/live/${channel_id}`;
 
 			try {
 				const res = await fetch(url, {
-					...(bearer && { headers: { Authorization: `Bearer ${bearer}` } }),
 					credentials: "include",
 					signal: controller.signal,
 				});
@@ -67,7 +65,7 @@ export default function useContentID(
 		return () => {
 			controller.abort();
 		};
-	}, [data, archiveData, bearer]);
+	}, [data, archiveData]);
 
 	return url;
 }
